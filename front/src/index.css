@@ -8,6 +8,7 @@ body {
   padding: 0;
   box-sizing: border-box;
   background-color: rgb(226, 226, 226);
+  color: var(--text);
 }
 :root{
   --button:#cc9000;
