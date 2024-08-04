@@ -1,6 +1,6 @@
 const mongoose =  require("mongoose")
 
-const UserRegisterSchema = mongoose.Schema ({
+const UserRegisterSchema = new mongoose.Schema ({
     username:{type: String,required:true},
     email:{type:String,required:true},
     role:{type:String,required:true},
@@ -8,3 +8,7 @@ const UserRegisterSchema = mongoose.Schema ({
 })
 
 const RegisterModel = new mongoose.model("User", UserRegisterSchema)
+
+const TeacherSchema = new mongoose.Schema({})
+
+module.exports = {RegisterModel}
