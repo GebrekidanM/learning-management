@@ -1,1 +1,0 @@
-{"version":3,"sources":["..\\..\\..\\front\\src\\component\\css\\Dashbord.module.scss"],"names":[],"mappings":"AAAA,MACI,SAAA","file":"Dashbord.module.min.css","sourcesContent":[".dash{\r\n    color: red;\r\n}"]}
