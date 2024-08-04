@@ -1,58 +1,68 @@
-.logContainer{
- width: 100%;
+.logContainer {
+  width: 100%;
 }
-.logBox{
-    margin-top: 4rem;
-    width: 50%;
-    margin-inline: auto;
-    display: flex;
-    justify-content: space-between;
-    background-color: var(--white);
-    box-shadow: 2px 2px 2px black;
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
-}
-.logBox form{
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1rem;
-    margin-inline: auto;
-}
-.logBox form input{
-    border: none;
-    padding: 1rem;
-    background-color:  rgb(226, 226, 226);
-    border-radius: 0.2rem;
-    outline: none;
-}
-.logBox form input::placeholder{
-    color: var(--card);
-}
-.button{
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.7rem;
-    background-color: var(--button);
-    color:var(--white);
-    min-width: 5rem;
-    font-weight:bold ;
-    transition: 1s;
-    margin-bottom: 1rem;
-}
-.button:hover{
-    cursor: pointer;
-    background-color: var(--card);
-}
-.logSide{
-    background-color: var(--card);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--white);
-    padding: 1rem;
-    border-top-left-radius: 1rem;
-    border-bottom-left-radius: 1rem;
 
+.logBox {
+  margin-top: 4rem;
+  width: 50%;
+  margin-inline: auto;
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--white);
+  box-shadow: 2px 2px 2px black;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
 }
+
+.logBox form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  margin-inline: auto;
+}
+
+.logBox form input {
+  border: none;
+  padding: 1rem;
+  background-color: rgb(226, 226, 226);
+  border-radius: 0.2rem;
+  outline: none;
+}
+
+.logBox form input::-moz-placeholder {
+  color: var(--card);
+}
+
+.logBox form input::placeholder {
+  color: var(--card);
+}
+
+.button {
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.7rem;
+  background-color: var(--button);
+  color: var(--white);
+  min-width: 5rem;
+  font-weight: bold;
+  transition: 1s;
+  margin-bottom: 1rem;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: var(--card);
+}
+
+.logSide {
+  background-color: var(--card);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--white);
+  padding: 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}/*# sourceMappingURL=login.module.css.map */

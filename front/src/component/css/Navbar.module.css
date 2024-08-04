@@ -1,49 +1,54 @@
-.navContainer{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: var(--card);
-    padding: 0;
+.navContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--card);
+  padding: 0;
 }
-.logBox{
-    margin-right: 2rem;
+
+.logBox {
+  margin-right: 2rem;
 }
-.button{
-    border: none;
-    border-radius: 0.3rem;
-    padding: 0.7rem;
-    background-color: var(--button);
-    color:var(--white);
-    min-width: 5rem;
-    font-weight:bold ;
-    transition: 1s;
+
+.button {
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.7rem;
+  background-color: var(--button);
+  color: var(--white);
+  min-width: 5rem;
+  font-weight: bold;
+  transition: 1s;
 }
-.button:hover{
-    cursor: pointer;
-    background-color: var(--card);
+
+.button:hover {
+  cursor: pointer;
+  background-color: var(--card);
 }
-.navBox{
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
+
+.navBox {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
 }
+
 .navBox li {
-    list-style: none;
-    font-size: large;
-    font-weight: 500;
-    padding: 0.5rem;
-    border-radius: 0.2rem;
-    color: var(--white);
-    transition: 1s;
-
-}
-.navBox li:hover{
-    background-color: var(--button);
-    cursor: pointer;
-    color: var(--text);
+  list-style: none;
+  font-size: large;
+  font-weight: 500;
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  color: var(--white);
+  transition: 1s;
 }
 
-.logo{
-    width: 3rem;
-    height:3rem;
+.navBox li:hover {
+  background-color: var(--button);
+  cursor: pointer;
+  color: var(--text);
 }
+
+.logo {
+  width: 3rem;
+  height: 3rem;
+}/*# sourceMappingURL=Navbar.module.css.map */
