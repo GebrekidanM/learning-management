@@ -3,7 +3,7 @@
 }
 
 .logBox {
-  margin-top: 4rem;
+  margin-top: 3rem;
   width: 50%;
   margin-inline: auto;
   display: -webkit-box;
@@ -97,4 +97,41 @@
   padding: 1rem;
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
+}
+
+.logSide h2 {
+  font-size: 1.2rem;
+}
+
+.customSelect {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.2rem;
+  font-size: 0.8rem;
+  width: 100%;
+  max-width: 200px;
+}
+
+.customSelect:focus {
+  outline: none;
+  border-color: var(--card);
+}
+
+@media only screen and (max-width: 930px) {
+  .logSide h2 {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 930px) {
+  .logSide {
+    display: none;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .logBox form input {
+    width: 80%;
+  }
+  .logBox form h2 {
+    font-size: 1rem;
+  }
 }/*# sourceMappingURL=login.module.css.map */

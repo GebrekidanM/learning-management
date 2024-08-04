@@ -68,17 +68,32 @@ const handleSubmit = (e)=>{
   e.preventDefault()
   let errors = {};
 
-    if (!userData.username) {
-      errors.username = 'Username is required';
+  const usernameError = validateUsername(userData.username);
+    if (usernameError) {
+      errors.username = usernameError;
     }
-    else if (userData) {
-      
-    } else {
-      
+
+    const passwordError = validatePassword(userData.password);
+    if (passwordError) {
+      errors.password = passwordError;
     }
+
+    const repasswordError = validateRepassword(userData.password, userData.repassword);
+    if (repasswordError) {
+      errors.repassword = repasswordError;
+    }
+
+
+
+    setUserError(errors);
+
+    if (Object.keys(errors).length === 0) {
+      console.log('Form submitted successfully', userData);
+    }
+
 }
-console.log(userError)
-  return (
+
+return (
       <div className={style.logContainer}>
         <div className={style.logBox}>
           <div className={style.logSide}>
@@ -88,14 +103,19 @@ console.log(userError)
           <form onSubmit={handleSubmit} >
             <h2>Create Account</h2>
               <input type='text' name='username'  placeholder='Username' value={userData.username} onChange={handleChange}/>
+              {userError.username && <p style={{ color: 'red' }}>{userError.username}</p>}
               <input type='email' name='email' placeholder='example@gmail.com' value={userData.email} onChange={handleChange}/>
-              <select id="role" name='role' value={userData.role} onChange={handleChange}>
+              
+              <select id="role" name='role' value={userData.role} onChange={handleChange} className={style.customSelect}>
                   <option value="">--Please choose an option--</option>
                   <option value="Director">Director</option>
                   <option value="Editor">Editor</option>
               </select>
+              {userError.role && <p style={{ color: 'red' }}>{userError.role}</p>}
               <input type='password' name='password' placeholder='password' value={userData.password} onChange={handleChange}/>
+              {userError.password && <p style={{ color: 'red' }}>{userError.password}</p>}
               <input type='password' name='repassword' placeholder='confirm-password' value={userData.repassword} onChange={handleChange}/>
+              {userError.repassword && <p style={{ color: 'red' }}>{userError.repassword}</p>}
               <button type='submit'className={style.button}>Sign up</button>
           </form>
         </div>
