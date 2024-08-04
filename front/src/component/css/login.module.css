@@ -130,6 +130,7 @@
 @media only screen and (max-width: 450px) {
   .logBox form input {
     width: 80%;
+    margin-inline: auto;
   }
   .logBox form h2 {
     font-size: 1rem;
