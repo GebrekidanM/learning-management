@@ -1,10 +1,11 @@
 {
   "name": "back",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodeman server.js",
+    "start": "node index",
+    "dev": "nodemon index"
   },
   "author": "kidan",
   "license": "ISC",
@@ -14,6 +15,6 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
     "mongoose": "^8.5.2",
-    "nodeman": "^1.1.2"
+    "nodemon": "^3.1.4"
   }
 }
