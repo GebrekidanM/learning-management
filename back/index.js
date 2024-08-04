@@ -1,10 +1,16 @@
 var express = require('express')
 var cors = require('cors')
-var app = express()
+var UserRouter = require('./routes/user')
 
-app.use(cors())
+
+var app = express()
 app.use(express.json())
+app.use(cors())
+
+
+app.use('/user',UserRouter)
 
 app.listen(4000,()=>{
     console.log("here we go")
 })
+
