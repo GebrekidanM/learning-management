@@ -2,7 +2,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: var(--white);
+    background-color: var(--card);
     padding: 0;
 }
 .logBox{
@@ -33,13 +33,14 @@
     font-weight: 500;
     padding: 0.5rem;
     border-radius: 0.2rem;
+    color: var(--white);
     transition: 1s;
+
 }
 .navBox li:hover{
-    background-color: var(--card);
+    background-color: var(--button);
     cursor: pointer;
-    color: var(--white);
-
+    color: var(--text);
 }
 
 .logo{
