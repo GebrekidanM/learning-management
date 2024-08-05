@@ -21,10 +21,21 @@ try {
 
     if(user)return;
 
-    const newUser = new Admin({ username, email, password: hashedPassword ,role});
-    await newUser.save();
+    const newUser = await Admin.save({ username, email, password: hashedPassword ,role});
+    res.status(200).json(newUser)
+
 } catch (error) {
     res.status(500).json({error: "Server error, please try again!"})
+}
+    
+})
+
+router.post('/',async(req,res)=>{
+    const {username,password} = req.body
+try {
+    const getUser = await Admin.findOne({username})
+} catch (error) {
+    
 }
     
 })
