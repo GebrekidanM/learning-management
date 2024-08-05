@@ -10,13 +10,20 @@ const YearModel = mongoose.model('Year',YearSchema)
 const gradeSchema = new mongoose.Schema({
     grade: {
         type: Number,
+        enum:[1,2,3,4,5,6,7,8],
         min: 1,
         max: 8,
         default: 1,
         required: true
-      }
+      },
+    yearId:{type: mongoose.Schema.Types.ObjectId, ref: 'YearModel', required:true}
 })
-
 const GradeModel = mongoose.model('Grade', gradeSchema);
 
-module.exports = {YearModel,GradeModel};
+const SectionSchema = new mongoose.Schema({
+    section:{type:String,required:true},
+    gradeId:{type: mongoose.Schema.Types.ObjectId, ref:'GradeModel', required:true}
+})
+const SectionModel = mongoose.model('Section',SectionSchema)
+
+module.exports = {YearModel,GradeModel,SectionModel};
