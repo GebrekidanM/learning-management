@@ -1,14 +1,14 @@
 const mongoose =  require("mongoose")
 
-const UserRegisterSchema = new mongoose.Schema ({
+const AdminSchema = new mongoose.Schema ({
     username:{type: String,required:true},
     email:{type:String,required:true},
-    role:{type:String,required:true},
+    role:{type:Number,enum:[1,2],default:2,required:true},//1 for writer 2 director
     password:{type:String,required:true}
 })
 
-const RegisterModel = new mongoose.model("User", UserRegisterSchema)
+const Admin = new mongoose.model("User", AdminSchema)
 
 const TeacherSchema = new mongoose.Schema({})
 
-module.exports = {RegisterModel}
+module.exports = {Admin}
