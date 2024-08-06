@@ -65,6 +65,8 @@
 }
 
 .button {
+  text-align: center;
+  text-decoration: none;
   border: none;
   border-radius: 0.3rem;
   padding: 0.7rem;
