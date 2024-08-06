@@ -1,16 +1,20 @@
+require("dotenv").config()
 var express = require('express')
 var cors = require('cors')
 var UserRouter = require('./routes/user')
-
+const mongoose = require('mongoose')
 
 var app = express()
 app.use(express.json())
 app.use(cors())
 
+mongoose.connect('mongodb://localhost:27017/tibeb').then(()=>{
+    app.listen(4000, () => {
+        console.log(`Server is running on port $4000`);
+    });
+});
 
 app.use('/user',UserRouter)
 
-app.listen(4000,()=>{
-    console.log("here we go")
-})
+
 

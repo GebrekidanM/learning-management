@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import {Link} from 'react-router-dom'
 import style from "../css/login.module.css"
 
 function Signup() {
@@ -98,7 +99,8 @@ return (
         <div className={style.logBox}>
           <div className={style.logSide}>
             <h2>Welcome to Nitsuh BG</h2>
-            <button className={style.button}>Login</button>
+            <Link to='/login' className={style.button}>Login</Link>
+
           </div>
           <form onSubmit={handleSubmit} >
             <h2>Create Account</h2>
