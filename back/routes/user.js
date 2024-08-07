@@ -54,16 +54,14 @@ try {
 
     const secretKey= 'Samra@Kidam-07,16{$}{$}'
 
-    const token = jwt.sign(user,secretKey,{expiresIn:'1h'},(error,token)=>{
+    jwt.sign(user,secretKey,{expiresIn:'1h'},(error,token)=>{
         if(error){
             return res.status(400).json({error:"Something is wrong, please try again!"})
         }
         res.cookie('user',token).json('ok')
     })
-
-
 } catch (error) {
-    res.status(400).json({error:"Something is wrong, please try again!"})
+    res.status(500).json({error:"Something is wrong, please try again!"})
 }
     
 })
