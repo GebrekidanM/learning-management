@@ -31,6 +31,7 @@ function Navbar() {
     getInfo()
   },[])
 
+
 // logout system
   const logout = async() => {
     const response = await fetch("http://localhost:4000/user/logout", { credentials: "include" })
