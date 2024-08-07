@@ -60,7 +60,7 @@ try {
         if(error){
             return res.status(400).json({error:"Something is wrong, please try again!"})
         }
-        res.cookie('user',info).json('ok')
+        res.cookie('user',info).json({username})
     })
 } catch (error) {
     res.status(500).json({error:"Something is wrong, please try again!"})

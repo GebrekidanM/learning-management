@@ -1,13 +1,15 @@
 import React from 'react'
 import style from "../css/Dashbord.module.css"
+import Navbar from '../header/Navbar'
 
 
-function Registeral() {
+function Admin() {
   return (
     <div className={style.dash}>
-      
+      <Navbar/>
+      Hello
     </div>
   )
 }
 
-export default Registeral
+export default Admin

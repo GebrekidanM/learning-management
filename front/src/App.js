@@ -1,4 +1,4 @@
-import Registeral from "./component/Dashboard/Registeral";
+import Admin from "./component/Dashboard/Admin";
 import Navbar from "./component/header/Navbar";
 import Login from "./component/pages/login";
 import Signup from "./component/pages/signup";
@@ -11,8 +11,8 @@ function App () {
       <Routes>
         <Route path={'/login'} element={<Login/>}/>
         <Route path={'/signup'} element={<Signup/>}/>
-        <Route path={'/register'} element={<Registeral/>}/>
-      </Routes>     
+        <Route path={'/main'} element={<Admin/>}/>
+      </Routes>
     </AuthProvider>
    
   );
