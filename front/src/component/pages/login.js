@@ -1,17 +1,18 @@
-import React, { useState } from 'react'
-import {Link} from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import {Link, Navigate} from 'react-router-dom'
 import style from "../css/login.module.css"
+import { AuthContext } from '../../context/AuthContext'
 
 function Login() {
   const [username,setUsername] = useState('')
   const [password,setPassword] = useState('')
-
+  const [redirect,setRedirect] = useState(false)
   const [userError,setUserError] = useState({
     username:"",
     password:"",
   })
   const [serverError,setServerError] = useState('')
-  const [userData,setUserData] = useState()
+  const {setLoggedUser} = useContext(AuthContext)
 
   const validateUsername = (username) => {
     if (!username) {
@@ -71,7 +72,8 @@ const handleSubmit = async(e)=>{
         const json = await response.json()
         
         if(response.ok){
-        setUserData(json)  
+          setLoggedUser(json)
+          setRedirect(true)  
         }else{
           setServerError(json.error)
         }
@@ -82,6 +84,10 @@ const handleSubmit = async(e)=>{
       }
       
   }
+}
+
+if (redirect) {
+  return <Navigate to='/'/>
 }
 
   return (

@@ -67,4 +67,21 @@
   margin-left: 3rem;
   width: 3rem;
   height: 3rem;
+}
+
+.userName {
+  color: var(--button);
+  text-transform: capitalize;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.username_logout {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 2rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }/*# sourceMappingURL=Navbar.module.css.map */

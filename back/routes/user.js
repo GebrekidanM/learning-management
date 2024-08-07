@@ -3,6 +3,11 @@ const { Admin } = require('../model/userModel')
 const bcrypt = require("bcrypt")
 const jwt = require('jsonwebtoken')
 
+// secretkey for jwt
+const secretKey= 'Samra@Kidam-07,16{$}{$}'
+
+
+
 //get all users
 router.get('/', async(req,res)=>{
 
@@ -51,19 +56,39 @@ try {
     }
 
     //initiate jwt
-
-    const secretKey= 'Samra@Kidam-07,16{$}{$}'
-
-    jwt.sign(user,secretKey,{expiresIn:'1h'},(error,token)=>{
+    jwt.sign(user,secretKey,{expiresIn:'3d'},(error,info)=>{
         if(error){
             return res.status(400).json({error:"Something is wrong, please try again!"})
         }
-        res.cookie('user',token).json('ok')
+        res.cookie('user',info).json('ok')
     })
 } catch (error) {
     res.status(500).json({error:"Something is wrong, please try again!"})
 }
     
 })
+
+//to get information of logged user
+
+router.get('/profile', (req,res)=>{
+    const {user} = req.cookies
+    if(user){
+        // verify jwt to use the info
+
+        jwt.verify(user, secretKey, {expiresIn:'3d'}, (error, info) => {
+            if(error) {
+                return res.status(400).json({error:"Something is wrong, please try again!"})
+            } else {
+                res.status(200).json(info)
+            }
+        })
+    }
+})
+
+// for logout
+router.get("/logout", (req, res) => {
+    res.cookie("user", "").json("ok")
+})
+
 
 module.exports = router
