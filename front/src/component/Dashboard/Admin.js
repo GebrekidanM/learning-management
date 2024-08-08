@@ -44,7 +44,7 @@ function Admin() {
     console.log(loggedUser)
   return (
     <div className={style.dashContainer}>
-      <AdminNav username={loggedUser.username}/>
+      <AdminNav filterType={filterType} username={loggedUser.username} />
       <div className={style.dashBox}>
           {/** dashboard navigation */}
           <div className={style.dashNav}>

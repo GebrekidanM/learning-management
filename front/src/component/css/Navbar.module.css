@@ -75,6 +75,8 @@
   text-transform: capitalize;
   font-weight: 600;
   cursor: pointer;
+  padding: 0.5rem;
+  z-index: 10;
 }
 
 .username_logout {

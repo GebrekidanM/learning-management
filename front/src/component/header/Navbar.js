@@ -9,7 +9,6 @@ function Navbar() {
   const { loggedUser,setLoggedUser } = useContext(AuthContext)
   const [ showDashboard,setShowDashboard] = useState(false)
   const [redirect,setRedirect] = useState(false)
-  
   //create user for the first time
   useEffect(() => {
     const createNew = async()=>{
@@ -41,6 +40,7 @@ function Navbar() {
   }
 
   const handleDashboard = ()=>{
+    console.log("Dashboard clicked");
     setShowDashboard(!showDashboard)
   }
   const handleClickOnDashboard = ()=>{
@@ -68,7 +68,7 @@ function Navbar() {
             <div className={style.username_logout}>
               <span className={style.userName} onClick={handleDashboard}>{loggedUser.username}</span>
               <div onClick={logout} style={{ marginRight: "2rem", cursor: "pointer", color: "red" }}>Logout</div>
-              {loggedUser.role == 2 && <>{showDashboard && <Link className={style.Dashbord} onClick={handleClickOnDashboard}> <MdDashboard/>  Dashboard</Link>}</>}
+              {showDashboard && <Link className={style.Dashbord} onClick={handleClickOnDashboard}> <MdDashboard/>  Dashboard</Link>}
             </div>
           :
             <Link to={'/login'} className={style.button}>Login</Link>}

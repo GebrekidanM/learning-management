@@ -6,13 +6,12 @@ import { AuthContext } from '../../context/AuthContext'
 function Login() {
   const [username,setUsername] = useState('')
   const [password,setPassword] = useState('')
-  const [redirect,setRedirect] = useState(false)
   const [userError,setUserError] = useState({
     username:"",
     password:"",
   })
   const [serverError,setServerError] = useState('')
-  const {setLoggedUser} = useContext(AuthContext)
+  const {setLoggedUser,loggedUser} = useContext(AuthContext)
 
   const validateUsername = (username) => {
     if (!username) {
@@ -73,7 +72,6 @@ const handleSubmit = async(e)=>{
         
         if(response.ok){
           setLoggedUser(json)
-          setRedirect(true)  
         }else{
           setServerError(json.error)
         }
@@ -86,7 +84,7 @@ const handleSubmit = async(e)=>{
   }
 }
 
-if (redirect) {
+if (loggedUser) {
   return <Navigate to='/'/>
 }
 
