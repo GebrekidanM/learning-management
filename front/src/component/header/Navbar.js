@@ -49,7 +49,7 @@ function Navbar() {
   }
 
   if(redirect){
-    return <Navigate to={'/main'}/>
+    return <Navigate to={'/main'} />
   }
 
   return (

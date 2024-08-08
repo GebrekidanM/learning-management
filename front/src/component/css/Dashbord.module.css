@@ -1,3 +1,45 @@
-.dash {
-  color: red;
+.dashBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 2rem;
+}
+
+.dashNav {
+  min-height: calc(100vh - 4rem);
+  background-color: var(--card);
+}
+
+.dashNavBarContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 1rem;
+  gap: 2rem;
+}
+
+.dashNavBarContainer a {
+  color: var(--white);
+  text-decoration: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5rem;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.dashNavBarContainer a:hover {
+  color: var(--button);
+}
+
+/*******************Admin Nav***********************/
+.adminNav {
+  height: 4rem;
+  width: 100vw;
+  background-color: var(--card);
 }/*# sourceMappingURL=Dashbord.module.css.map */
