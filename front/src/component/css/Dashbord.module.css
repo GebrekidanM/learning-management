@@ -11,6 +11,7 @@
 }
 
 .dashNavBarContainer {
+  height: 90%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -18,8 +19,11 @@
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   padding: 1rem;
-  gap: 2rem;
+  gap: 1rem;
 }
 
 .dashNavBarContainer a {

@@ -41,7 +41,6 @@ function Admin() {
         return <Main/>;
     }}
 
-    console.log(loggedUser)
   return (
     <div className={style.dashContainer}>
       <AdminNav filterType={filterType} username={loggedUser.username} />
