@@ -1,13 +1,20 @@
 .dashBox {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   gap: 2rem;
 }
 
+/**************For vertical nav part of admin panel****************/
 .dashNav {
-  min-height: calc(100vh - 4rem);
+  height: calc(100vh - 4rem);
   background-color: var(--card);
+  width: 15%;
+  position: sticky;
+  top: 4rem;
 }
 
 .dashNavBarContainer {
@@ -41,10 +48,16 @@
   color: var(--button);
 }
 
+.dashDisplay {
+  width: calc(80% - 2rem);
+}
+
 /*******************Admin Nav***********************/
 .adminNav {
+  position: sticky;
+  top: 0;
   height: 4rem;
-  width: 100vw;
+  width: 100%;
   background-color: var(--card);
   display: -webkit-box;
   display: -ms-flexbox;
