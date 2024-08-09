@@ -22,6 +22,8 @@ function Student() {
   const [searchParams] = useSearchParams()
   const stuType = searchParams.get('stuType')
 
+//here to pull at the end of the current link
+
 function generateNewSearchParams(key,value) {
   const type = new URLSearchParams(searchParams)
   type.set(key,value)
