@@ -37,8 +37,7 @@
 .searchButton {
   height: 100%;
   padding: 0.7rem;
-  border: 1px solid var(--button);
-  border-left: none;
+  border: none;
   background-color: var(--button);
   color: #fff;
   border-radius: 0 5px 5px 0;
@@ -50,7 +49,6 @@
 
 .searchButton:hover {
   background-color: var(--card);
-  border-color: var(--card);
 }
 
 .button {
@@ -136,5 +134,5 @@ input, select {
 
 .submit {
   width: 30%;
-  margin-inline: auto;
+  justify-self: end;
 }/*# sourceMappingURL=pages.module.css.map */

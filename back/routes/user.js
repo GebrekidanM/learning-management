@@ -27,7 +27,12 @@ try {
     if(user)return res.status(400).json({error:'There is a user'});
 
     const newUser = await Admin.create({ username, email, password: hashedPassword ,role});
-    res.status(200).json(newUser)
+    if(newUser){
+        res.status(200).json(newUser)
+    }else{
+        return res.status(500).json({error:"Something is wrong!"})
+    }
+    
 
 } catch (error) {
     res.status(500).json({error: "Server error, please try again!"})

@@ -7,8 +7,26 @@ const AdminSchema = new mongoose.Schema ({
     password:{type:String,required:true}
 })
 
-const Admin = new mongoose.model("User", AdminSchema)
+const Admin = mongoose.model("User", AdminSchema)
 
 const TeacherSchema = new mongoose.Schema({})
 
-module.exports = {Admin}
+const StudentSchema = new mongoose.Schema({
+    first:{type:String,required:true},
+        middle:{type:String,required:true},
+        last:{type:String,required:true},
+        gender:{type:String,required:true},
+        age:{type:Number,required:true},
+        grade:{type:Number,required:true},
+        region:{type:String,required:true},
+        city:{type:String,required:true},
+        subCity:{type:String,required:true},
+        wereda:{type:String,required:true},
+        houseNo:{type:Number,required:true},
+        familyTel:{type:Number,required:true}
+},
+{ timestamps: true } 
+)
+const Student = mongoose.model('Student',StudentSchema)
+
+module.exports = {Admin,Student}
