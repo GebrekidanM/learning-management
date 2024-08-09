@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import style from "../css/Dashbord.module.css"
 import {useSearchParams, NavLink} from 'react-router-dom' 
 import Main from './pages/Main'
@@ -18,11 +18,10 @@ import AdminNav from './pages/AdminNav'
 import { AuthContext } from '../../context/AuthContext'
 
 function Admin() {
-  const [searchParams, setSearcharams] = useSearchParams()
-  const {loggedUser} = useContext(AuthContext)
-  
+  const [searchParams] = useSearchParams()
+  const {loggedUser} = useContext(AuthContext)  
   const filterType = searchParams.get('type')
-
+  
   const renderPages = (filterType) => {
     switch (filterType) {
       case 'home':
@@ -44,6 +43,9 @@ function Admin() {
   return (
     <div className={style.dashContainer}>
       <AdminNav filterType={filterType} username={loggedUser.username} />
+
+
+
       <div className={style.dashBox}>
           {/** dashboard navigation */}
           <div className={style.dashNav}>

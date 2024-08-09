@@ -40,7 +40,6 @@ function Navbar() {
   }
 
   const handleDashboard = ()=>{
-    console.log("Dashboard clicked");
     setShowDashboard(!showDashboard)
   }
   const handleClickOnDashboard = ()=>{

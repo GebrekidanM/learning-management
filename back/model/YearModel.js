@@ -5,6 +5,7 @@ const YearSchema = new mongoose.Schema({
     endPoint:{type:Date,required:true},
     yearName:{type:Number,required:true}
 })
+
 const YearModel = mongoose.model('Year',YearSchema)
 
 const gradeSchema = new mongoose.Schema({
