@@ -1,11 +1,11 @@
 const router = require('express').Router()
-const {GradeModel} = require('../model/YearModel')
+const {GradeModel,YearModel} = require('../model/YearModel')
 
 //create year
 
 router.post('/create-year', async (req, res) => {
     const yearData = req.body;
-
+console.log(yearData)
     try {
         const existingYear = await YearModel.findOne({ yearName: yearData.yearName });
 
@@ -23,7 +23,7 @@ router.post('/create-year', async (req, res) => {
             res.status(409).json({ error: 'Year already exists. No new grades were inserted.' });
         }
     } catch (error) {
-        res.status(500).json({ error: 'Server error.' });
+        res.status(500).json({ error:  error.message});
     }
 });
 

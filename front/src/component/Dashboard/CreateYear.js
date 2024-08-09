@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import style from "../css/Createyear.module.css"
+import { Navigate } from 'react-router-dom';
 
 function CreateYear() {
   const [startPoint, setStartPoint] = useState('');
@@ -32,6 +34,7 @@ function CreateYear() {
         setStartPoint('');
         setEndPoint('');
         setYearName('');
+
       } else {
         const json = await response.json();
         setServerError(json.error || 'Failed to create year.');
@@ -40,12 +43,15 @@ function CreateYear() {
       setServerError('An error occurred: ' + error.message);
     }
   };
+  if(successMessage){
+    return <Navigate to={'/main'}/>
+  }
 
   return (
-    <div>
-      <h2>Create a New Year</h2>
+    <div className={style.yearContainer}>
+      <h2>Create a New Academic Year</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className={style.info}>
           <label>Start Date:</label>
           <input
             type="date"
@@ -54,7 +60,7 @@ function CreateYear() {
             required
           />
         </div>
-        <div>
+        <div className={style.info}>
           <label>End Date:</label>
           <input
             type="date"
@@ -63,8 +69,9 @@ function CreateYear() {
             required
           />
         </div>
-        <div>
-          <label>Year Name:</label>
+        <div className={style.info}>
+          <label>Year Name(<small><i>In ethiopian calander</i></small>):</label>
+          
           <input
             type="number"
             value={yearName}
@@ -72,7 +79,7 @@ function CreateYear() {
             required
           />
         </div>
-        <button type="submit">Create Year</button>
+        <button type="submit" className={style.button}>Create Year</button>
       </form>
       {serverError && <div style={{ color: 'red' }}>{serverError}</div>}
       {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}

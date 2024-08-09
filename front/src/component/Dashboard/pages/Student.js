@@ -4,19 +4,6 @@ import style from "./css/pages.module.css"
 import Grade from './create/Grade'
 import CreateStudent from './create/CreateStudent'
 
-
-const grades = [
-  {grade:1,Male:17,Female:15},
-  {grade:2,Male:15,Female:20},
-  {grade:3,Male:10,Female:25},
-  {grade:4,Male:10,Female:15},
-  {grade:5,Male:17,Female:10},
-  {grade:6,Male:15,Female:15},
-  {grade:7,Male:17,Female:17},
-  {grade:8,Male:15,Female:11}
-]
-
-
 function Student() {
 
   const [searchParams] = useSearchParams()
@@ -44,9 +31,7 @@ function generateNewSearchParams(key,value) {
       <div>
         {stuType == 'createStudent' ?
             <CreateStudent/>
-          : <>{grades.map((clas)=>
-               <Grade grade={clas.grade} Male={clas.Male} Female={clas.Female}/>
-              )}
+          : <>
             </>
       }
       </div>
