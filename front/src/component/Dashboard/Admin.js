@@ -16,11 +16,14 @@ import { PiStudent } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 import AdminNav from './pages/AdminNav'
 import { AuthContext } from '../../context/AuthContext'
+import CreateStudent from './pages/create/CreateStudent'
 
 function Admin() {
   const [searchParams] = useSearchParams()
   const {loggedUser} = useContext(AuthContext)  
   const filterType = searchParams.get('type')
+  const sectionId = searchParams.get('sectionId')
+
   
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -59,8 +62,12 @@ function Admin() {
               </div>
           </div>
           <div className={style.dashDisplay}>
-            {renderPages(filterType)}            
-          </div>
+          {filterType === 'student' && sectionId ? (
+            <CreateStudent sectionId={sectionId} />
+          ) : (
+            renderPages(filterType)
+          )}
+        </div>
       </div>
     </div>
   )

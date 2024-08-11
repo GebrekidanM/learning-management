@@ -12,7 +12,7 @@ function Navbar() {
   //create user for the first time
   useEffect(() => {
     const createNew = async()=>{
-        await fetch('http://localhost:4000/user/create',{credentials:"include"})
+        await fetch('http://localhost:4000/user/createOne',{credentials:"include"})
     }
     createNew()
   },[])

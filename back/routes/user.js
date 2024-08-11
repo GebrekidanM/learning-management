@@ -14,7 +14,7 @@ router.get('/', async(req,res)=>{
 })
 
 //create one new user only for the first time
-router.get('/create',async (req,res)=>{
+router.get('/createOne',async (req,res)=>{
     const username = 'user'
     const password = 'User@001'
     const email = 'user@gmail.com'

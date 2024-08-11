@@ -17,7 +17,7 @@ const StudentSchema = new mongoose.Schema({
         last:{type:String,required:true},
         gender:{type:String,required:true},
         age:{type:Number,required:true},
-        grade:{type:Number,required:true},
+        sectionId:{type:mongoose.Schema.Types.ObjectId, ref:'SectionModel',required:true},
         region:{type:String,required:true},
         city:{type:String,required:true},
         subCity:{type:String,required:true},

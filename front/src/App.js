@@ -4,14 +4,16 @@ import Signup from "./component/pages/signup";
 import {Routes,Route,useLocation} from "react-router-dom"
 import { AuthProvider } from "./context/AuthContext";
 import DashboardIs from "./component/Dashboard/DashboardIs";
+import CreateStudent from "./component/Dashboard/pages/create/CreateStudent";
+
 function App () {
   return (
     <AuthProvider>
-      <ConditionalNavbar/>
+      <ConditionalNavbar />
       <Routes>
-        <Route path={'/login'} element={<Login/>}/>
-        <Route path={'/signup'} element={<Signup/>}/>
-        <Route path={'/main'} element={<DashboardIs/>}/>
+        <Route path={'/login'} element={<Login />}/>
+        <Route path={'/signup'} element={<Signup />}/>
+        <Route path={'/main'} element={<DashboardIs />}/>
       </Routes>
     </AuthProvider>
    
