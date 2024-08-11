@@ -17,12 +17,14 @@ import { GiTeacher } from "react-icons/gi";
 import AdminNav from './pages/AdminNav'
 import { AuthContext } from '../../context/AuthContext'
 import CreateStudent from './pages/create/CreateStudent'
+import StudentDetail from './pages/component/StudentDetail'
 
 function Admin() {
   const [searchParams] = useSearchParams()
   const {loggedUser} = useContext(AuthContext)  
   const filterType = searchParams.get('type')
   const sectionId = searchParams.get('sectionId')
+  const studentId = searchParams.get('studentId')
 
   
   const renderPages = (filterType) => {
@@ -30,6 +32,9 @@ function Admin() {
       case 'home':
         return <Main />;
       case 'student':
+        if (studentId) {
+          return <StudentDetail studentId={studentId} />;
+        }
         return <Student />;
       case 'grade':
         return <Grade />;

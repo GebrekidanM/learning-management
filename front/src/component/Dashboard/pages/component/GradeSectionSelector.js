@@ -14,7 +14,6 @@ function GradeSectionSelector() {
     const type = searchParams.get('type');
     const sectionId = searchParams.get('sectionId');
 
-console.log(sectionId)
 
     const navigate = useNavigate();
 
