@@ -82,7 +82,6 @@ function CreateYear() {
         <button type="submit" className={style.button}>Create Year</button>
       </form>
       {serverError && <div style={{ color: 'red' }}>{serverError}</div>}
-      {successMessage && <div style={{ color: 'green' }}>{successMessage}</div>}
     </div>
   );
 }

@@ -15,8 +15,7 @@ const gradeSchema = new mongoose.Schema({
 const GradeModel = mongoose.model('Grade', gradeSchema);
 
 const SectionSchema = new mongoose.Schema({
-    section:{type:String,required:true},
-    enum:['A','B','C','D','E','F'],
+    section:{type:String, required:true, enum:['A','B','C','D','E','F']},
     gradeId:{type: mongoose.Schema.Types.ObjectId, ref:'GradeModel', required:true}
 })
 const SectionModel = mongoose.model('Section',SectionSchema)

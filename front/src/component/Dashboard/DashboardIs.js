@@ -19,14 +19,18 @@ function DashboardIs() {
         checkYear();
     }, []);
 
-    if (yearExists === null) {
-        return <div>Loading...</div>;
+    const handleCreateYear = () => {
+        setYearExists(false);
+    };
+
+    if(yearExists === null){
+        return <div>loading ...</div>
     }
 
     return (
         <div>
             {yearExists ? (
-                <Admin />
+                <Admin year={handleCreateYear} />
             ) : (
                 <CreateYear />
             )}

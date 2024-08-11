@@ -1,64 +1,72 @@
 const router = require('express').Router()
-const {GradeModel,YearModel} = require('../model/YearModel')
+const {GradeModel,YearModel,SectionModel} = require('../model/YearModel')
 
-//create year
+//create year and with that year grade
 
 router.post('/create-year', async (req, res) => {
     const yearData = req.body;
-console.log(yearData)
     try {
         const existingYear = await YearModel.findOne({ yearName: yearData.yearName });
 
         if (!existingYear) {
+            // Create the year
             const year = await YearModel.create(yearData);
+
+            // Create grades for the year
             const grades = Array.from({ length: 8 }, (_, i) => ({
                 grade: i + 1,
                 yearId: year._id
             }));
 
-            await GradeModel.insertMany(grades);
+            const createdGrades = await GradeModel.insertMany(grades);
 
-            res.status(201).json({ message: 'Year and grades inserted successfully.' });
+            // Create sections for each grade
+            const sectionLabels = ['A', 'B', 'C', 'D', 'E', 'F'];
+            const sections = createdGrades.flatMap(grade =>
+                sectionLabels.map(label => ({
+                    section: label,
+                    gradeId: grade._id
+                }))
+            );
+
+            await SectionModel.insertMany(sections);
+
+            res.status(201).json({ message: 'Year, grades, and sections inserted successfully.' });
         } else {
-            res.status(409).json({ error: 'Year already exists. No new grades were inserted.' });
+            res.status(409).json({ error: 'Year already exists. No new grades or sections were inserted.' });
         }
     } catch (error) {
-        res.status(500).json({ error:  error.message});
+        res.status(500).json({ error: error.message });
     }
 });
+//get grade
 
-
-// Change Gregorian Calander to Ethiopian calander 
-
-function convertToEthiopianYear() {
-    const today = new Date(); // Get today's date
-    const gregorianYear = today.getFullYear(); // Extract the current Gregorian year
-    const gregorianMonth = today.getMonth()
-    const gregorianDay = today.getDate()
-
-
-    // Determine if the current date is before or after Ethiopian New Year (September 11)
-    const ethiopianNewYear = new Date(gregorianYear, 8, 11); // September 11 in the Gregorian year
-    let ethiopianYear;
-
-    if(gregorianMonth < 8){
-        return ethiopianYear = gregorianYear - 8
-    } 
-    if (gregorianMonth > 8) {
-        return ethiopianYear = gregorianYear - 7;
+router.get('/grades',async(req,res)=>{
+    const getGrade = await GradeModel.find({})
+    if(getGrade){
+        return res.status(200).json({getGrade})
+    }else{
+        return res.status(404).json({error:"Not found"})
     }
-    if(gregorianMonth = 8){
-        if (gregorianDay >= 11) {
-            return ethiopianYear = gregorianYear - 7;
+
+})
+
+// Route to get sections for a specific grade
+router.get('/grades/:gradeId/sections', async (req, res) => {
+    const { gradeId } = req.params;
+
+    try {
+        const sections = await SectionModel.find({ gradeId: gradeId });
+
+        if (sections.length > 0) {
+            res.status(200).json(sections);
         } else {
-            return ethiopianYear = gregorianYear - 8
+            res.status(404).json({ error: 'No sections found for this grade.' });
         }
+    } catch (error) {
+        res.status(500).json({ error: error.message });
     }
-
-    return ethiopianYear;
-}
-// Example usage
-const ethiopianYear = convertToEthiopianYear();
+});
 
 // check is the year exist or not
 
