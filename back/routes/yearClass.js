@@ -1,16 +1,16 @@
 const router = require('express').Router()
-const {GradeModel,YearModel,SectionModel} = require('../model/YearModel')
+const {Grade,Year,Section} = require('../model/YearModel')
 
 //create year and with that year grade
 
 router.post('/create-year', async (req, res) => {
     const yearData = req.body;
     try {
-        const existingYear = await YearModel.findOne({ yearName: yearData.yearName });
+        const existingYear = await Year.findOne({ yearName: yearData.yearName });
 
         if (!existingYear) {
             // Create the year
-            const year = await YearModel.create(yearData);
+            const year = await Year.create(yearData);
 
             // Create grades for the year
             const grades = Array.from({ length: 8 }, (_, i) => ({
@@ -18,7 +18,7 @@ router.post('/create-year', async (req, res) => {
                 yearId: year._id
             }));
 
-            const createdGrades = await GradeModel.insertMany(grades);
+            const createdGrades = await Grade.insertMany(grades);
 
             // Create sections for each grade
             const sectionLabels = ['A', 'B', 'C', 'D', 'E', 'F'];
@@ -29,7 +29,7 @@ router.post('/create-year', async (req, res) => {
                 }))
             );
 
-            await SectionModel.insertMany(sections);
+            await Section.insertMany(sections);
 
             res.status(201).json({ message: 'Year, grades, and sections inserted successfully.' });
         } else {
@@ -42,7 +42,7 @@ router.post('/create-year', async (req, res) => {
 //get grade
 
 router.get('/grades',async(req,res)=>{
-    const getGrade = await GradeModel.find({})
+    const getGrade = await Grade.find({})
     if(getGrade){
         return res.status(200).json({getGrade})
     }else{
@@ -56,7 +56,7 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
     const { gradeId } = req.params;
 
     try {
-        const sections = await SectionModel.find({ gradeId: gradeId });
+        const sections = await Section.find({ gradeId: gradeId });
 
         if (sections.length > 0) {
             res.status(200).json(sections);
@@ -72,7 +72,7 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
 
 router.get('/check-academic-year', async (req, res) => {
     try {
-        const yearExists = await YearModel.exists({});
+        const yearExists = await Year.exists({});
         res.json({ yearExists }); // its reasult will be true or false
     } catch (error) {
         res.status(400).json({ error: "Not found" });

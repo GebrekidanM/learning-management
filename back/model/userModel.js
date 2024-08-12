@@ -11,19 +11,27 @@ const Admin = mongoose.model("User", AdminSchema)
 
 const TeacherSchema = new mongoose.Schema({})
 
-const StudentSchema = new mongoose.Schema({
+const StudentSchema = mongoose.Schema({
     first:{type:String,required:true},
-        middle:{type:String,required:true},
-        last:{type:String,required:true},
-        gender:{type:String,required:true},
-        age:{type:Number,required:true},
-        sectionId:{type:mongoose.Schema.Types.ObjectId, ref:'SectionModel',required:true},
-        region:{type:String,required:true},
-        city:{type:String,required:true},
-        subCity:{type:String,required:true},
-        wereda:{type:String,required:true},
-        houseNo:{type:Number,required:true},
-        familyTel:{type:Number,required:true}
+    middle:{type:String,required:true},
+    last:{type:String,required:true},
+    gender:{type:String,required:true},
+    age:{type:Number,required:true},
+    sectionId:{type:mongoose.Schema.Types.ObjectId, ref:'Section',required:true},
+    region:{type:String,required:true},
+    city:{type:String,required:true},
+    subCity:{type:String,required:true},
+    wereda:{type:String,required:true},
+    houseNo:{type:Number,required:true},
+    studentPhoto:{type:String,required:true},
+    family:[
+        {
+            familyPhoto:{type:String,required:true},
+            familyName:{type:String,required:true},
+            familyType:{ type:String, required:true},
+            familyTel:{type:Number,required:true}
+        }
+    ]
 },
 { timestamps: true } 
 )

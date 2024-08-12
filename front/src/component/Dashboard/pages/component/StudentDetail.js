@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import style from './css/detail.module.css'
 
 function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
@@ -9,10 +10,11 @@ function StudentDetail({studentId}) {
             setLoading(true)
             try {
                const response = await fetch(`http://localhost:4000/member/${studentId}`)
+               console.log(response)
+
                const json = await response.json()
                if(response.ok){
-                console.log(json)
-                  setStudent(json.getStudent)
+                  setStudent(json.student)
                }else{
                 setError(json.error)
                }
@@ -29,9 +31,9 @@ function StudentDetail({studentId}) {
   return (
     <div>
       {loading && <p>Loading...</p>}
-      <div>
-        <h3>Basic informations</h3>
-        <h4>{student.first}</h4>
+      <div className={style.bsicInfo}>
+        <h4>{student.first} {student.middle} {student.last}</h4>
+        <p>{}</p>
       </div>
 
     </div>

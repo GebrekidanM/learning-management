@@ -15,7 +15,7 @@ function CreateStudent({ sectionId }) {
     wereda: '',
     houseNo: '',
     familyTel: '',
-    sectionId: sectionId || ''
+    sectionId
   });
 
   const [error, setError] = useState('');

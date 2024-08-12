@@ -3,7 +3,7 @@ import CreateYear from './CreateYear';
 import Admin from './Admin';
 
 function DashboardIs() {
-    const [yearExists, setYearExists] = useState(null); // State to track if the academic year exists
+    const [yearExists, setYearExists] = useState(""); // State to track if the academic year exists
 
     useEffect(() => {
         const checkYear = async () => {
@@ -23,8 +23,8 @@ function DashboardIs() {
         setYearExists(false);
     };
 
-    if(yearExists === null){
-        return <div>loading ...</div>
+    if(yearExists === ""){
+         return <div>loading ...</div>
     }
 
     return (
