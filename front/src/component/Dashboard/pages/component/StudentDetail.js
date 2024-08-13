@@ -30,18 +30,34 @@ function StudentDetail({studentId}) {
   return (
     <div>
       {loading && <p>Loading...</p>}
-      <div className={style.basicInfo}>
-        <div>
-          {student && <img src={`http://localhost:4000/${student.studentPhoto}`} alt='hello'/>}
+      {student && 
+      <div className={style.BoxContainer}>
+        <div className={style.basicInfo}>
+          <img src={`http://localhost:4000/uploads/${student.studentPhoto}`} alt='hello'/>
+          <time>
+              {student && format(new Date(student.createdAt), "MMM yyyy dd, HH:mm")}
+          </time>
+          <div className={style.extraInfo}>
+            <h4>{student.first} {student.middle} {student.last}</h4>
+            <p>Gendar: {student.gender}</p>
+            <p>Age: {student.age}</p>
+            <p> Grade: {student.sectionId.gradeId.grade}{student.sectionId.section}</p>
+            <p>Acadamic year: {student.sectionId.gradeId.yearId.yearName}</p>
+          </div>
+        </div>
+        <div className={style.basicInfo}>
+          <h3>Detail Adress</h3>
+          <div className={style.extraInfo}>
+              <p><i>Region:</i>   {student.region}</p>
+              <p><i>City:</i>     {student.city}</p>
+              <p><i>Subcity: </i> {student.subCity}</p>
+              <p><i>Wereda:   </i>{student.wereda}</p>
+              <p><i>House No: </i>{student.houseNo}</p>
+          </div>
           
         </div>
-        <time>
-            {student && format(new Date(student.createdAt), "MMM yyyy dd, HH:mm")}
-        </time>
-        <h4>{student.first} {student.middle} {student.last}</h4>
-        <p>{}</p>
       </div>
-
+      }
     </div>
   )
 }
