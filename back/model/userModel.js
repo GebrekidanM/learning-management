@@ -38,4 +38,6 @@ const FamilySchema = new mongoose.Schema({
     familyEmail:{type:String,required:true},
     studentId:{type:mongoose.Schema.Types.ObjectId,ref:"Student",required:true}
 })
-module.exports = {Admin,Student}
+const Family = mongoose.model('Family',FamilySchema)
+
+module.exports = {Admin,Student,Family}

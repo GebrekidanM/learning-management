@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
 const upload = require('../upload') 
-const {Student} = require('../model/userModel')
+const {Student, Family} = require('../model/userModel')
 
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {
@@ -60,4 +60,18 @@ router.get('/',async(req,res)=>{
     }
 })
 
+
+/**************************** For Student Family ********************************************/
+router.get('/family/:id',async(req,res)=>{
+    const {id} = req.params
+    try {
+        const family = await Family.findOne({studentId:id})
+        if(!family){
+            return res.status(404).json({error:"Not found!"})
+        }
+        res.status(200).json(family)
+    } catch (error) {
+        res.status(500).json({error:"Server error"})
+    }
+})
 module.exports = router
