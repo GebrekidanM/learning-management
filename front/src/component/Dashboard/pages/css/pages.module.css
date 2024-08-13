@@ -80,9 +80,10 @@
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 1rem;
+  margin-bottom: 3rem;
 }
 
-.nameBox {
+.inLineBox {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -100,17 +101,6 @@
   gap: 0.5rem;
 }
 
-.infoContainer {
-  width: 30%;
-}
-
-.infoContainer div {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  gap: 1rem;
-}
-
 input, select {
   padding: 0.5rem;
   border: none;
@@ -118,21 +108,23 @@ input, select {
   outline: none;
 }
 
-.ageGrade {
+.familyBox {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  gap: 1rem;
-}
-
-.adressInfo {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
   gap: 1rem;
 }
 
 .submit {
   width: 30%;
   justify-self: end;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
 }/*# sourceMappingURL=pages.module.css.map */

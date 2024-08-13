@@ -1,177 +1,283 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import style from '../css/pages.module.css';
+import { useNavigate } from 'react-router-dom';
 
 function CreateStudent({ sectionId }) {
-  const [userData, setUserData] = useState({
-    first: '',
-    middle: '',
-    last: '',
-    gender: '',
-    age: '',
-    region: '',
-    city: '',
-    subCity: '',
-    wereda: '',
-    houseNo: '',
-    familyTel: '',
-    sectionId
-  });
+    const [userData, setUserData] = useState({
+        first: "",
+        middle: "",
+        last: "",
+        gender: "",
+        age: "",
+        region: "",
+        city: "",
+        subCity: "",
+        wereda: "",
+        houseNo: "",
+        sectionId
+    });
+    const [studentPhoto,setStudentPhoto] = useState(null)
 
-  const [error, setError] = useState('');
-  const [formErrors, setFormErrors] = useState({});
-  const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setUserData(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
+    // Handle input change and clear errors
+    const handleOnChange = (e) => {
+        const { name, value } = e.target;
+        setUserData(prev => ({ ...prev, [name]: value }));
+        setErrors(prev => ({ ...prev, [name]: '' }));
+    };
 
-  const validateForm = () => {
-    const errors = {};
-    const namePattern = /^[a-zA-Z\s]+$/; // Regex pattern for letters and spaces
+    // Handle file change
+    const handleFileChange = (e) => {
+      console.log(e.target.files)
 
-    if (!userData.first.trim()) errors.first = 'First name is required';
-    else if (!namePattern.test(userData.first)) errors.first = 'First name must contain only characters';
+      setStudentPhoto(e.target.files)
+    };
 
-    if (!userData.last.trim()) errors.last = 'Last name is required';
-    else if (!namePattern.test(userData.last)) errors.last = 'Last name must contain only characters';
+    // Validation part
+    const validateStudentData = () => {
+        const errors = {};
+        let isValid = true;
 
-    if (!userData.gender) errors.gender = 'Gender is required';
+        if (!userData.first.trim()) {
+            errors.first = "First name is required";
+            isValid = false;
+        }
+        if (!userData.middle.trim()) {
+            errors.middle = "Middle name is required";
+            isValid = false;
+        }
+        if (!userData.last.trim()) {
+            errors.last = "Last name is required";
+            isValid = false;
+        }
+        if (!userData.gender) {
+            errors.gender = "Gender is required";
+            isValid = false;
+        }
+        if (!userData.age || userData.age <= 0) {
+            errors.age = "Age must be a positive number";
+            isValid = false;
+        }
+        if (!studentPhoto) {
+            errors.studentPhoto = "Student photo is required";
+            isValid = false;
+        }
+        if (!userData.region.trim()) {
+            errors.region = "Region/State is required";
+            isValid = false;
+        }
+        if (!userData.city.trim()) {
+            errors.city = "City is required";
+            isValid = false;
+        }
+        if (!userData.subCity.trim()) {
+            errors.subCity = "Subcity/Zone is required";
+            isValid = false;
+        }
+        if (!userData.wereda.trim()) {
+            errors.wereda = "Wereda is required";
+            isValid = false;
+        }
+        if (!userData.houseNo) {
+            errors.houseNo = "House No. is required";
+            isValid = false;
+        }
 
-    if (!userData.age || userData.age <= 0) errors.age = 'Age must be a positive number';
+        setErrors(errors);
+        return isValid;
+    };
 
-    if (!userData.familyTel.match(/^\d{10}$/)) errors.familyTel = 'Family phone number must be 10 digits';
+    // Form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
 
-    if (!userData.region.trim()) errors.region = 'Region/State is required';
-    if (!userData.city.trim()) errors.city = 'City is required';
-    if (!userData.subCity.trim()) errors.subCity = 'Subcity/Zone is required';
-    if (!userData.wereda.trim()) errors.wereda = 'Wereda is required';
-    if (!userData.houseNo.trim()) errors.houseNo = 'House No. is required';
+        if (!validateStudentData()) {
+            setLoading(false);
+            return;
+        }
 
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+        const data = new FormData();
+        data.set('first',userData.first)
+        data.set("last",userData.last)
+        data.set('middle',userData.middle)
+        data.set('gender',userData.gender)
+        data.set('age',userData.age)
+        data.set('region',userData.region)
+        data.set('city',userData.city)
+        data.set('subCity',userData.subCity)
+        data.set('wereda',userData.wereda)
+        data.set('houseNo',userData.houseNo)
+        data.set('studentPhoto',studentPhoto[0])
+        data.set('sectionId',userData.sectionId)
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+        try {
+            const response = await fetch('http://localhost:4000/member/student', {
+                method: 'POST',
+                body: data,
+            });
+            const json = await response.json();
 
-    if (!validateForm()) return;
+            if (response.ok) {
+                navigate(`/main?type=student&studentId=${json._id}`, { replace: true });
+            } else {
+                setErrors({ form: json.error || 'Failed to create student.' });
+            }
+        } catch (error) {
+            setErrors({ form: 'An error occurred: ' + error.message });
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    setLoading(true); // Disable button and show loading state
+    return (
+        <div className={style.createBox}>
+            <form onSubmit={handleSubmit}>
+                <h2>Student's information</h2>
+                <div className={style.inLineBox}>
+                    <div className={style.info}>
+                        <label>First name:</label>
+                        <input
+                            type='text'
+                            name="first"
+                            value={userData.first}
+                            onChange={handleOnChange}
+                            required
+                        />
+                        {errors.first && <span className={style.error}>{errors.first}</span>}
+                    </div>
+                    <div className={style.info}>
+                        <label>Middle name:</label>
+                        <input
+                            type='text'
+                            name="middle"
+                            value={userData.middle}
+                            onChange={handleOnChange}
+                            required
+                        />
+                        {errors.middle && <span className={style.error}>{errors.middle}</span>}
+                    </div>
+                    <div className={style.info}>
+                        <label>Last name:</label>
+                        <input
+                            type='text'
+                            name="last"
+                            value={userData.last}
+                            onChange={handleOnChange}
+                            required
+                        />
+                        {errors.last && <span className={style.error}>{errors.last}</span>}
+                    </div>
+                </div>
 
-    try {
-      const response = await fetch('http://localhost:4000/member/', {
-        method: 'POST',
-        body: JSON.stringify(userData),
-        headers: { 'Content-Type': 'application/json' }
-      });
+                <div className={`${style.info} ${style.infoContainer}`}>
+                    <label>Gender:</label>
+                    <div>
+                        <span>
+                            <input type="radio" name="gender" value="Male" checked={userData.gender === "Male"} onChange={handleOnChange} /> Male
+                        </span>
+                        <span>
+                            <input type="radio" name="gender" value="Female" checked={userData.gender === "Female"} onChange={handleOnChange} /> Female
+                        </span>
+                    </div>
+                    {errors.gender && <span className={style.error}>{errors.gender}</span>}
+                </div>
 
-      const json = await response.json();
+                <div className={style.inLineBox}>
+                    <div className={style.info}>
+                        <label>Age:</label>
+                        <input
+                            type='number'
+                            name="age"
+                            value={userData.age}
+                            onChange={handleOnChange}
+                            min="1"
+                            required
+                        />
+                        {errors.age && <span className={style.error}>{errors.age}</span>}
+                    </div>
+                    <div className={style.info}>
+                        <label>Student Photo:</label>
+                        <input
+                            type='file'
+                            name="studentPhoto"
+                            onChange={handleFileChange}
+                            required
+                        />
+                        {errors.studentPhoto && <span className={style.error}>{errors.studentPhoto}</span>}
+                    </div>
+                </div>
 
-      if (response.ok) {
-        navigate(`/main?type=student&studentId=${json.createStudent._id}`);
-      } else {
-        setError('Error registering student: ' + json.error);
-      }
-    } catch (error) {
-      setError('Network error: ' + error.message);
-    } finally {
-      setLoading(false); // Re-enable button
-    }
-  };
+                <div className={style.inLineBox}>
+                    <div className={style.info}>
+                        <label>Region/State:</label>
+                        <input
+                            type='text'
+                            name="region"
+                            value={userData.region}
+                            onChange={handleOnChange}
+                            required
+                        />
+                        {errors.region && <span className={style.error}>{errors.region}</span>}
+                    </div>
+                    <div className={style.info}>
+                        <label>City:</label>
+                        <input
+                            type='text'
+                            name="city"
+                            value={userData.city}
+                            onChange={handleOnChange}
+                            required
+                        />
+                        {errors.city && <span className={style.error}>{errors.city}</span>}
+                    </div>
+                    <div className={style.info}>
+                        <label>Subcity/Zone:</label>
+                        <input
+                            type='text'
+                            name="subCity"
+                            value={userData.subCity}
+                            onChange={handleOnChange}
+                            required
+                        />
+                        {errors.subCity && <span className={style.error}>{errors.subCity}</span>}
+                    </div>
+                    <div className={style.info}>
+                        <label>Wereda:</label>
+                        <input
+                            type='text'
+                            name="wereda"
+                            value={userData.wereda}
+                            onChange={handleOnChange}
+                            required
+                        />
+                        {errors.wereda && <span className={style.error}>{errors.wereda}</span>}
+                    </div>
+                    <div className={style.info}>
+                        <label>House No.:</label>
+                        <input
+                            type='number'
+                            name="houseNo"
+                            value={userData.houseNo}
+                            onChange={handleOnChange}
+                            min="1"
+                            required
+                        />
+                        {errors.houseNo && <span className={style.error}>{errors.houseNo}</span>}
+                    </div>
+                </div>
 
-  return (
-    <div className={style.createBox}>
-      <form onSubmit={handleSubmit}>
-        <h2>Register Student</h2>
-
-        {error && <p className={style.error}>{error}</p>}
-
-        <div className={style.nameBox}>
-          <div className={style.info}>
-            <label>First name:</label>
-            <input type='text' name="first" value={userData.first} onChange={handleOnChange} />
-            {formErrors.first && <p className={style.error}>{formErrors.first}</p>}
-          </div>
-          <div className={style.info}>
-            <label>Middle name:</label>
-            <input type='text' name="middle" value={userData.middle} onChange={handleOnChange} />
-          </div>
-          <div className={style.info}>
-            <label>Last name:</label>
-            <input type='text' name="last" value={userData.last} onChange={handleOnChange} />
-            {formErrors.last && <p className={style.error}>{formErrors.last}</p>}
-          </div>
+                {errors.form && <div className={style.error}>{errors.form}</div>}
+                <button type="submit" disabled={loading} className={style.button}>
+                    {loading ? 'Submitting...' : 'Submit'}
+                </button>
+            </form>
         </div>
-
-        <div className={`${style.info} ${style.infoContainer}`}>
-          <label>Gender:</label>
-          <div>
-            <span>
-              <input type="radio" name="gender" value="Male" onChange={handleOnChange} checked={userData.gender === 'Male'} />
-              Male
-            </span>
-            <span>
-              <input type="radio" name="gender" value="Female" onChange={handleOnChange} checked={userData.gender === 'Female'} />
-              Female
-            </span>
-          </div>
-          {formErrors.gender && <p className={style.error}>{formErrors.gender}</p>}
-        </div>
-
-        <div className={style.ageGrade}>
-          <div className={`${style.info} ${style.infoContainer}`}>
-            <label>Age:</label>
-            <input type='number' name="age" value={userData.age} onChange={handleOnChange} />
-            {formErrors.age && <p className={style.error}>{formErrors.age}</p>}
-          </div>
-          <div className={`${style.info} ${style.infoContainer}`}>
-            <label>Family phone number:</label>
-            <input type='tel' name="familyTel" value={userData.familyTel} onChange={handleOnChange} />
-            {formErrors.familyTel && <p className={style.error}>{formErrors.familyTel}</p>}
-          </div>
-        </div>
-
-        <div className={style.adressInfo}>
-          <div className={style.info}>
-            <label>Region/ State</label>
-            <input type='text' name="region" value={userData.region} onChange={handleOnChange} />
-            {formErrors.region && <p className={style.error}>{formErrors.region}</p>}
-          </div>
-          <div className={style.info}>
-            <label>City</label>
-            <input type='text' name="city" value={userData.city} onChange={handleOnChange} />
-            {formErrors.city && <p className={style.error}>{formErrors.city}</p>}
-          </div>
-          <div className={style.info}>
-            <label>Subcity/ Zone</label>
-            <input type='text' name="subCity" value={userData.subCity} onChange={handleOnChange} />
-            {formErrors.subCity && <p className={style.error}>{formErrors.subCity}</p>}
-          </div>
-          <div className={style.info}>
-            <label>Wereda</label>
-            <input type='text' name="wereda" value={userData.wereda} onChange={handleOnChange} />
-            {formErrors.wereda && <p className={style.error}>{formErrors.wereda}</p>}
-          </div>
-          <div className={style.info}>
-            <label>House No.</label>
-            <input type='text' name="houseNo" value={userData.houseNo} onChange={handleOnChange} />
-            {formErrors.houseNo && <p className={style.error}>{formErrors.houseNo}</p>}
-          </div>
-        </div>
-
-        <button type='submit' className={`${style.button} ${style.submit}`} disabled={loading}>
-          {loading ? 'Submitting...' : 'Register'}
-        </button>
-      </form>
-    </div>
-  );
+    );
 }
 
 export default CreateStudent;
