@@ -1,22 +1,23 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
+const upload = require('../upload') 
 const {Student} = require('../model/userModel')
 
-router.post('/', async (req,res)=>{
-    const {first,middle,last,gender,age,region,city,subCity,wereda,houseNo,familyTel,sectionId} = req.body
-
+// Route to handle student creation
+router.post('/student', upload.single('studentPhoto'), async (req, res) => {
+    const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId } = req.body;
+    const studentPhoto = req.file.filename
     try {
-        const createStudent = await Student.create({first,middle,last,gender,age,sectionId,region,city,subCity,wereda,houseNo,familyTel})
-        if (createStudent) {
-            return res.status(200).json({createStudent})
-        } else {
-           return res.status(500).json({error:"Something is wrong, please try later!"})
+        const student = await Student.create({first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
+        if(student){
+            res.status(200).json(student)
+        }else{
+            res.status(400).json({error:"Something is wrong!"})
         }
     } catch (error) {
-        return res.status(500).json({error:error.massage})
+        res.status(500).json({error:"Server error"})
     }
-})
-
+});
 
 //get one student
 router.get('/:id',async(req,res)=>{
@@ -38,7 +39,7 @@ router.get('/:id',async(req,res)=>{
         if(Student){
             res.status(200).json({student})
         }else{
-             res.status(404).json({error:"No student!"})
+            res.status(404).json({error:"No student!"})
         }
     } catch (error) {
         res.status(500).json({error:error.message})
@@ -47,7 +48,6 @@ router.get('/:id',async(req,res)=>{
 
 //get all students
 router.get('/',async(req,res)=>{
-
     try {
         const students = await Student.find({}).populate('sectionId')
         if(students){

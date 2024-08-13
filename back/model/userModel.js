@@ -23,15 +23,8 @@ const StudentSchema = mongoose.Schema({
     subCity:{type:String,required:true},
     wereda:{type:String,required:true},
     houseNo:{type:Number,required:true},
-    studentPhoto:{type:String,required:true},
-    family:[
-        {
-            familyPhoto:{type:String,required:true},
-            familyName:{type:String,required:true},
-            familyType:{ type:String, required:true},
-            familyTel:{type:Number,required:true}
-        }
-    ]
+    studentPhoto:{type:String,required:true}
+    
 },
 { timestamps: true } 
 )
