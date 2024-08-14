@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import style from './css/detail.module.css'
 import {format } from "date-fns";
+import { Navigate,useNavigate } from 'react-router-dom';
 
 function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
@@ -9,6 +10,7 @@ function StudentDetail({studentId}) {
     const [familyLoading,setFamilyLoading] = useState(false)
     const [familyError,setFamilyError] = useState('')
     const [family,setFamily] = useState('')
+    const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchAstudent = async()=>{
@@ -52,6 +54,10 @@ function StudentDetail({studentId}) {
       fetchAfamily()
     },[])
 
+    //family one
+    const handleFamily = ()=>{
+         navigate(`/main?type=student&family=${studentId}`)
+    }
   return (
     <div>
       {loading && <p>Loading...</p>}
@@ -82,13 +88,14 @@ function StudentDetail({studentId}) {
           </div>
         </div>
         <div className={style.basicInfo}>
+          {familyLoading && <p>Loading...</p>}
           {familyError && <p className={'error'}>{familyError}</p>}
           {family 
           ? 
             <p>family</p> 
           :
             <div className={style.familyCreateBox}>
-                <div className={'button'}>Add Family 1</div>
+                <div className={'button'} onClick={handleFamily}>Add Family 1</div>
                 <div></div>
 
             </div>
@@ -101,7 +108,7 @@ function StudentDetail({studentId}) {
             <p>family</p> 
           :
             <div className={style.familyCreateBox}>
-                <div className={'button'}>Add Family 2</div>
+                <div className={'button'} onClick={handleFamily}>Add Family 2</div>
                 <div></div>
 
             </div>

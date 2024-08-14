@@ -18,6 +18,7 @@ import AdminNav from './pages/AdminNav'
 import { AuthContext } from '../../context/AuthContext'
 import CreateStudent from './pages/create/CreateStudent'
 import StudentDetail from './pages/component/StudentDetail'
+import CreateFamily from './pages/create/CreateFamily'
 
 function Admin() {
   const [searchParams] = useSearchParams()
@@ -25,6 +26,9 @@ function Admin() {
   const filterType = searchParams.get('type')
   const sectionId = searchParams.get('sectionId')
   const studentId = searchParams.get('studentId')
+  const family = searchParams.get('family')
+
+  
 
   
   const renderPages = (filterType) => {
@@ -52,8 +56,6 @@ function Admin() {
     <div className={style.dashContainer}>
       <AdminNav filterType={filterType} username={loggedUser.username} />
 
-
-
       <div className={style.dashBox}>
           {/** dashboard navigation */}
           <div className={style.dashNav}>
@@ -67,11 +69,12 @@ function Admin() {
               </div>
           </div>
           <div className={style.dashDisplay}>
-          {filterType === 'student' && sectionId ? (
-            <CreateStudent sectionId={sectionId} />
-          ) : (
-            renderPages(filterType)
-          )}
+          {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />
+           
+          : filterType === 'student' && family?<CreateFamily studentId={family}/>
+
+          : renderPages(filterType)
+          }
         </div>
       </div>
     </div>

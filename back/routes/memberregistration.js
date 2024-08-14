@@ -74,4 +74,20 @@ router.get('/family/:id',async(req,res)=>{
         res.status(500).json({error:"Server error"})
     }
 })
+
+router.post('family',upload.single('familyPhoto') ,async(req,res)=>{
+    const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone} = req.body
+    const familyPhoto = req.file.filename
+    try {
+        const family = await Family.create({familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,familyPhoto})
+        if(!family){
+            return res.status(400).json({error:"Something is wrong please try again"})
+        }
+        res.status(200).json(family)
+    } catch (error) {
+        res.status(500).json({error:"Server error"})
+        
+    }
+})
+
 module.exports = router

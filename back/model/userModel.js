@@ -33,6 +33,7 @@ const Student = mongoose.model('Student',StudentSchema)
 const FamilySchema = new mongoose.Schema({
     familyFirst:{type:String,required:true},
     familyMiddle:{type:String,required:true},
+    familyType:{type:String,required:true},
     familyLast:{type:String,required:true},
     familyPhone:{type:Number,required:true},
     familyEmail:{type:String,required:true},
