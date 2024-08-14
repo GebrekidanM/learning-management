@@ -31,6 +31,7 @@ const StudentSchema = new mongoose.Schema({
 const Student = mongoose.model('Student',StudentSchema)
 
 const FamilySchema = new mongoose.Schema({
+    familyPhoto:{type:String,required:true},
     familyFirst:{type:String,required:true},
     familyMiddle:{type:String,required:true},
     familyType:{type:String,required:true},

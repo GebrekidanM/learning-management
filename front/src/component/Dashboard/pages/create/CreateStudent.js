@@ -121,7 +121,6 @@ function CreateStudent({ sectionId }) {
                 body: data,
             });
             const json = await response.json();
-
             if (response.ok) {
                 navigate(`/main?type=student&studentId=${json._id}`, { replace: true });
             } else {

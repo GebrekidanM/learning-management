@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import style from './css/detail.module.css'
 import {format } from "date-fns";
-import { Navigate,useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 
 function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
@@ -9,7 +9,7 @@ function StudentDetail({studentId}) {
     const [loading,setLoading] = useState(false)
     const [familyLoading,setFamilyLoading] = useState(false)
     const [familyError,setFamilyError] = useState('')
-    const [family,setFamily] = useState('')
+    const [family,setFamily] = useState("")
     const navigate = useNavigate()
 
     useEffect(()=>{
@@ -38,7 +38,8 @@ function StudentDetail({studentId}) {
         setFamilyLoading(true)
         try {
             const response = await fetch(`http://localhost:4000/member/family/${studentId}`)
-            const json = response.json()
+            const json = await response.json()
+
             if(response.ok){
               setFamily(json.family)
             }else{
@@ -54,10 +55,15 @@ function StudentDetail({studentId}) {
       fetchAfamily()
     },[])
 
+    console.log(family)
+
+
     //family one
     const handleFamily = ()=>{
          navigate(`/main?type=student&family=${studentId}`)
     }
+
+
   return (
     <div>
       {loading && <p>Loading...</p>}
@@ -87,33 +93,31 @@ function StudentDetail({studentId}) {
               <p><i>House No:</i> {student.houseNo}</p>
           </div>
         </div>
-        <div className={style.basicInfo}>
+
           {familyLoading && <p>Loading...</p>}
           {familyError && <p className={'error'}>{familyError}</p>}
-          {family 
-          ? 
-            <p>family</p> 
-          :
-            <div className={style.familyCreateBox}>
-                <div className={'button'} onClick={handleFamily}>Add Family 1</div>
-                <div></div>
 
+          {family 
+          ? family.map((fam)=>(
+              <div key={fam._id} className={style.basicInfo}>
+                    <img src={`http://localhost:4000/uploads/${fam.familyPhoto}`} alt={fam._familyFirst}/>
+                    <h4>{student.first}'s {fam.familyType}</h4>
+                    <div className={style.extraInfo}>
+                      <h5>{fam.familyFirst} {fam.familyMiddle} {fam.familyLast}</h5>
+                      <p>Email: {fam.familyEmail}</p>
+                      <p>Phone: {fam.familyPhone}</p>
+                  </div>
+              </div>
+            ))
+            
+          :
+            <div className={style.basicInfo}>
+              <div className={style.familyCreateBox}>
+                  <div className={'button'} onClick={handleFamily}>Add Family 1</div>
+                  <div></div>
+              </div>
             </div>
           }
-        </div>
-        <div className={style.basicInfo}>
-          {familyError && <p className={'error'}>{familyError}</p>}
-          {family 
-          ? 
-            <p>family</p> 
-          :
-            <div className={style.familyCreateBox}>
-                <div className={'button'} onClick={handleFamily}>Add Family 2</div>
-                <div></div>
-
-            </div>
-          }
-        </div>
       </div>
       }
     </div>

@@ -28,9 +28,9 @@ function generateNewSearchParams(key,value) {
       <div>
         {stuType == 'createStudent' ?
             <GradeSectionSelector/>
-          : <>
-          
-            </>
+          : <div>
+                
+            </div>
         }
       </div>
     </div>

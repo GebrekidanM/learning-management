@@ -1,26 +1,12 @@
 .BoxContainer {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   gap: 2rem;
 }
 
 .basicInfo {
+  text-align: center;
   margin-top: 2rem;
-  width: 25%;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
   border-radius: 0.3rem;
   background-color: rgb(212, 212, 212);
   -webkit-box-shadow: 3px 4px 3px rgba(0, 0, 0, 0.432);
@@ -29,10 +15,14 @@
 
 .basicInfo img {
   width: 100%;
+  height: 15rem;
   border-radius: 0.3rem 0.3rem 0 0;
+  -o-object-fit: cover;
+     object-fit: cover;
 }
 
 .extraInfo {
-  width: 90%;
+  text-align: left;
+  width: 80%;
   margin-inline: auto;
 }/*# sourceMappingURL=detail.module.css.map */

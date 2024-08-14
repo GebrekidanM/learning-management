@@ -65,27 +65,28 @@ router.get('/',async(req,res)=>{
 router.get('/family/:id',async(req,res)=>{
     const {id} = req.params
     try {
-        const family = await Family.findOne({studentId:id})
+        const family = await Family.find({studentId:id})
         if(!family){
             return res.status(404).json({error:"Not found!"})
         }
-        res.status(200).json(family)
+        res.status(200).json({family})
     } catch (error) {
         res.status(500).json({error:"Server error"})
     }
 })
 
-router.post('family',upload.single('familyPhoto') ,async(req,res)=>{
-    const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone} = req.body
+router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
+    const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,studentId} = req.body
     const familyPhoto = req.file.filename
     try {
-        const family = await Family.create({familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,familyPhoto})
+        const family = await Family.create({familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,familyPhoto,studentId})
         if(!family){
             return res.status(400).json({error:"Something is wrong please try again"})
         }
         res.status(200).json(family)
     } catch (error) {
-        res.status(500).json({error:"Server error"})
+        console.log(error)
+        res.status(500).json({error:error.message})
         
     }
 })

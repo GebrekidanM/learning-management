@@ -11,6 +11,7 @@ function CreateFamily({studentId}) {
         familyType:"",
         familyTel:"",
         familyEmail:"",
+        familyPhone:"",
         studentId
     })
     const [familyPhoto,setFamilyPhoto] = useState('')
@@ -31,16 +32,17 @@ function CreateFamily({studentId}) {
         data.set("familyLast",member.familyLast)
         data.set('familyMiddle',member.familyMiddle)
         data.set('familyEmail',member.familyEmail)
-        data.set('familyPhoto',member.familyPhoto)
+        data.set('familyPhone',member.familyPhone)
         data.set('familyType',member.familyType)
         data.set('studentId',member.studentId)
-        const response = await fetch('http://localhost:4000/member/family',{
-            method:"POST",
-            body:data
-        })
+        data.set('familyPhoto',familyPhoto[0])
+        const response = await fetch('http://localhost:4000/member/family', {
+            method: 'POST',
+            body: data,
+        });
         const json = response.json()
         if(response.ok){
-            navigate(`/main?type=student&studentId=${json._id}`, { replace: true });
+            navigate(`/main?type=student&studentId=${studentId}`, { replace: true });
         }
     }
 
@@ -96,8 +98,8 @@ function CreateFamily({studentId}) {
                           <label>Family Phone Number:</label>
                           <input
                               type='number'
-                              name="familyphone"
-                              value={member.familyTel}
+                              name="familyPhone"
+                              value={member.familyPhone}
                               onChange={handleFamilyChange}
                               min="1"
                               required
