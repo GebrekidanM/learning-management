@@ -1,0 +1,144 @@
+.logContainer {
+  width: 100%;
+}
+
+.logBox {
+  margin-top: 3rem;
+  width: 50%;
+  margin-inline: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  background-color: var(--white);
+  -webkit-box-shadow: 2px 2px 2px black;
+          box-shadow: 2px 2px 2px black;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.logBox form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  padding: 1rem;
+  margin-inline: auto;
+}
+
+.logBox form p {
+  font-size: 0.8rem;
+}
+
+.logBox form input {
+  margin-block: 0.5rem;
+  border: none;
+  padding: 1rem;
+  background-color: rgb(226, 226, 226);
+  border-radius: 0.2rem;
+  outline: none;
+}
+
+.logBox form input::-webkit-input-placeholder {
+  color: var(--card);
+}
+
+.logBox form input::-moz-placeholder {
+  color: var(--card);
+}
+
+.logBox form input:-ms-input-placeholder {
+  color: var(--card);
+}
+
+.logBox form input::-ms-input-placeholder {
+  color: var(--card);
+}
+
+.logBox form input::placeholder {
+  color: var(--card);
+}
+
+.button {
+  text-align: center;
+  text-decoration: none;
+  border: none;
+  border-radius: 0.3rem;
+  padding: 0.7rem;
+  background-color: var(--button);
+  color: var(--white);
+  min-width: 5rem;
+  font-weight: bold;
+  -webkit-transition: 1s;
+  transition: 1s;
+  margin-bottom: 1rem;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: var(--card);
+}
+
+.logSide {
+  background-color: var(--card);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: var(--white);
+  padding: 1rem;
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.logSide h2 {
+  font-size: 1.2rem;
+}
+
+.customSelect {
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.2rem;
+  font-size: 0.8rem;
+  width: 100%;
+  max-width: 200px;
+}
+
+.customSelect:focus {
+  outline: none;
+  border-color: var(--card);
+}
+
+@media only screen and (max-width: 930px) {
+  .logSide h2 {
+    font-size: 1rem;
+  }
+}
+@media only screen and (max-width: 930px) {
+  .logSide {
+    display: none;
+  }
+}
+@media only screen and (max-width: 450px) {
+  .logBox form input {
+    width: 80%;
+    margin-inline: auto;
+  }
+  .logBox form h2 {
+    font-size: 1rem;
+  }
+}/*# sourceMappingURL=login.module.css.map */

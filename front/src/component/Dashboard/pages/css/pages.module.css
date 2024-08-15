@@ -1,0 +1,130 @@
+.pageContainer {
+  width: 100%;
+}
+
+.pagehead {
+  margin-block: 1.4rem;
+  width: 90%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.searchContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.searchInput {
+  width: 250px;
+  padding: 0.7rem;
+  border: none;
+  border-radius: 5px 0 0 5px;
+  font-size: 16px;
+  outline: none;
+}
+
+.searchButton {
+  height: 100%;
+  padding: 0.7rem;
+  border: none;
+  background-color: var(--button);
+  color: #fff;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.searchButton:hover {
+  background-color: var(--card);
+}
+
+.button {
+  border: none;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.3rem;
+  padding: 0.7rem;
+  background-color: var(--button);
+  color: var(--white);
+  min-width: 5rem;
+  font-weight: bold;
+  -webkit-transition: 1s;
+  transition: 1s;
+}
+
+.button:hover {
+  cursor: pointer;
+  background-color: var(--card);
+}
+
+/******************************** Register new student **********************************/
+.createBox form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.inLineBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+}
+
+.info {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 0.5rem;
+}
+
+input, select {
+  padding: 0.5rem;
+  border: none;
+  border-radius: 0.2rem;
+  outline: none;
+}
+
+.familyBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 1rem;
+}
+
+.submit {
+  width: 30%;
+  justify-self: end;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+}/*# sourceMappingURL=pages.module.css.map */
