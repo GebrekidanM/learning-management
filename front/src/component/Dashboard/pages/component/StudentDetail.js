@@ -55,7 +55,7 @@ function StudentDetail({studentId}) {
       fetchAfamily()
     },[])
 
-    console.log(family)
+    console.log(family.length)
 
 
     //family one
@@ -83,22 +83,24 @@ function StudentDetail({studentId}) {
             <p>Acadamic year: {student.sectionId.gradeId.yearId.yearName}</p>
           </div>
         </div>
-        <div className={style.basicInfo}>
+        <div className={style.adressInfo}>
           <h3>Detail Adress</h3>
           <div className={style.extraInfo}>
-              <p><i>Region:</i> {student.region}</p>
-              <p><i>City:</i> {student.city}</p>
-              <p><i>Subcity:</i> {student.subCity}</p>
-              <p><i>Wereda:</i> {student.wereda}</p>
-              <p><i>House No:</i> {student.houseNo}</p>
+              <p><i><b>Region:</b></i> {student.region}</p>
+              <p><i><b>City:</b></i> {student.city}</p>
+              <p><i><b>Subcity:</b></i> {student.subCity}</p>
+              <p><i><b>Wereda:</b></i> {student.wereda}</p>
+              <p><i><b>House No:</b></i> {student.houseNo}</p>
           </div>
         </div>
 
           {familyLoading && <p>Loading...</p>}
           {familyError && <p className={'error'}>{familyError}</p>}
 
-          {family 
-          ? family.map((fam)=>(
+          {family.length > 0 
+          ? 
+          family.length > 1 ?
+          family.map((fam)=>(
               <div key={fam._id} className={style.basicInfo}>
                     <img src={`http://localhost:4000/uploads/${fam.familyPhoto}`} alt={fam._familyFirst}/>
                     <h4>{student.first}'s {fam.familyType}</h4>
@@ -109,9 +111,32 @@ function StudentDetail({studentId}) {
                   </div>
               </div>
             ))
-            
+            :
+
+            (<>
+              {family.map((fam)=>(
+                <div key={fam._id} className={style.basicInfo}>
+                      <img src={`http://localhost:4000/uploads/${fam.familyPhoto}`} alt={fam._familyFirst}/>
+                      <h4>{student.first}'s {fam.familyType}</h4>
+                      <div className={style.extraInfo}>
+                        <h5>{fam.familyFirst} {fam.familyMiddle} {fam.familyLast}</h5>
+                        <p>Email: {fam.familyEmail}</p>
+                        <p>Phone: {fam.familyPhone}</p>
+                    </div>
+                </div>
+              ))
+              }
+              <div className={style.addFamily}>
+                <div className={style.familyCreateBox}>
+                    <div className={'button'} onClick={handleFamily}>Add Family 1</div>
+                    <div></div>
+                </div>
+              </div>
+             
+            </>
+            )
           :
-            <div className={style.basicInfo}>
+            <div className={style.addFamily}>
               <div className={style.familyCreateBox}>
                   <div className={'button'} onClick={handleFamily}>Add Family 1</div>
                   <div></div>
