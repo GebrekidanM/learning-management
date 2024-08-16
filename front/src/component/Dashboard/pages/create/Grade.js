@@ -15,7 +15,7 @@ function Grade() {
     useEffect(() => {
         const fetchGrades = async () => {
             try {
-                const response = await fetch('http://localhost:4000/member/grades');
+                const response = await fetch('http://localhost:4000/class/grades');
                 const json = await response.json();
                 if (response.ok) {
                     setGrades(json);
@@ -38,7 +38,7 @@ function Grade() {
         setStudentsError('')
 
         try {
-            const response = await fetch(`http://localhost:4000/member/sections/${gradeId}`);
+            const response = await fetch(`http://localhost:4000/class/sections/${gradeId}`);
             const json = await response.json();
             if (response.ok) {
                 setSections(json);

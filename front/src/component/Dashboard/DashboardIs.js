@@ -10,7 +10,7 @@ function DashboardIs() {
             try {
                 const response = await fetch('http://localhost:4000/class/check-academic-year');
                 const data = await response.json();
-                setYearExists(data.yearExists);
+                setYearExists(data);
             } catch (error) {
                 console.error('Failed to check academic year', error);
             }

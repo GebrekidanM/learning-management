@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 
 function CreateFamily({studentId}) {
     const navigate = useNavigate()
+
     const [member,setMember] = useState({
         familyFrist:"",
         familyMiddle:"",
@@ -40,7 +41,6 @@ function CreateFamily({studentId}) {
             method: 'POST',
             body: data,
         });
-        const json = response.json()
         if(response.ok){
             navigate(`/main?type=student&studentId=${studentId}`, { replace: true });
         }

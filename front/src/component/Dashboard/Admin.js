@@ -19,6 +19,7 @@ import { AuthContext } from '../../context/AuthContext'
 import CreateStudent from './pages/create/CreateStudent'
 import StudentDetail from './pages/component/StudentDetail'
 import CreateFamily from './pages/create/CreateFamily'
+import TeacherDetail from './pages/component/TeacherDetail'
 
 function Admin() {
   const [searchParams] = useSearchParams()
@@ -26,10 +27,8 @@ function Admin() {
   const filterType = searchParams.get('type')
   const sectionId = searchParams.get('sectionId')
   const studentId = searchParams.get('studentId')
+  const teacherId = searchParams.get('studentId')
   const family = searchParams.get('family')
-
-  
-
   
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -47,6 +46,9 @@ function Admin() {
       case 'parent':
         return <Family />;
       case 'teacher':
+        if (teacherId) {
+          return <TeacherDetail teacherId={teacherId} />;
+        }
         return <Teacher />;
       default:
         return <Main/>;

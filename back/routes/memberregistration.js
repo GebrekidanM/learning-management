@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
 const upload = require('../upload') 
-const {Student, Family} = require('../model/userModel')
+const {Student, Family, Teacher} = require('../model/userModel')
 const {Section,Grade} = require('../model/YearModel')
 
 // Route to handle student creation
@@ -78,35 +78,42 @@ router.get('/students/:sectionId',async(req,res)=>{
     }
 })
 
-/**********************************************For grades and sections************************************************ */
-//get grades with students 
+/**********************************For teacher**************************************/
 
-router.get('/grades',async(req,res)=>{
+router.post('/teacher', upload.single('teacherPhoto'), async (req, res) => {
+    const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo} = req.body;
+    const teacherPhoto = req.file.filename
     try {
-        const grades = await Grade.find({}).populate('yearId')
-        if(grades){
-            res.status(200).json(grades)
+        const student = await Teacher.create({first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
+        if(student){
+            res.status(200).json(student)
         }else{
-            res.status(404).json({error:"No grade"})
+            res.status(400).json({error:"Something is wrong!"})
         }
     } catch (error) {
-        res.status(500).json({error:error.massege})
-    }
-})
-
-router.get('/sections/:gradeId', async (req, res) => {
-    const {gradeId} = req.params
-    if(!mongoose.Types.ObjectId.isValid(gradeId)){
-        return res.status(400).json({error:"Invalid Id!"})
-    }
-    try {
-        const sections = await Section.find({ gradeId });
-        res.status(200).json(sections);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+        console.log(error)
+        res.status(500).json({error:error.message})
     }
 });
 
+//get teacher by id
+
+router.get('/teacher/:teacherId',async(req,res)=>{
+    const {teacherId} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(teacherId)){
+        return res.status(404).json({error:"Invalid Id!"})
+    }
+    try {
+        const teacher = await Teacher.findById({_id:teacherId}).propulate('gradeId')
+        if(!teacher){
+            return res.status(404).json({error:"a Teacher with this id isnot found!"})
+        }
+        res.status(200).json(teacher)
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
 
 /**************************** For Student Family ********************************************/
 router.get('/family/:id',async(req,res)=>{

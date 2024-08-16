@@ -20,8 +20,11 @@ const TeacherSchema = new mongoose.Schema({
     subCity:{type:String,required:true},
     wereda:{type:String,required:true},
     houseNo:{type:Number,required:true},
-    studentPhoto:{type:String,required:true},
-    experience:{type:Number,required:true}
+    teacherPhoto:{type:String,required:true},
+    experience:{type:Number,required:true},
+    email:{type:String,required:true},
+    phoneNo:{type:String,required:true},
+    yearId:{type:mongoose.Schema.Types.ObjectId, ref:'Year',required:true}
 })
 const Teacher = mongoose.model('Teacher',TeacherSchema)
 

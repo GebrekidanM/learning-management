@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect ,useState} from 'react'
 import {Link, useSearchParams} from 'react-router-dom'
 import style from "./css/pages.module.css"
 import CreateTeacher from './create/CreateTeacher'
 
 function Teacher() {
-  const [yearId,setYearId] = useState('')
+  const [yearId,setYearId] = useState({})
   const [yearError,setYearError] = useState('')
 
   const [searchParams] = useSearchParams()
@@ -20,7 +20,7 @@ function generateNewSearchParams(key,value) {
 
 useEffect(()=>{
   const fetchYear = async ()=>{
-    const response = await fetch('http://localhost:4000/class//check-academic-year')
+    const response = await fetch('http://localhost:4000/class/check-academic-year')
     const json = await response.json()
     if(response.ok){
       setYearId(json)

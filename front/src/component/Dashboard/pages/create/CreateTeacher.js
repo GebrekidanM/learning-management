@@ -15,9 +15,11 @@ function CreateTeacher({yearId,yearError}) {
         wereda: "",
         houseNo: "",
         experience:"",
+        phoneNo:"",
+        email:"",
         yearId
     });
-    const [studentPhoto,setStudentPhoto] = useState(null)
+    const [teacherPhoto,setTeacherPhoto] = useState(null)
 
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
@@ -33,9 +35,7 @@ function CreateTeacher({yearId,yearError}) {
 
     // Handle file change
     const handleFileChange = (e) => {
-      console.log(e.target.files)
-
-      setStudentPhoto(e.target.files)
+      setTeacherPhoto(e.target.files)
     };
 
     // Validation part
@@ -63,7 +63,7 @@ function CreateTeacher({yearId,yearError}) {
             errors.age = "Age must be a positive number";
             isValid = false;
         }
-        if (!studentPhoto) {
+        if (!teacherPhoto) {
             errors.studentPhoto = "Student photo is required";
             isValid = false;
         }
@@ -87,6 +87,10 @@ function CreateTeacher({yearId,yearError}) {
             errors.houseNo = "House No. is required";
             isValid = false;
         }
+        if (!userData.phoneNo) {
+            errors.phoneNo = "House No. is required";
+            isValid = false;
+        }
 
         setErrors(errors);
         return isValid;
@@ -108,24 +112,28 @@ function CreateTeacher({yearId,yearError}) {
         data.set('middle',userData.middle)
         data.set('gender',userData.gender)
         data.set('age',userData.age)
+        data.set('email',userData.email)
+        data.set('experience',userData.experience)
+
         data.set('region',userData.region)
         data.set('city',userData.city)
         data.set('subCity',userData.subCity)
         data.set('wereda',userData.wereda)
         data.set('houseNo',userData.houseNo)
-        data.set('studentPhoto',studentPhoto[0])
+        data.set('phoneNo',userData.phoneNo)
+        data.set('teacherPhoto',teacherPhoto[0])
         data.set('yearId',userData.yearId)
 
         try {
-            const response = await fetch('http://localhost:4000/member/student', {
+            const response = await fetch('http://localhost:4000/member/teacher', {
                 method: 'POST',
                 body: data,
             });
             const json = await response.json();
             if (response.ok) {
-                navigate(`/main?type=student&studentId=${json._id}`, { replace: true });
+                navigate(`/main?type=teacher&teacherId=${json._id}`, { replace: true });
             } else {
-                setErrors({ form: json.error || 'Failed to create student.' });
+                setErrors({ form: json.error || 'Failed to create techer.' });
             }
         } catch (error) {
             setErrors({ form: 'An error occurred: ' + error.message });
@@ -136,8 +144,9 @@ function CreateTeacher({yearId,yearError}) {
 
     return (
         <div className={style.createBox}>
+            {yearError && <p className='error'>{yearError}</p>}
             <form onSubmit={handleSubmit}>
-                <h2>Student's information</h2>
+                <h2>Teacher's information</h2>
                 <div className={style.inLineBox}>
                     <div className={style.info}>
                         <label>First name:</label>
@@ -201,10 +210,35 @@ function CreateTeacher({yearId,yearError}) {
                         {errors.age && <span className={style.error}>{errors.age}</span>}
                     </div>
                     <div className={style.info}>
-                        <label>Student Photo:</label>
+                          <label>Phone Number:</label>
+                          <input
+                              type='number'
+                              name="phoneNo"
+                              value={userData.phoneNo}
+                              onChange={handleOnChange}
+                              min="1"
+                              required
+                          />
+                      </div>
+                      <div className={style.info}>
+                        <label>Email:</label>
+                        <input type='email' 
+                               name='email' 
+                               value={userData.email} 
+                               onChange={handleOnChange}/>
+                      </div>
+                      <div className={style.info}>
+                        <label>Experience:</label>
+                        <input type='number' 
+                               name='experience' 
+                               value={userData.experience} 
+                               onChange={handleOnChange}/>
+                      </div>
+                    <div className={style.info}>
+                        <label>Photo:</label>
                         <input
                             type='file'
-                            name="studentPhoto"
+                            name="teacherPhoto"
                             onChange={handleFileChange}
                             required
                         />

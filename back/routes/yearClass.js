@@ -40,29 +40,30 @@ router.post('/create-year', async (req, res) => {
     }
 });
 //get grade
+/**********************************************For grades and sections************************************************ */
+//get grades with students 
 
 router.get('/grades',async(req,res)=>{
-    const getGrade = await Grade.find({})
-    if(getGrade){
-        return res.status(200).json({getGrade})
-    }else{
-        return res.status(404).json({error:"Not found"})
+    try {
+        const grades = await Grade.find({}).populate('yearId')
+        if(grades){
+            res.status(200).json(grades)
+        }else{
+            res.status(404).json({error:"No grade"})
+        }
+    } catch (error) {
+        res.status(500).json({error:error.massege})
     }
-
 })
 
-// Route to get sections for a specific grade
-router.get('/grades/:gradeId/sections', async (req, res) => {
-    const { gradeId } = req.params;
-
+router.get('/sections/:gradeId', async (req, res) => {
+    const {gradeId} = req.params
+    if(!mongoose.Types.ObjectId.isValid(gradeId)){
+        return res.status(400).json({error:"Invalid Id!"})
+    }
     try {
-        const sections = await Section.find({ gradeId: gradeId });
-
-        if (sections.length > 0) {
-            res.status(200).json(sections);
-        } else {
-            res.status(404).json({ error: 'No sections found for this grade.' });
-        }
+        const sections = await Section.find({ gradeId });
+        res.status(200).json(sections);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -73,7 +74,7 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
 router.get('/check-academic-year', async (req, res) => {
     try {
         const yearExists = await Year.exists({});
-        res.json(yearExists._id); // its reasult will be true or false
+        res.json(yearExists._id);
     } catch (error) {
         res.status(400).json({ error: "Not found" });
     }
