@@ -1,23 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import style from './css/detail.module.css'
-import {format } from "date-fns";
-import {useNavigate } from 'react-router-dom';
 
-function TeacherDetail({studentId}) {
+function TeacherDetail({teacherId}) {
     const [error,setError] = useState('')
     const [loading,setLoading] = useState(false)
     const [teacher,setTeacher] = useState("")
-    const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchTeacher = async()=>{
             setLoading(true)
             try {
-               const response = await fetch(`http://localhost:4000/member/teacher/${studentId}`)
+               const response = await fetch(`http://localhost:4000/member/teacher/${teacherId}`)
                const json = await response.json()
-
                if(response.ok){
-                  setTeacher(json)
+                 return setTeacher(json)
                }else{
                 setError(json.error)
                }
@@ -29,6 +25,7 @@ function TeacherDetail({studentId}) {
         }
         fetchTeacher() 
     },[])
+    
   return (
     <div>
       {loading && <p>Loading...</p>}
@@ -37,9 +34,6 @@ function TeacherDetail({studentId}) {
       <div className={style.BoxContainer}>
         <div className={style.basicInfo}>
           <img src={`http://localhost:4000/uploads/${teacher.teacherPhoto}`} alt='hello'/>
-          <time>
-              {teacher && format(new Date(teacher.createdAt), "MMM yyyy dd, HH:mm")}
-          </time>
           <div className={style.extraInfo}>
             <h5>{teacher.first} {teacher.middle} {teacher.last}</h5>
             <p>Gendar: {teacher.gender}</p>

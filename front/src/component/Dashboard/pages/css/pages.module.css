@@ -157,4 +157,22 @@ input, select {
   display: -ms-flexbox;
   display: flex;
   gap: 1rem;
+}
+
+/****************************For teacher page******************************/
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #ffffff;
+  text-align: left;
+  padding: 8px;
+}
+
+th {
+  background-color: var(--card);
+  color: var(--white);
 }/*# sourceMappingURL=pages.module.css.map */

@@ -23,6 +23,9 @@ body {
   font-size: 0.8rem;
   font-style: italic;
 }
+a{
+  text-decoration: none;
+}
 .button{
   border: none;
   text-align: center;
@@ -39,6 +42,22 @@ body {
   cursor: pointer;
   background-color: var(--button);
 
+}
+.delete{
+  font-weight: bold;
+  color: red;
+  cursor: pointer;
+}
+
+.edit{
+  font-weight: bold;
+  color: rgb(177, 174, 3);
+  cursor: pointer;
+}
+.view a{
+  font-weight: bold;
+  color: green;
+  cursor: pointer;
 }
 
 

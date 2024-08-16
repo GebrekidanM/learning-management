@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext} from 'react'
 import style from "../css/Dashbord.module.css"
 import {useSearchParams, NavLink} from 'react-router-dom' 
 import Main from './pages/Main'
@@ -27,7 +27,7 @@ function Admin() {
   const filterType = searchParams.get('type')
   const sectionId = searchParams.get('sectionId')
   const studentId = searchParams.get('studentId')
-  const teacherId = searchParams.get('studentId')
+  const teacherId = searchParams.get('teacherId')
   const family = searchParams.get('family')
   
   const renderPages = (filterType) => {

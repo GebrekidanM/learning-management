@@ -2,7 +2,7 @@ const router = require('express').Router()
 const mongoose = require('mongoose')
 const upload = require('../upload') 
 const {Student, Family, Teacher} = require('../model/userModel')
-const {Section,Grade} = require('../model/YearModel')
+const {Section,Grade, Year} = require('../model/YearModel')
 
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {
@@ -100,12 +100,11 @@ router.post('/teacher', upload.single('teacherPhoto'), async (req, res) => {
 
 router.get('/teacher/:teacherId',async(req,res)=>{
     const {teacherId} = req.params
-
     if(!mongoose.Types.ObjectId.isValid(teacherId)){
         return res.status(404).json({error:"Invalid Id!"})
     }
     try {
-        const teacher = await Teacher.findById({_id:teacherId}).propulate('gradeId')
+        const teacher = await Teacher.findById({_id:teacherId}).populate('yearId')
         if(!teacher){
             return res.status(404).json({error:"a Teacher with this id isnot found!"})
         }
@@ -114,6 +113,39 @@ router.get('/teacher/:teacherId',async(req,res)=>{
         res.status(500).json({error:error.message})
     }
 })
+
+
+//get all teachers
+
+router.get('/teachers', async (req, res) => {
+    try {
+        // Get today's date
+        const today = new Date();
+
+        // Find the current year based on today's date
+        const currentYear = await Year.findOne({
+            startPoint: { $lte: today },
+            endPoint: { $gte: today }
+        });
+
+        if (!currentYear) {
+            return res.status(404).json({ error: "No active year found for today's date." });
+        }
+
+        // Filter teachers by the current yearId
+        const teachers = await Teacher.find({ yearId: currentYear._id })
+        if(teachers){
+            // Respond with the filtered list of teachers
+            res.status(200).json(teachers);
+        }else{
+            res.status(404).json({error:error.message})
+        }
+        
+    } catch (error) {
+        // Handle any errors
+        res.status(500).json({ error: error.message });
+    }
+});
 
 /**************************** For Student Family ********************************************/
 router.get('/family/:id',async(req,res)=>{
