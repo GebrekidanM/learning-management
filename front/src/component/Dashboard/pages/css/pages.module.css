@@ -70,6 +70,10 @@
   background-color: var(--card);
 }
 
+.activeButton {
+  background-color: var(--button);
+}
+
 /******************************** Register new student **********************************/
 .createBox form {
   display: -webkit-box;
@@ -127,4 +131,30 @@ input, select {
 .error {
   color: red;
   font-size: 0.8rem;
+}
+
+/******************************** For grade, section and student list*******************************/
+.gradeContainer {
+  width: 100%;
+}
+
+.gradeBox {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.sectionContainer {
+  width: 100%;
+}
+
+.sectionBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
 }/*# sourceMappingURL=pages.module.css.map */

@@ -64,9 +64,18 @@ router.get('/',async(req,res)=>{
 
 //get student by sectionId
 
-router.get('/student/:sectionId',async(re,res)=>{
+router.get('/students/:sectionId',async(req,res)=>{
     const {sectionId} = req.params
-    
+    try {
+        const students = await Student.find({sectionId});
+        if(students == ""){
+           return res.status(404).json({error:"There is no student in this class"})
+        }
+        res.status(200).json(students);
+        
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 })
 
 /**********************************************For grades and sections************************************************ */
