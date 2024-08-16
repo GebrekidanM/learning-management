@@ -160,7 +160,7 @@ router.get('/family/:id',async(req,res)=>{
         res.status(500).json({error:"Server error"})
     }
 })
-
+//register family
 router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
     const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,studentId} = req.body
     const familyPhoto = req.file.filename
@@ -173,6 +173,20 @@ router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
     } catch (error) {
         console.log(error)
         res.status(500).json({error:error.message})
+    }
+})
+
+//get all families
+router.get('/family',async(req,res)=>{
+
+    try {
+        const family = await Family.find({}).populate()
+        if(!family){
+            return res.status(404).json({error:"Not found!"})
+        }
+        res.status(200).json({family})
+    } catch (error) {
+        res.status(500).json({error:"Server error"})
     }
 })
 

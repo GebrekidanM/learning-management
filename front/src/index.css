@@ -51,7 +51,7 @@ a{
 
 .edit{
   font-weight: bold;
-  color: rgb(177, 174, 3);
+  color: var(--button);
   cursor: pointer;
 }
 .view a{

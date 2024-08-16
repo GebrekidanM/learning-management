@@ -78,13 +78,15 @@ function Teacher() {
 
               <table >
                 <tr>
+                  <th> No </th>
                   <th> Name </th>
                   <th> phone No. </th>
                   <th colSpan={"3"}> Action</th>
                 </tr>
                 
-                {teachers.length > 0 && teachers.map(teacher=>(
+                {teachers.length > 0 && teachers.map((teacher,index)=>(
                   <tr key={teacher._id}>
+                    <td>{index + 1}</td>
                     <td>{teacher.first} {teacher.middle}</td>
                     <td>{teacher.phoneNo}</td>
                     <td className={'delete'}>Delete</td>

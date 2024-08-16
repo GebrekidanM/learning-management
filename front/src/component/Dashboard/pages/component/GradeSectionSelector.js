@@ -10,10 +10,8 @@ function GradeSectionSelector() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
     const [searchParams] = useSearchParams();
-
     const type = searchParams.get('type');
     const sectionId = searchParams.get('sectionId');
-
 
     const navigate = useNavigate();
 
@@ -23,11 +21,11 @@ function GradeSectionSelector() {
             setLoading(true);
             try {
                 const response = await fetch('http://localhost:4000/class/grades');
-                const data = await response.json();
+                const json = await response.json();
                 if (response.ok) {
-                    setGrades(data.getGrade);
+                    setGrades(json);
                 } else {
-                    setError(data.error || 'Error fetching grades');
+                    setError(json.error || 'Error fetching grades');
                 }
             } catch (err) {
                 setError('Error fetching grades');
@@ -64,7 +62,7 @@ function GradeSectionSelector() {
     const handleSectionClick = (sectionId) => {
         navigate(`/main?type=student&sectionId=${sectionId}`);
     };
-console.log(type,sectionId)
+
     return (
         <div className={style.GradeSectionBox}>
             {!sectionId && (
@@ -76,7 +74,7 @@ console.log(type,sectionId)
                             <p>Loading grades...</p>
                         ) : (
                             <div className={style.gradeListBox}>
-                                {grades.map(grade => (
+                                {grades?.map(grade => (
                                     <li 
                                         className={style.gradeList} 
                                         key={grade._id} 

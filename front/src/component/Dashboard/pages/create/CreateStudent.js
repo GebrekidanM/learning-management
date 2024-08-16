@@ -4,23 +4,11 @@ import { useNavigate } from 'react-router-dom';
 
 function CreateStudent({ sectionId }) {
     const [userData, setUserData] = useState({
-        first: "",
-        middle: "",
-        last: "",
-        gender: "",
-        age: "",
-        region: "",
-        city: "",
-        subCity: "",
-        wereda: "",
-        houseNo: "",
-        sectionId
+        first: "", middle: "", last: "", gender: "", age: "", region: "", city: "", subCity: "", wereda: "", houseNo: "", sectionId
     });
     const [studentPhoto,setStudentPhoto] = useState(null)
-
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
-
     const navigate = useNavigate();
 
     // Handle input change and clear errors
@@ -32,8 +20,6 @@ function CreateStudent({ sectionId }) {
 
     // Handle file change
     const handleFileChange = (e) => {
-      console.log(e.target.files)
-
       setStudentPhoto(e.target.files)
     };
 
@@ -88,7 +74,7 @@ function CreateStudent({ sectionId }) {
         }
 
         setErrors(errors);
-        return isValid;
+         return isValid;
     };
 
     // Form submission

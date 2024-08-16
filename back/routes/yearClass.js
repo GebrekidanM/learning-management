@@ -1,4 +1,5 @@
 const router = require('express').Router()
+const mongoose = require('mongoose')
 const {Grade,Year,Section} = require('../model/YearModel')
 
 //create year and with that year grade
@@ -64,6 +65,24 @@ router.get('/sections/:gradeId', async (req, res) => {
     try {
         const sections = await Section.find({ gradeId });
         res.status(200).json(sections);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
+// Route to get sections for a specific grade
+router.get('/grades/:gradeId/sections', async (req, res) => {
+    const { gradeId } = req.params;
+
+    try {
+        const sections = await Section.find({ gradeId: gradeId });
+
+        if (sections.length > 0) {
+            res.status(200).json(sections);
+        } else {
+            res.status(404).json({ error: 'No sections found for this grade.' });
+        }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
