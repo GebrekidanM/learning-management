@@ -73,7 +73,7 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
 router.get('/check-academic-year', async (req, res) => {
     try {
         const yearExists = await Year.exists({});
-        res.json({ yearExists }); // its reasult will be true or false
+        res.json(yearExists._id); // its reasult will be true or false
     } catch (error) {
         res.status(400).json({ error: "Not found" });
     }

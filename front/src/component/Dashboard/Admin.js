@@ -72,7 +72,7 @@ function Admin() {
           {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />
            
           : filterType === 'student' && family?<CreateFamily studentId={family}/>
-
+          
           : renderPages(filterType)
           }
         </div>

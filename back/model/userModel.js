@@ -9,7 +9,21 @@ const AdminSchema = new mongoose.Schema ({
 
 const Admin = mongoose.model("User", AdminSchema)
 
-const TeacherSchema = new mongoose.Schema({})
+const TeacherSchema = new mongoose.Schema({
+    first:{type:String,required:true},
+    middle:{type:String,required:true},
+    last:{type:String,required:true},
+    gender:{type:String,required:true},
+    age:{type:Number,required:true},
+    region:{type:String,required:true},
+    city:{type:String,required:true},
+    subCity:{type:String,required:true},
+    wereda:{type:String,required:true},
+    houseNo:{type:Number,required:true},
+    studentPhoto:{type:String,required:true},
+    experience:{type:Number,required:true}
+})
+const Teacher = mongoose.model('Teacher',TeacherSchema)
 
 const StudentSchema = new mongoose.Schema({
     first:{type:String,required:true},
@@ -41,4 +55,4 @@ const FamilySchema = new mongoose.Schema({
     studentId:{type:mongoose.Schema.Types.ObjectId,ref:"Student",required:true}
 })
 const Family = mongoose.model('Family',FamilySchema)
-module.exports = {Admin,Student,Family}
+module.exports = {Admin,Student,Family,Teacher}
