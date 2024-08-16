@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const upload = require('../upload') 
 const {Student, Family, Teacher} = require('../model/userModel')
 const {Section,Grade, Year} = require('../model/YearModel')
+const { populate } = require('dotenv')
 
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {
@@ -180,7 +181,17 @@ router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
 router.get('/family',async(req,res)=>{
 
     try {
-        const family = await Family.find({}).populate()
+        const family = await Family.find({}).populate({
+            path: 'studentId',
+            select: 'first middle sectionId',
+            populate:({
+                path:'sectionId',
+                populate:({
+                    path:'gradeId',
+                    select:'grade'
+                })
+            })
+        });
         if(!family){
             return res.status(404).json({error:"Not found!"})
         }
