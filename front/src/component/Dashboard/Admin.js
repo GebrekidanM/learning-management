@@ -21,6 +21,7 @@ import StudentDetail from './pages/component/StudentDetail'
 import CreateFamily from './pages/create/CreateFamily'
 import TeacherDetail from './pages/component/TeacherDetail'
 import FamilyDetail from './pages/component/FamilyDetail'
+import FamilyEdit from './pages/component/edit/FamilyEdit'
 
 function Admin() {
   const [searchParams] = useSearchParams()
@@ -31,6 +32,10 @@ function Admin() {
   const teacherId = searchParams.get('teacherId')
   const familyId = searchParams.get('familyId')
   const family = searchParams.get('family')
+  const edit = searchParams.get('action')
+
+  console.log(edit)
+
   
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -48,6 +53,9 @@ function Admin() {
       case 'parent':
         if (familyId) {
           return <FamilyDetail familyId={familyId} />;
+        }
+        if (edit) {
+          return <FamilyEdit familyId={edit} />;
         }
         return <Family />;
       case 'teacher':

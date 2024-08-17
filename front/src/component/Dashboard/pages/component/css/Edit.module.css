@@ -1,0 +1,40 @@
+.container {
+  margin-top: 2rem;
+  width: 100;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.BoxContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 2rem;
+}
+
+.basicInfo img {
+  width: 10rem;
+  height: 13rem;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.clickEdit {
+  font-size: 1rem;
+  color: var(--button);
+  cursor: pointer;
+}
+
+.name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}/*# sourceMappingURL=Edit.module.css.map */

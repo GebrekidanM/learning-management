@@ -49,7 +49,7 @@ a{
   cursor: pointer;
 }
 
-.edit{
+.edit a{
   font-weight: bold;
   color: var(--button);
   cursor: pointer;
