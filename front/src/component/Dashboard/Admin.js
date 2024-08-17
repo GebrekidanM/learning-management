@@ -20,6 +20,7 @@ import CreateStudent from './pages/create/CreateStudent'
 import StudentDetail from './pages/component/StudentDetail'
 import CreateFamily from './pages/create/CreateFamily'
 import TeacherDetail from './pages/component/TeacherDetail'
+import FamilyDetail from './pages/component/FamilyDetail'
 
 function Admin() {
   const [searchParams] = useSearchParams()
@@ -28,6 +29,7 @@ function Admin() {
   const sectionId = searchParams.get('sectionId')
   const studentId = searchParams.get('studentId')
   const teacherId = searchParams.get('teacherId')
+  const familyId = searchParams.get('familyId')
   const family = searchParams.get('family')
   
   const renderPages = (filterType) => {
@@ -44,6 +46,9 @@ function Admin() {
       case 'schedule':
         return <Schedule />;
       case 'parent':
+        if (familyId) {
+          return <FamilyDetail familyId={familyId} />;
+        }
         return <Family />;
       case 'teacher':
         if (teacherId) {

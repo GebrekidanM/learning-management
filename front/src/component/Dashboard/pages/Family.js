@@ -37,8 +37,9 @@ useEffect(()=>{
               <table style={{marginTop:"2rem"}}>
                 <tr>
                   <th> No </th>
-                  <th> Name </th>
-                  <th> phone No. </th>
+                  <th> Family Name </th>
+                  <th> Student Name </th>
+                  <th>Family Type</th>
                   <th colSpan={"3"}> Action</th>
                 </tr>
               {error && <p className='error'>{error}</p>}
@@ -46,8 +47,9 @@ useEffect(()=>{
                 {families.length > 0 && families.map((family,index)=>(
                   <tr key={family._id}>
                     <td>{index + 1}</td>
-                    <td>{family.first} {family.middle}</td>
-                    <td>{family.phoneNo}</td>
+                    <td>{family.familyFirst} {family.familyMiddle}</td>
+                    <td>{family.studentId.first} {family.studentId.middle}</td>
+                    <td>{family.familyType}</td>
                     <td className={'delete'}>Delete</td>
                     <td className={'edit'}>Edit</td>
                     <td className={'view'}><Link to={`/main?type=parent&familyId=${family._id}`}>View</Link></td>

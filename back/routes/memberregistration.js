@@ -149,6 +149,7 @@ router.get('/teachers', async (req, res) => {
 });
 
 /**************************** For Student Family ********************************************/
+//get family with student id
 router.get('/family/:id',async(req,res)=>{
     const {id} = req.params
     try {
@@ -157,6 +158,23 @@ router.get('/family/:id',async(req,res)=>{
             return res.status(404).json({error:"Not found!"})
         }
         res.status(200).json({family})
+    } catch (error) {
+        res.status(500).json({error:"Server error"})
+    }
+})
+
+/// get family with family id
+router.get('/family/own/:id',async(req,res)=>{
+    const {id} = req.params
+    try {
+        const family = await Family.find({_id:id}).populate({
+            path:'studentId',
+            select:'-studentPhoto -createdAt -updatedAt -gender -age -_id -last'
+        })
+        if(!family){
+            return res.status(404).json({error:"Not found!"})
+        }
+        res.status(200).json(family)
     } catch (error) {
         res.status(500).json({error:"Server error"})
     }
@@ -178,7 +196,7 @@ router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
 })
 
 //get all families
-router.get('/family',async(req,res)=>{
+router.get('/families',async(req,res)=>{
 
     try {
         const family = await Family.find({}).populate({
@@ -195,7 +213,7 @@ router.get('/family',async(req,res)=>{
         if(!family){
             return res.status(404).json({error:"Not found!"})
         }
-        res.status(200).json({family})
+        res.status(200).json(family)
     } catch (error) {
         res.status(500).json({error:"Server error"})
     }

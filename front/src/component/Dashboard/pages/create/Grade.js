@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import style from '../css/pages.module.css';
+import { Link } from 'react-router-dom';
 
 function Grade() {
     const [grades, setGrades] = useState([]);
@@ -114,13 +115,25 @@ function Grade() {
                 <div className={style.studentContainer}>
                     <h3>Students in Section</h3>
                     
-                    <ul className={style.studentBox}>
-                        {students.map(student => (
-                            <li key={student._id}>
-                                {student.first} {student.middle} {student.last} 
-                            </li>
+                    <table >
+                        <tr>
+                            <th> No </th>
+                            <th> Name </th>
+                            <th> phone No. </th>
+                            <th colSpan={"3"}> Action</th>
+                        </tr>
+                            
+                        {students.length > 0 && students.map((student,index)=>(
+                        <tr key={student._id}>
+                            <td>{index + 1}</td>
+                            <td>{student.first} {student.middle} {student.last} </td>
+                            <td>{student.phoneNo}</td>
+                            <td className={'delete'}>Delete</td>
+                            <td className={'edit'}>Edit</td>
+                            <td className={'view'}><Link to={`/main?type=student&studentId=${student._id}`}>View</Link></td>
+                        </tr>
                         ))}
-                    </ul>
+                    </table>
                 </div>
             )}
         </div>
