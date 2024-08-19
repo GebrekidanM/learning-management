@@ -179,6 +179,21 @@ router.get('/family/own/:id',async(req,res)=>{
         res.status(500).json({error:"Server error"})
     }
 })
+
+/// get family with family id
+router.get('/family/only/:id',async(req,res)=>{
+    const {id} = req.params
+    try {
+        const family = await Family.find({_id:id})
+        if(!family){
+            return res.status(404).json({error:"Not found!"})
+        }
+        res.status(200).json(family)
+    } catch (error) {
+        res.status(500).json({error:"Server error"})
+    }
+})
+
 //register family
 router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
     const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,studentId} = req.body
@@ -218,5 +233,30 @@ router.get('/families',async(req,res)=>{
         res.status(500).json({error:"Server error"})
     }
 })
+
+//update family information
+
+router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (req, res) => {
+    const { id } = req.params;
+    const updates = req.body;
+
+    // Check if the ID is a valid MongoDB ObjectID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Invalid ID!' });
+    }
+    if (req.file) {
+        updates.familyPhoto = req.file.filename; 
+    }
+
+    try {
+        const updatedFamily = await Family.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+        if (!updatedFamily) {
+            return res.status(404).json({ error: 'Family not found!' });
+        }
+        res.status(200).json(updatedFamily);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router

@@ -9,11 +9,13 @@
           justify-content: center;
 }
 
-.BoxContainer {
+.basicInfo {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  gap: 2rem;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .basicInfo img {
@@ -23,8 +25,39 @@
      object-fit: contain;
 }
 
+.extraInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.imageHolder {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 0.5rem;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  width: 15rem;
+}
+
+.imageHolder input {
+  border: 1px solid var(--card);
+  width: 12rem;
+}
+
 .clickEdit {
-  font-size: 1rem;
+  background-color: rgba(226, 226, 226, 0.747);
+  left: 0;
+  position: absolute;
+  font-size: 2rem;
   color: var(--button);
   cursor: pointer;
 }
@@ -33,8 +66,19 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  gap: 0.5rem;
+  gap: 1rem;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+.name input {
+  background-color: rgb(226, 226, 226);
+  border-bottom: 1.5px solid rgb(226, 226, 226);
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.name input:focus {
+  border-color: var(--button);
 }/*# sourceMappingURL=Edit.module.css.map */

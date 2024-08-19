@@ -58,4 +58,5 @@ const FamilySchema = new mongoose.Schema({
     studentId:{type:mongoose.Schema.Types.ObjectId,ref:"Student",required:true}
 })
 const Family = mongoose.model('Family',FamilySchema)
+
 module.exports = {Admin,Student,Family,Teacher}

@@ -19,24 +19,22 @@ router.get('/createOne',async (req,res)=>{
     const password = 'User@001'
     const email = 'user@gmail.com'
     const role = 2
-try {
-    const user = await Admin.findOne({})
-    // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    try {
+        const user = await Admin.findOne({})
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-    if(user)return res.status(400).json({error:'There is a user'});
+        if(user)return res.status(400).json({error:'There is a user'});
 
-    const newUser = await Admin.create({ username, email, password: hashedPassword ,role});
-    if(newUser){
-        res.status(200).json(newUser)
-    }else{
-        return res.status(500).json({error:"Something is wrong!"})
+        const newUser = await Admin.create({ username, email, password: hashedPassword ,role});
+        if(newUser){
+            res.status(200).json(newUser)
+        }else{
+            return res.status(500).json({error:"Something is wrong!"})
+        }   
+    } catch (error) {
+        res.status(500).json({error: "Server error, please try again!"})
     }
-    
-
-} catch (error) {
-    res.status(500).json({error: "Server error, please try again!"})
-}
     
 })
 

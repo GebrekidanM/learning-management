@@ -12,7 +12,12 @@ function Navbar() {
   //create user for the first time
   useEffect(() => {
     const createNew = async()=>{
+      try {
         await fetch('http://localhost:4000/user/createOne',{credentials:"include"})
+      } catch (error) {
+        return <Navigate to ={`/error?error=${error.error}`}/>
+      }
+        
     }
     createNew()
   },[])
@@ -21,11 +26,16 @@ function Navbar() {
   //get information of the logged user
   useEffect(() => {
     const getInfo = async()=>{
-        const response = await fetch('http://localhost:4000/user/profile', {credentials:"include"})
-        const json = await response.json()
-        if(response.ok){
-          setLoggedUser(json)
-        }
+      try {
+          const response = await fetch('http://localhost:4000/user/profile', {credentials:"include"})
+          const json = await response.json()
+          if(response.ok){
+            setLoggedUser(json)
+          }
+      } catch (error) {
+        return <Navigate to ={`/error?error=${error.error}`}/>
+      }
+        
     }
     getInfo()
   },[])

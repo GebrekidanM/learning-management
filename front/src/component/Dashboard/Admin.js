@@ -34,9 +34,6 @@ function Admin() {
   const family = searchParams.get('family')
   const edit = searchParams.get('action')
 
-  console.log(edit)
-
-  
   const renderPages = (filterType) => {
     switch (filterType) {
       case 'home':
