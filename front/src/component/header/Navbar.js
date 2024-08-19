@@ -52,6 +52,7 @@ function Navbar() {
 
   return (
     <div className={style.navContainer}>
+
       {/*Nav bar link*/}
       <div className={style.navBox}>
         <span><img src={logo} alt='nitsuh' className={style.logo}/></span>
@@ -60,6 +61,7 @@ function Navbar() {
         <Link to='/contact' className={style.navLink}>Contact</Link>
         <Link to='/blog' className={style.navLink}>Blog</Link>
       </div>
+      
       {/*if loggedin or not*/}
       <div className={style.logBox}>
         {loggedUser?.username ? 
