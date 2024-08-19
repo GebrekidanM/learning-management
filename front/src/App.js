@@ -17,16 +17,15 @@ function App () {
         <Route path={'/login'} element={<Login />}/>
         <Route path={'/signup'} element={<Signup />}/>
         <Route path={'/main'} element={<DashboardIs />}/>
-        <Route path={'/error'} element={<Error error={error}/>}/>
+        <Route component={() => <Error errorCode="500" />} />
       </Routes>
     </AuthProvider>
-   
   );
 }
 
 const ConditionalNavbar = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/main'];
+  const hideNavbarRoutes = ['/main','/error'];
 
   return !hideNavbarRoutes.includes(location.pathname) && <Navbar />;
 };
