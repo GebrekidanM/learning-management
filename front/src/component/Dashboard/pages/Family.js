@@ -51,8 +51,12 @@ useEffect(()=>{
                     <td>{family.studentId.first} {family.studentId.middle}</td>
                     <td>{family.familyType}</td>
                     <td className={'delete'}>Delete</td>
-                    <td className={'edit'}><Link to={`/main?type=parent&action=${family._id}`}>Edit</Link></td>
-                    <td className={'view'}><Link to={`/main?type=parent&familyId=${family._id}`}>View</Link></td>
+                    <td className={'edit'}>
+                      <Link to={`/main?type=parent&action=${family._id}`}>Edit</Link>
+                    </td>
+                    <td className={'view'}>
+                      <Link to={`/main?type=parent&familyId=${family._id}`}>View</Link>
+                    </td>
                   </tr>
                 ))}
                </table>

@@ -30,7 +30,7 @@ function StudentDetail({studentId}) {
             }            
         }
         fetchAstudent() 
-    },[])
+    },[studentId])
 
     //fetch family information
     useEffect(()=>{
@@ -53,7 +53,7 @@ function StudentDetail({studentId}) {
         
       }
       fetchAfamily()
-    },[])
+    },[studentId])
 
     console.log(family.length)
 

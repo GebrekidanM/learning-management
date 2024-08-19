@@ -25,7 +25,7 @@ function FamilyDetail({familyId}) {
             }            
         }
         fetchFamily() 
-    },[])
+    },[id])
     
   return (
     <div>
@@ -49,7 +49,6 @@ function FamilyDetail({familyId}) {
             <p>Subcity: {family.studentId.subCity}</p>
             <p>Wereda: {family.studentId.wereda}</p>
             <p>House No: {family.studentId.houseNo}</p>
-
 
           </div>
         </div>

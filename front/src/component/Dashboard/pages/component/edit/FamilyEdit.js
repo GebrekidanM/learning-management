@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from '../css/Edit.module.css';
 import { LiaUserEditSolid } from "react-icons/lia";
+import {useNavigate} from 'react-router-dom';
 import { z } from 'zod';
 
 function FamilyEdit({ familyId }) {
@@ -17,6 +18,8 @@ function FamilyEdit({ familyId }) {
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const id = familyId;
+  const navigate = useNavigate()
+
 
   useEffect(() => {
     const fetchFamily = async () => {
@@ -106,14 +109,14 @@ function FamilyEdit({ familyId }) {
     try {
         const response = await fetch(`http://localhost:4000/member/family/update/${familyId}`, {
             method: 'PATCH',
-            body: formData,
+            body: data,
         });
         const result = await response.json();
 
         if (!response.ok) {
             setError(result.error);
         } else {
-            console.log('Handle success')
+          navigate(-1)   
         }
     } catch (error) {
         setError(error.message);

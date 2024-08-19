@@ -48,6 +48,26 @@ router.get('/student/:id',async(req,res)=>{
     }
 })
 
+//get one student without additional information
+
+router.get('/student/only/:id',async(req,res)=>{
+    const {id} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(id)){
+        return res.status(400).json({error:"Not valid id!"})
+    }
+    try {
+        const student = await Student.findById(id)
+        if(Student){
+            res.status(200).json({student})
+        }else{
+            res.status(404).json({error:"No student!"})
+        }
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
+
 //get all students
 router.get('/',async(req,res)=>{
     try {
@@ -237,11 +257,12 @@ router.get('/families',async(req,res)=>{
 //update family information
 
 router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (req, res) => {
-    const { id } = req.params;
+    const { familyId } = req.params;
     const updates = req.body;
 
+
     // Check if the ID is a valid MongoDB ObjectID
-    if (!mongoose.Types.ObjectId.isValid(id)) {
+    if (!mongoose.Types.ObjectId.isValid(familyId)) {
         return res.status(404).json({ error: 'Invalid ID!' });
     }
     if (req.file) {
@@ -249,7 +270,7 @@ router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (re
     }
 
     try {
-        const updatedFamily = await Family.findByIdAndUpdate(id, updates, { new: true, runValidators: true });
+        const updatedFamily = await Family.findByIdAndUpdate(familyId, updates, { new: true, runValidators: true });
         if (!updatedFamily) {
             return res.status(404).json({ error: 'Family not found!' });
         }
