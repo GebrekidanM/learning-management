@@ -121,6 +121,7 @@ function StudentEdit({ studentId }) {
         <div className={style.container}>
             {loading ? <p>Loading...</p>:
             <form onSubmit={handleSubmit}>
+                
                 {error && <p className='error'>{error}</p>}
                 <div className={style.basicInfo}>
                     <span className={style.imageHolder}>

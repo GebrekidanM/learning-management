@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import style from '../css/pages.module.css';
 import { Link } from 'react-router-dom';
+import Delete from '../component/delete/Delete';
 
 function Grade() {
     const [grades, setGrades] = useState([]);
@@ -11,6 +12,7 @@ function Grade() {
     const [studentsError, setStudentsError] = useState('');
     const [activeGradeId,setActiveGradeId] = useState('')
     const [activeSectionId,setActiveSectionId] = useState('')
+    const [deleteCard,setDeleteCard] = useState(false)
 
     // Fetch grades when component mounts
     useEffect(() => {
@@ -68,6 +70,10 @@ function Grade() {
             setStudentsError('An error occurred while fetching students: ' + error.message);
         }
     };
+
+    const handleDeleteCard = ()=>{
+        setDeleteCard(true)
+    }
 
     return (
         <div className={style.grade}>
@@ -128,9 +134,10 @@ function Grade() {
                             <td>{index + 1}</td>
                             <td>{student.first} {student.middle} {student.last} </td>
                             <td>{student.phoneNo}</td>
-                            <td className={'delete'}>Delete</td>
+                            <td className={'delete'} onClick={handleDeleteCard}>Delete</td>
                             <td className={'edit'}><Link to={`/main?type=student&action=${student._id}`}>Edit</Link></td>
                             <td className={'view'}><Link to={`/main?type=student&studentId=${student._id}`}>View</Link></td>
+                            {deleteCard && <Delete first={student.first} middle={student.middle} role={"Student"}/>}
                         </tr>
                         ))}
                     </table>

@@ -286,7 +286,6 @@ router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (re
     const { familyId } = req.params;
     const updates = req.body;
 
-
     // Check if the ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(familyId)) {
         return res.status(404).json({ error: 'Invalid ID!' });
@@ -306,9 +305,8 @@ router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (re
     }
 });
 
-router.delete('/family/:id', async (req, res) => {
+router.delete('/delete/:id', async (req, res) => {
     const { id } = req.params;
-
     // Check if the ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'Invalid ID!' });
@@ -317,7 +315,6 @@ router.delete('/family/:id', async (req, res) => {
     try {
         // Find the Family document by ID and delete it
         const deletedFamily = await Family.findByIdAndDelete(id);
-
         if (!deletedFamily) {
             return res.status(404).json({ error: 'Family member not found!' });
         }
