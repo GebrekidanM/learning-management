@@ -7,6 +7,7 @@ import Schedule from './pages/Schedule'
 import Family from './pages/Family'
 import Teacher from './pages/Teacher'
 import Grade from './pages/Grade'
+import StudentEdit from './pages/component/edit/StudentEdit'
 
 //icons
 import { MdDashboard,MdFamilyRestroom  } from "react-icons/md";
@@ -33,6 +34,7 @@ function Admin() {
   const familyId = searchParams.get('familyId')
   const family = searchParams.get('family')
   const edit = searchParams.get('action')
+  const stuEdit = searchParams.get('action')
 
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -41,6 +43,9 @@ function Admin() {
       case 'student':
         if (studentId) {
           return <StudentDetail studentId={studentId} />;
+        }
+        if (stuEdit) {
+          return <StudentEdit studentId={stuEdit} />;
         }
         return <Student />;
       case 'grade':

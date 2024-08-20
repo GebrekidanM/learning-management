@@ -27,7 +27,7 @@ function generateNewSearchParams(key,value) {
             className={style.button}>Add new</Link>
       </div>
       <div>
-        {stuType == 'createStudent' ?
+        {stuType === 'createStudent' ?
             <GradeSectionSelector/>
           : <Grade/>
         }

@@ -130,70 +130,70 @@ function FamilyEdit({ familyId }) {
         <form  onSubmit={handleSubmit}>
           {error && <p className='error'>{error}</p>}
           <div className={style.basicInfo}>
-          <span className={style.imageHolder}>
-            <img src={imagePreview == null ? `http://localhost:4000/uploads/${familyPhoto}` : imagePreview} alt='Profile' />
-            {showFileInput && <input type='file' accept='image/*' onChange={handleFileChange} />}
-            <span className={style.clickEdit} onClick={handleClick}>{<LiaUserEditSolid />}</span>
-          </span>
+            <span className={style.imageHolder}>
+              <img src={imagePreview == null ? `http://localhost:4000/uploads/${familyPhoto}` : imagePreview} alt='Profile' />
+              {showFileInput && <input type='file' accept='image/*' onChange={handleFileChange} />}
+              <span className={style.clickEdit} onClick={handleClick}>{<LiaUserEditSolid />}</span>
+            </span>
           
-          <div className={style.extraInfo}>
-            <span className={style.name}>
-              <p><b>First Name:</b></p>
-              <input
-                type='text'
-                value={familyFirst}
-                onChange={e => setFamilyFirst(e.target.value)}
-              />
-              {validationErrors.familyFirst && <p className={style.error}>{validationErrors.familyFirst}</p>}
-            </span>
-            <span className={style.name}>
-              <p><b>Middle Name:</b></p>
-              <input
-                type='text'
-                value={familyMiddle}
-                onChange={e => setFamilyMiddle(e.target.value)}
-              />
-              {validationErrors.familyMiddle && <p className={style.error}>{validationErrors.familyMiddle}</p>}
-            </span>
-            <span className={style.name}>
-              <p><b>Last Name:</b></p>
-              <input
-                type='text'
-                value={familyLast}
-                onChange={e => setFamilyLast(e.target.value)}
-              />
-              {validationErrors.familyLast && <p className={style.error}>{validationErrors.familyLast}</p>}
-            </span>
-            <span className={style.name}>
-              <p><b>Family Type:</b></p>
-              <input
-                type='text'
-                value={familyType}
-                onChange={e => setFamilyType(e.target.value)}
-              />
-              {validationErrors.familyType && <p className={style.error}>{validationErrors.familyType}</p>}
-            </span>
-            <span className={style.name}>
-              <p><b>Phone no:</b> </p>
-              <input
-                type='text'
-                value={familyPhone}
-                onChange={e => setFamilyPhone(e.target.value)}
-              />
-              {validationErrors.familyPhone && <p className={style.error}>{validationErrors.familyPhone}</p>}
-            </span>
-            <span className={style.name}>
-              <p><b>Email:</b></p>
-              <input
-                type='email'
-                value={familyEmail}
-                onChange={e => setFamilyEmail(e.target.value)}
-              />
-              {validationErrors.familyEmail && <p className={style.error}>{validationErrors.familyEmail}</p>}
-            </span>
-            <span style={{ fontSize: '0.8rem', color: 'blue', fontStyle: 'italic', marginBottom: '1rem' }}>** Click on where you want to edit</span>
-            <button className='button' style={{ width: '50%' }} type='submit'>Update</button>
-          </div>
+            <div className={style.extraInfo}>
+              <span className={style.name}>
+                <p><b>First Name:</b></p>
+                <input
+                  type='text'
+                  value={familyFirst}
+                  onChange={e => setFamilyFirst(e.target.value)}
+                />
+                {validationErrors.familyFirst && <p className={style.error}>{validationErrors.familyFirst}</p>}
+              </span>
+              <span className={style.name}>
+                <p><b>Middle Name:</b></p>
+                <input
+                  type='text'
+                  value={familyMiddle}
+                  onChange={e => setFamilyMiddle(e.target.value)}
+                />
+                {validationErrors.familyMiddle && <p className={style.error}>{validationErrors.familyMiddle}</p>}
+              </span>
+              <span className={style.name}>
+                <p><b>Last Name:</b></p>
+                <input
+                  type='text'
+                  value={familyLast}
+                  onChange={e => setFamilyLast(e.target.value)}
+                />
+                {validationErrors.familyLast && <p className={style.error}>{validationErrors.familyLast}</p>}
+              </span>
+              <span className={style.name}>
+                <p><b>Family Type:</b></p>
+                <input
+                  type='text'
+                  value={familyType}
+                  onChange={e => setFamilyType(e.target.value)}
+                />
+                {validationErrors.familyType && <p className={style.error}>{validationErrors.familyType}</p>}
+              </span>
+              <span className={style.name}>
+                <p><b>Phone no:</b> </p>
+                <input
+                  type='text'
+                  value={familyPhone}
+                  onChange={e => setFamilyPhone(e.target.value)}
+                />
+                {validationErrors.familyPhone && <p className={style.error}>{validationErrors.familyPhone}</p>}
+              </span>
+              <span className={style.name}>
+                <p><b>Email:</b></p>
+                <input
+                  type='email'
+                  value={familyEmail}
+                  onChange={e => setFamilyEmail(e.target.value)}
+                />
+                {validationErrors.familyEmail && <p className={style.error}>{validationErrors.familyEmail}</p>}
+              </span>
+              <span style={{ fontSize: '0.8rem', color: 'blue', fontStyle: 'italic', marginBottom: '1rem' }}>** Click on where you want to edit</span>
+              <button className='button' style={{ width: '50%' }} type='submit'>Update</button>
+            </div>
           </div>
         </form>
       }

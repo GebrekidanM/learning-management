@@ -168,6 +168,32 @@ router.get('/teachers', async (req, res) => {
     }
 });
 
+//update student information
+
+router.patch('/student/update/:studentId', upload.single('studentPhoto'), async (req, res) => {
+    const { studentId } = req.params;
+    const updates = req.body;
+
+    // Check if the ID is a valid MongoDB ObjectID
+    if (!mongoose.Types.ObjectId.isValid(studentId)) {
+        return res.status(404).json({ error: 'Invalid ID!' });
+    }
+    if (req.file) {
+        updates.studentPhoto = req.file.filename; 
+    }
+
+    try {
+        const updatedStudent = await Student.findByIdAndUpdate(studentId, updates, { new: true, runValidators: true });
+        if (!updatedStudent) {
+            return res.status(404).json({ error: 'Student not found!' });
+        }
+        res.status(200).json(updatedStudent);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 /**************************** For Student Family ********************************************/
 //get family with student id
 router.get('/family/:id',async(req,res)=>{
@@ -275,6 +301,28 @@ router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (re
             return res.status(404).json({ error: 'Family not found!' });
         }
         res.status(200).json(updatedFamily);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.delete('/family/:id', async (req, res) => {
+    const { id } = req.params;
+
+    // Check if the ID is a valid MongoDB ObjectID
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Invalid ID!' });
+    }
+
+    try {
+        // Find the Family document by ID and delete it
+        const deletedFamily = await Family.findByIdAndDelete(id);
+
+        if (!deletedFamily) {
+            return res.status(404).json({ error: 'Family member not found!' });
+        }
+
+        res.status(200).json({ message: 'Family member deleted successfully', deletedFamily });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import style from './css/detail.module.css';
+import style from '../css/Edit.module.css';
 import { useNavigate } from 'react-router-dom';
+import { LiaUserEditSolid } from "react-icons/lia";
 
-function EditStudent({ studentId }) {
+function StudentEdit({ studentId }) {
     const [student, setStudent] = useState({
         first: '',
         middle: '',
@@ -96,7 +97,7 @@ function EditStudent({ studentId }) {
         }
 
         try {
-            const response = await fetch(`http://localhost:4000/member/student/${studentId}`, {
+            const response = await fetch(`http://localhost:4000/member/student/updat/${studentId}`, {
                 method: 'PATCH',
                 body: formData,
             });
@@ -117,153 +118,158 @@ function EditStudent({ studentId }) {
       };
 
     return (
-        <div className={style.BoxContainer}>
-            {loading && <p>Loading...</p>}
-            {error && <p className='error'>{error}</p>}
+        <div className={style.container}>
+            {loading ? <p>Loading...</p>:
             <form onSubmit={handleSubmit}>
-            <span className={style.imageHolder}>
-                <img 
-                    src={imagePreview == null ? `http://localhost:4000/uploads/${student.studentPhoto}` : imagePreview} alt='Profile' />
-                    {showFileInput && <input type='file' accept='image/*' onChange={handleFileChange} />}
-                    <span className={style.clickEdit} onClick={handleClick}>{/* Insert icon here */}</span>
-            </span>
-            <div  className={style.extraInfo}>      
-                <div className={style.name}>
+                {error && <p className='error'>{error}</p>}
+                <div className={style.basicInfo}>
+                    <span className={style.imageHolder}>
+                        <img 
+                            src={imagePreview == null ? `http://localhost:4000/uploads/${studentPhoto}` : imagePreview} alt='Profile' />
+                            {showFileInput && <input type='file' accept='image/*' onChange={handleFileChange} />}
+                            <span className={style.clickEdit} onClick={handleClick}>{<LiaUserEditSolid />}</span>
+                    </span>
+                    <div  className={style.extraInfo}>      
+                        <div className={style.name}>
 
-                    <label htmlFor='first'>First Name:</label>
-                    <input
-                        type='text'
-                        id='first'
-                        name='first'
-                        value={student.first}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={style.name}>
-                    <label htmlFor='middle'>Middle Name:</label>
-                    <input
-                        type='text'
-                        id='middle'
-                        name='middle'
-                        value={student.middle}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={style.name}>
-                    <label htmlFor='last'>Last Name:</label>
-                    <input
-                        type='text'
-                        id='last'
-                        name='last'
-                        value={student.last}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={style.name}>
-                    <label>Gender:</label>
-                    <div className={style.genderOptions}>
-                        <label>
+                            <label htmlFor='first'>First Name:</label>
                             <input
-                                type='radio'
-                                name='gender'
-                                value='Male'
-                                checked={student.gender === 'Male'}
+                                type='text'
+                                id='first'
+                                name='first'
+                                value={student.first}
                                 onChange={handleInputChange}
                                 required
                             />
-                            Male
-                        </label>
-                        <label>
+                        </div>
+                        <div className={style.name}>
+                            <label htmlFor='middle'>Middle Name:</label>
                             <input
-                                type='radio'
-                                name='gender'
-                                value='Female'
-                                checked={student.gender === 'Female'}
+                                type='text'
+                                id='middle'
+                                name='middle'
+                                value={student.middle}
                                 onChange={handleInputChange}
                                 required
                             />
-                            Female
-                        </label>
+                        </div>
+                        <div className={style.name}>
+                            <label htmlFor='last'>Last Name:</label>
+                            <input
+                                type='text'
+                                id='last'
+                                name='last'
+                                value={student.last}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className={style.name}>
+                            <label>Gender:</label>
+                            <div className={style.genderOptions}>
+                                <label>
+                                    <input
+                                        type='radio'
+                                        name='gender'
+                                        value='Male'
+                                        checked={student.gender === 'Male'}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                    Male
+                                </label>
+                                <label>
+                                    <input
+                                        type='radio'
+                                        name='gender'
+                                        value='Female'
+                                        checked={student.gender === 'Female'}
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                    Female
+                                </label>
+                            </div>
+                        </div>
+                        <div className={style.name}>
+                            <label htmlFor='age'>Age:</label>
+                            <input
+                                type='number'
+                                id='age'
+                                name='age'
+                                value={student.age}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <button type='submit' disabled={loading} className={`button ${style.button}` }>
+                            {loading ? 'Updating...' : 'Update'}
+                        </button>
                     </div>
+                    <div className={style.extraInfo}>
+                        <div className={style.name}>
+                            <label htmlFor='region'>Region/State:</label>
+                            <input
+                                type='text'
+                                id='region'
+                                name='region'
+                                value={student.region}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className={style.name}>
+                            <label htmlFor='city'>City:</label>
+                            <input
+                                type='text'
+                                id='city'
+                                name='city'
+                                value={student.city}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className={style.name}>
+                            <label htmlFor='subCity'>Subcity/Zone:</label>
+                            <input
+                                type='text'
+                                id='subCity'
+                                name='subCity'
+                                value={student.subCity}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className={style.name}>
+                            <label htmlFor='wereda'>Wereda:</label>
+                            <input
+                                type='text'
+                                id='wereda'
+                                name='wereda'
+                                value={student.wereda}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        <div className={style.name}>
+                            <label htmlFor='houseNo'>House No.:</label>
+                            <input
+                                type='number'
+                                id='houseNo'
+                                name='houseNo'
+                                value={student.houseNo}
+                                onChange={handleInputChange}
+                                required
+                            />
+                        </div>
+                        
+                    </div>
+                       
                 </div>
-                <div className={style.name}>
-                    <label htmlFor='age'>Age:</label>
-                    <input
-                        type='number'
-                        id='age'
-                        name='age'
-                        value={student.age}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-            </div>
-            <div className={style.extraInfo}>
-                <div className={style.name}>
-                    <label htmlFor='region'>Region/State:</label>
-                    <input
-                        type='text'
-                        id='region'
-                        name='region'
-                        value={student.region}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={style.name}>
-                    <label htmlFor='city'>City:</label>
-                    <input
-                        type='text'
-                        id='city'
-                        name='city'
-                        value={student.city}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={style.name}>
-                    <label htmlFor='subCity'>Subcity/Zone:</label>
-                    <input
-                        type='text'
-                        id='subCity'
-                        name='subCity'
-                        value={student.subCity}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={style.name}>
-                    <label htmlFor='wereda'>Wereda:</label>
-                    <input
-                        type='text'
-                        id='wereda'
-                        name='wereda'
-                        value={student.wereda}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={style.name}>
-                    <label htmlFor='houseNo'>House No.:</label>
-                    <input
-                        type='number'
-                        id='houseNo'
-                        name='houseNo'
-                        value={student.houseNo}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-            </div>
-                <button type='submit' disabled={loading} className={style.button}>
-                    {loading ? 'Updating...' : 'Update'}
-                </button>
             </form>
+            }
         </div>
     );
 }
 
-export default EditStudent;
+export default StudentEdit;

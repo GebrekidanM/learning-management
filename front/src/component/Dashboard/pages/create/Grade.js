@@ -129,7 +129,7 @@ function Grade() {
                             <td>{student.first} {student.middle} {student.last} </td>
                             <td>{student.phoneNo}</td>
                             <td className={'delete'}>Delete</td>
-                            <td className={'edit'}>Edit</td>
+                            <td className={'edit'}><Link to={`/main?type=student&action=${student._id}`}>Edit</Link></td>
                             <td className={'view'}><Link to={`/main?type=student&studentId=${student._id}`}>View</Link></td>
                         </tr>
                         ))}
