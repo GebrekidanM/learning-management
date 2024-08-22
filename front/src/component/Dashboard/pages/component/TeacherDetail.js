@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import style from './css/detail.module.css'
+import { useNavigate } from 'react-router-dom'
 
 function TeacherDetail({teacherId}) {
     const [error,setError] = useState('')
     const [loading,setLoading] = useState(false)
     const [teacher,setTeacher] = useState("")
+    const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchTeacher = async()=>{
@@ -24,7 +26,14 @@ function TeacherDetail({teacherId}) {
             }            
         }
         fetchTeacher() 
-    },[])
+    },[teacherId])
+
+
+    const handleAddClass = ()=>{
+        navigate(`/main?type=teacher&teacher=${teacherId}`)
+    }
+
+
     
   return (
     <div>
@@ -50,6 +59,9 @@ function TeacherDetail({teacherId}) {
               <p><i><b>Wereda:</b></i> {teacher.wereda}</p>
               <p><i><b>House No:</b></i> {teacher.houseNo}</p>
           </div>
+        </div>
+        <div className={style.addFamily}>
+          <button className='button' onClick={handleAddClass}>Add Class</button>
         </div>
       </div>
       }

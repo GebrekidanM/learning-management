@@ -46,4 +46,13 @@
   margin-top: 2rem;
   grid-row-start: 2;
   grid-row-end: 3;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
 }/*# sourceMappingURL=detail.module.css.map */
