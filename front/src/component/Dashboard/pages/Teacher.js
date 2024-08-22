@@ -5,7 +5,7 @@ import CreateTeacher from './create/CreateTeacher'
 import Delete from './component/delete/Delete'
 
 function Teacher() {
-  const [yearId,setYearId] = useState({})
+  const [yearId,setYearId]= useState('')
   const [yearError,setYearError] = useState('')
   const [teachers,setTeachers] = useState('')
   const [error,setError] = useState('')
@@ -24,6 +24,19 @@ function Teacher() {
       type.set(key,value)
       return `?${type.toString()}`
     }
+
+    useEffect(()=>{
+      const checkYear = async ()=>{
+            const response = await fetch('localhost:4000/class/check-academic-year')
+            const json = await response.json()
+            if(response.ok){
+              setYearId(json)
+            }else{
+              setYearError(json.error)
+            }
+      }
+      checkYear()
+    })
 
     const fetchTeachers = async ()=>{
       try {
@@ -110,7 +123,6 @@ function Teacher() {
               middle={teachers.find(teacher=> teacher._id === selectedTeacherId)?.middle}
               role={'Teacher'}
               setDeleteCard={setDeleteCard}
-
           />}
       </div>
     </div>

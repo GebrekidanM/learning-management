@@ -28,6 +28,7 @@ const Family = () => {
         setLoading(false)
       }
     }
+    
 useEffect(()=>{
     fetchFamily()
   },[])
