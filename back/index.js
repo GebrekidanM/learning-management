@@ -4,6 +4,7 @@ const cors = require('cors')
 const UserRouter = require('./routes/user')
 const MemberRouter = require('./routes/memberregistration')
 const ClassRouter = require('./routes/yearClass')
+const ClassTeacher = require('./routes/medium')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 
@@ -21,6 +22,8 @@ mongoose.connect('mongodb://localhost:27017/tibeb').then(()=>{
 app.use('/user',UserRouter)
 app.use('/member', MemberRouter)
 app.use('/class',ClassRouter)
+app.use('/medium',ClassTeacher)
+
 
 
 
