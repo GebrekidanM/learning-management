@@ -12,12 +12,9 @@ function Delete({ first, middle, role, id, setDeleteCard, onDeleteSuccess }) {
             if (response.ok) {
                 onDeleteSuccess();  // Call the success handler to refresh the data
             } else {
-                const errorData = await response.json();
-                console.error('Delete failed:', errorData.error);
                 alert('Failed to delete. Please try again.');
             }
         } catch (error) {
-            console.error('Error occurred during deletion:', error);
             alert('An error occurred. Please try again.');
         }
     };

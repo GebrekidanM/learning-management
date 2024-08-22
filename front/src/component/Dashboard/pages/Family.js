@@ -37,14 +37,11 @@ useEffect(() => {
   fetchFamily();
 }, [refreshTrigger]);  // Trigger refetch when refreshTrigger changes
 
-
 const handleDeleteCard = (familyId)=>{
   setSelectedFamilyId(familyId)
   setDeleteCard(true)
 
 }
-
- 
 
 const handleDeleteSuccess = () => {
   setDeleteCard(false);
@@ -76,7 +73,7 @@ const handleDeleteSuccess = () => {
                     <td>{family.familyFirst} {family.familyMiddle}</td>
                     <td>{family.studentId.first} {family.studentId.middle}</td>
                     <td>{family.familyType}</td>
-                    <td className={'delete'} onacalick={()=>handleDeleteCard(family._id)}>Delete</td>
+                    <td className={'delete'} onClick={()=>handleDeleteCard(family._id)}>Delete</td>
                     <td className={'edit'}>
                       <Link to={`/main?type=parent&action=${family._id}`}>Edit</Link>
                     </td>
@@ -90,8 +87,8 @@ const handleDeleteSuccess = () => {
                {deleteCard && 
                <Delete
                     setDeleteCard={setDeleteCard}
-                    first={families.find(family=>family._id === selectedFamilyId)?.first}
-                    middle={families.find(family=>family._id === selectedFamilyId)?.middle}
+                    first={families.find(family=>family._id === selectedFamilyId)?.familyFirst}
+                    middle={families.find(family=>family._id === selectedFamilyId)?.familyMiddle}
                     id={selectedFamilyId}
                     role={'family'}
                     onDeleteSuccess={handleDeleteSuccess}
