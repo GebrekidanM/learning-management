@@ -291,7 +291,7 @@ router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (re
         return res.status(404).json({ error: 'Invalid ID!' });
     }
     if (req.file) {
-        updates.familyPhoto = req.file.filename; 
+        updates.familyPhoto = req.file.filename;
     }
 
     try {
@@ -307,22 +307,38 @@ router.patch('/family/update/:familyId', upload.single('familyPhoto'), async (re
 
 router.delete('/delete/:id', async (req, res) => {
     const { id } = req.params;
+
     // Check if the ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'Invalid ID!' });
     }
 
     try {
-        // Find the Family document by ID and delete it
+        // Try to delete from Family
         const deletedFamily = await Family.findByIdAndDelete(id);
-        if (!deletedFamily) {
-            return res.status(404).json({ error: 'Family member not found!' });
+        if (deletedFamily) {
+            return res.status(200).json(deletedFamily);
         }
 
-        res.status(200).json({ message: 'Family member deleted successfully', deletedFamily });
+        // Try to delete from Student if Family not found
+        const deletedStudent = await Student.findByIdAndDelete(id);
+        if (deletedStudent) {
+            return res.status(200).json(deletedStudent);
+        }
+
+        // Try to delete from Teacher if Student not found
+        const deletedTeacher = await Teacher.findByIdAndDelete(id);
+        if (deletedTeacher) {
+            return res.status(200).json(deletedTeacher);
+        }
+
+        // If none were deleted
+        return res.status(404).json({ error: "No document found with this ID!" });
+
     } catch (error) {
-        res.status(500).json({ error: error.message });
+        return res.status(500).json({ error: error.message });
     }
 });
+
 
 module.exports = router

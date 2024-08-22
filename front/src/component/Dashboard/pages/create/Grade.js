@@ -13,7 +13,9 @@ function Grade() {
     const [activeGradeId,setActiveGradeId] = useState('')
     const [activeSectionId,setActiveSectionId] = useState('')
     const [deleteCard,setDeleteCard] = useState(false)
-
+    const [refreshTrigger, setRefreshTrigger] = useState(false);  // Add a state for refresh trigger
+    const [selectedStudentId,setSelectedStudentId] = useState('')
+    
     // Fetch grades when component mounts
     useEffect(() => {
         const fetchGrades = async () => {
@@ -55,9 +57,9 @@ function Grade() {
 
     // Fetch students for the selected section
     const fetchStudents = async (sectionId) => {
-          setStudents([]); // Clear students when selecting a new section
-          setStudentsError('')
-          setActiveSectionId(sectionId);
+        setStudents([]); // Clear students when selecting a new section
+        setStudentsError('')
+        setActiveSectionId(sectionId);
         try {
             const response = await fetch(`http://localhost:4000/member/students/${sectionId}`);
             const json = await response.json();
@@ -71,8 +73,21 @@ function Grade() {
         }
     };
 
-    const handleDeleteCard = ()=>{
+    // Refetch students when delete is successful
+    useEffect(() => {
+        if (activeSectionId) {
+            fetchStudents(activeSectionId);
+        }
+    }, [refreshTrigger]);  // Trigger refetch when refreshTrigger changes
+
+    const handleDeleteCard = (selectedStudentIdNo) => {
+        setSelectedStudentId(selectedStudentIdNo)
         setDeleteCard(true)
+    }
+
+    const handleDeleteSuccess = () => {
+        setDeleteCard(false);
+        setRefreshTrigger(prev => !prev);  // Toggle refresh trigger
     }
 
     return (
@@ -123,26 +138,35 @@ function Grade() {
                     
                     <table >
                         <tr>
-                            <th> No </th>
-                            <th> Name </th>
-                            <th> phone No. </th>
-                            <th colSpan={"3"}> Action</th>
+                            <th>No</th>
+                            <th>Name</th>
+                            <th colSpan={"3"}>Action</th>
                         </tr>
                             
-                        {students.length > 0 && students.map((student,index)=>(
+                        {students.length > 0 && students.map((student, index) => (
                         <tr key={student._id}>
                             <td>{index + 1}</td>
-                            <td>{student.first} {student.middle} {student.last} </td>
-                            <td>{student.phoneNo}</td>
-                            <td className={'delete'} onClick={handleDeleteCard}>Delete</td>
+                            <td>{student.first} {student.middle} {student.last}</td>
+                            <td className={'delete'} onClick={()=>handleDeleteCard(student._id)}>Delete</td>
                             <td className={'edit'}><Link to={`/main?type=student&action=${student._id}`}>Edit</Link></td>
                             <td className={'view'}><Link to={`/main?type=student&studentId=${student._id}`}>View</Link></td>
-                            {deleteCard && <Delete first={student.first} middle={student.middle} role={"Student"}/>}
+                            
                         </tr>
                         ))}
                     </table>
                 </div>
             )}
+
+            {deleteCard && (
+                                <Delete 
+                                    setDeleteCard={setDeleteCard} 
+                                    first={students.find(student=>student._id === selectedStudentId)?.first} 
+                                    middle={students.find(student=> student._id ===selectedStudentId)?.middle} 
+                                    role={"Student"} 
+                                    id={selectedStudentId} 
+                                    onDeleteSuccess={handleDeleteSuccess}  // Pass the success handler to Delete component
+                                />
+                            )}
         </div>
     );
 }

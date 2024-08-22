@@ -1,28 +1,42 @@
-import React from 'react'
-import style from '../css/delete.module.css'
-import { useNavigate } from 'react-router-dom'
+import React from 'react';
+import style from '../css/delete.module.css';
 
+function Delete({ first, middle, role, id, setDeleteCard, onDeleteSuccess }) {
 
-function Delete({first,middle,role,id}) {
-    const navigate = useNavigate()
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:4000/member/delete/${id}`, {
+                method: "DELETE"
+            });
 
-    const handleDelete = async()=>{
-        await fetch(`http://localhost:4000/member/delete/${id}`)
-    }
-    const handleGoBack = ()=>{
-        return navigate(-1)
-    }
-  return (
-    <div className={style.deleteContainer}>
-        <div className={style.deleteCard}>
-            <p>Do you want to delete {role} {first} {middle}</p>
-            <div className={style.buttonBox}>
-                <button className='button' onClick={handleDelete} >Yes!</button>
-                <button className='button' onClick={handleGoBack}>No!</button>
+            if (response.ok) {
+                onDeleteSuccess();  // Call the success handler to refresh the data
+            } else {
+                const errorData = await response.json();
+                console.error('Delete failed:', errorData.error);
+                alert('Failed to delete. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error occurred during deletion:', error);
+            alert('An error occurred. Please try again.');
+        }
+    };
+
+    const handleGoBack = () => {
+        setDeleteCard(false);
+    };
+
+    return (
+        <div className={style.deleteContainer}>
+            <div className={style.deleteCard}>
+                <p>Are you sure you want to delete <b>{role} {first} {middle}</b>?</p>
+                <div className={style.buttonBox}>
+                    <button className='button' onClick={handleDelete}>Yes, Delete</button>
+                    <button className='button' onClick={handleGoBack}>No, Go Back</button>
+                </div>
             </div>
         </div>
-    </div>
-  )
+    );
 }
 
-export default Delete
+export default Delete;
