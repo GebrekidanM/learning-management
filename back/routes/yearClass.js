@@ -88,6 +88,20 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
     }
 });
 
+
+router.get('/sections', async(req,res)=>{
+    try {
+        const sections = await Section.find({}).populate('gradeId')
+        if (sections){
+            res.status(200).json(sections)
+        }else{
+            res.status(404).json({error:"No section!"})
+        }
+    } catch (error) {
+        res.status(500).json({error:"Server error"})
+    }
+})
+
 // check is the year exist or not
 
 router.get('/check-academic-year', async (req, res) => {

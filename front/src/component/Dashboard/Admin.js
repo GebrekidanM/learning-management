@@ -23,6 +23,7 @@ import CreateFamily from './pages/create/CreateFamily'
 import TeacherDetail from './pages/component/TeacherDetail'
 import FamilyDetail from './pages/component/FamilyDetail'
 import FamilyEdit from './pages/component/edit/FamilyEdit'
+import AddSectionSubject from './pages/component/component/AddSectionSubject'
 
 function Admin() {
   const [searchParams] = useSearchParams()
@@ -35,6 +36,7 @@ function Admin() {
   const family = searchParams.get('family')
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
+  const teacher = searchParams.get('teacher')
 
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -63,6 +65,9 @@ function Admin() {
       case 'teacher':
         if (teacherId) {
           return <TeacherDetail teacherId={teacherId} />;
+        }
+        if(teacher){
+          return <AddSectionSubject teacherId={teacher}/>
         }
         return <Teacher />;
       default:
