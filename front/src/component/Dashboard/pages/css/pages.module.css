@@ -57,8 +57,8 @@
   text-decoration: none;
   border-radius: 0.3rem;
   padding: 0.7rem;
-  background-color: var(--button);
   color: var(--white);
+  background-color: var(--card);
   min-width: 5rem;
   font-weight: bold;
   -webkit-transition: 1s;
@@ -67,7 +67,7 @@
 
 .button:hover {
   cursor: pointer;
-  background-color: var(--card);
+  background-color: var(--button);
 }
 
 .activeButton {
@@ -175,4 +175,30 @@ td, th {
 th {
   background-color: var(--card);
   color: var(--white);
+}
+
+/************************ subject*************************/
+.subjectContainer {
+  width: 50%;
+  margin-inline: auto;
+}
+
+.subjectBox {
+  margin-top: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 1rem;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.buttonSubject {
+  width: 50%;
+  -webkit-margin-start: 0%;
+          margin-inline-start: 0%;
 }/*# sourceMappingURL=pages.module.css.map */

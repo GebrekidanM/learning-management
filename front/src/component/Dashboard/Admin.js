@@ -24,6 +24,9 @@ import TeacherDetail from './pages/component/TeacherDetail'
 import FamilyDetail from './pages/component/FamilyDetail'
 import FamilyEdit from './pages/component/edit/FamilyEdit'
 import AddSectionSubject from './pages/component/component/AddSectionSubject'
+import CreateSectionSubject from './pages/component/component/CreateSectionSubject'
+import Subject from './pages/Subject'
+
 
 function Admin() {
   const [searchParams] = useSearchParams()
@@ -37,6 +40,8 @@ function Admin() {
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
   const teacher = searchParams.get('teacher')
+  const Id = searchParams.get('Id')
+
 
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -54,6 +59,8 @@ function Admin() {
         return <Grade />;
       case 'schedule':
         return <Schedule />;
+      case 'subject':
+        return <Subject />;
       case 'parent':
         if (familyId) {
           return <FamilyDetail familyId={familyId} />;
@@ -68,6 +75,9 @@ function Admin() {
         }
         if(teacher){
           return <AddSectionSubject teacherId={teacher}/>
+        }
+        if(Id){
+          return <CreateSectionSubject teacherId={Id}/>
         }
         return <Teacher />;
       default:
@@ -88,6 +98,7 @@ function Admin() {
                 <NavLink to={'?type=parent'}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
                 <NavLink to={'?type=grade'}><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
                 <NavLink to={'?type=schedule'}><span>{<GrSchedules/>}</span><span>Schedule</span></NavLink>
+                <NavLink to={'?type=subject'}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
               </div>
           </div>
           <div className={style.dashDisplay}>

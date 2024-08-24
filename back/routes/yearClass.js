@@ -1,8 +1,10 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
-const {Grade,Year,Section} = require('../model/YearModel')
+const {Grade,Year,Section} = require('../model/YearModel');
+const { Subject } = require('../model/SubjectModel');
 
 //create year and with that year grade
+const subjects = ["አማርኛ","ሒሳብ","አካባቢ ሳይንስ","የክወና እና እይታ ጥበብ","የሥነ ጥበባት ትምህርት","ጤሰማ","ስነ ምግባር","ኅብረተሰብ","English","Spoken","Grammer","Communication","Mathematics","General Science","Social Study","PVA","HPE"]
 
 router.post('/create-year', async (req, res) => {
     const yearData = req.body;
@@ -30,7 +32,15 @@ router.post('/create-year', async (req, res) => {
                 }))
             );
 
-            await Section.insertMany(sections);
+           const section = await Section.insertMany(sections);
+           if(section) {
+            const subject = section.flatMap(sec=>(
+                subjects.map(sub=>({
+                    name:sub,
+                    sectionId:sec._id
+                }))
+            ))
+           }
 
             res.status(201).json({ message: 'Year, grades, and sections inserted successfully.' });
         } else {
@@ -76,7 +86,7 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
     const { gradeId } = req.params;
 
     try {
-        const sections = await Section.find({ gradeId: gradeId });
+        const sections = await Section.find({ gradeId });
 
         if (sections.length > 0) {
             res.status(200).json(sections);

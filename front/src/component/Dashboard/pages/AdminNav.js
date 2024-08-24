@@ -5,8 +5,7 @@ function AdminNav({username,filterType}) {
   return (
     <div className={style.adminNav}>
       <div className={style.username}>
-        {filterType? filterType : <>Welcome {username}</> }
-          
+        {filterType? <h1>{filterType}</h1> : <>Welcome {username}</> }
       </div>
     </div>
   )

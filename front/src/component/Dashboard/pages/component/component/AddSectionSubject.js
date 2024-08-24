@@ -1,6 +1,7 @@
 import React, { useEffect,useState } from 'react'
 import SectionCard from './SectionCard'
 import style from '../css/SectionTeacher.module.css'
+import {Link} from 'react-router-dom'
 
 function AddSectionSubject({teacherId}) {
     const [sectionInfos,setSectionInfos] = useState([])
@@ -11,7 +12,7 @@ function AddSectionSubject({teacherId}) {
         const fetchTeacherSections = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:4000/teacher/section/${teacherId}`);
+                const response = await fetch(`http://localhost:4000/medium/teacher/section/${teacherId}`);
                 const json = await response.json();
                 if (response.ok) {
                     setSectionInfos(json);
@@ -19,7 +20,7 @@ function AddSectionSubject({teacherId}) {
                     setError(json.error || 'Failed to fetch sections');
                 }
             } catch (error) {
-                setError('An error occurred: ' + error.message);
+                setError(error.message);
             } finally {
                 setLoading(false);
             }
@@ -33,14 +34,18 @@ function AddSectionSubject({teacherId}) {
     <>
         {loading ? <p>Loading</p>
         :
-        error ? <p className='error'>{error}</p>
-        :
-            <div>
-                <p>Hello</p>
-                {sectionInfos && sectionInfos.map(sectionInfo=>(
-                    <SectionCard style={style} sectionInfo={sectionInfo}/>
-                ))}
-            </div>
+        <div className={style.MainBox}>
+            <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>
+            {error ? <p className='error'>{error}</p>
+               :
+                <div>
+                
+                    {sectionInfos && sectionInfos.map(sectionInfo=>(
+                        <SectionCard style={style} sectionInfo={sectionInfo}/>
+                    ))}
+                </div>
+            }
+        </div>
         }
     </>
   )
