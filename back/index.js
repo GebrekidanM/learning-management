@@ -13,12 +13,26 @@ app.use(express.json())
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
-mongoose.connect('mongodb://localhost:27017/tibeb').then(()=>{
-    app.listen(4000, () => {
-        console.log(`Server is running on port $4000`);
-    });
-});
 
+
+const database = async () => {
+
+    try {
+        await mongoose.connect(
+            'mongodb+srv://nitsuhkidan:ESirak%4007%2C16@nitsuh.7d4nz.mongodb.net/tibeb?retryWrites=true&w=majority&appName=nitsuh'
+        );
+        console.log('Connected to the database successfully');
+        
+        app.listen(4000, () => {
+            console.log('Server is running on port 4000');
+        });
+    } catch (error) {
+        console.error('Failed to connect to the database:', error);
+        process.exit(1); // Exits the process with failure
+    }
+}
+
+database();
 app.use('/user',UserRouter)
 app.use('/member', MemberRouter)
 app.use('/class',ClassRouter)

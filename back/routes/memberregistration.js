@@ -238,7 +238,6 @@ router.get('/numberOfStudent',async(req,res)=>{
             {$sort:{grade:1,section:1}}
         ])
         if(NumberOfStudents){
-            console.log(NumberOfStudents)
             res.status(200).json(NumberOfStudents)
         }else{
             res.status(404).json({error:'Not found'})
