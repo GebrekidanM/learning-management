@@ -4,7 +4,7 @@ const {Grade,Year,Section} = require('../model/YearModel');
 const { Subject } = require('../model/SubjectModel');
 
 //create year and with that year grade
-const subjects = ["አማርኛ","ሒሳብ","አካባቢ ሳይንስ","የክወና እና እይታ ጥበብ","የሥነ ጥበባት ትምህርት","ጤሰማ","ስነ ምግባር","ኅብረተሰብ","English","Spoken","Grammer","Communication","Mathematics","General Science","Social Study","PVA","HPE"]
+const subjects = ["አማርኛ","ሒሳብ","አካባቢ ሳይንስ","የክወና እና እይታ ጥበብ","የሥነ ጥበባት ትምህርት","ጤሰማ","ስነ ምግባር","ኅብረተሰብ","English","Affan Oromo","Spoken","Grammer","Communication","Mathematics","General Science","Social Study","PVA","HPE"]
 
 router.post('/create-year', async (req, res) => {
     const yearData = req.body;
@@ -40,7 +40,8 @@ router.post('/create-year', async (req, res) => {
                     sectionId:sec._id
                 }))
             ))
-           }
+                await Subject.insertMany(subject)
+           };
 
             res.status(201).json({ message: 'Year, grades, and sections inserted successfully.' });
         } else {
@@ -117,9 +118,14 @@ router.get('/sections', async(req,res)=>{
 router.get('/check-academic-year', async (req, res) => {
     try {
         const yearExists = await Year.exists({});
-        res.json(yearExists._id);
+        if(yearExists){
+            res.status(200).json(yearExists._id);
+        }else{
+            res.status(404).json({ error: 'Not found' });
+        }
     } catch (error) {
-        res.status(400).json({ error: "Not found" });
+        res.status(500).json({ error: "Something is wrong" });
+
     }
 });
 

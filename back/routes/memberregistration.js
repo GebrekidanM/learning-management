@@ -192,7 +192,61 @@ router.patch('/student/update/:studentId', upload.single('studentPhoto'), async 
         res.status(500).json({ error: error.message });
     }
 });
+//for number of students in each grae and section
 
+router.get('/numberOfStudent',async(req,res)=>{
+    try {
+        const NumberOfStudents = await Student.aggregate([
+            //looking for students section
+            {
+                $lookup:{
+                    from:'sections', //name of collection
+                    localField:'sectionId',
+                    foreignField:'_id',
+                    as:'section'
+                }
+            },
+            //change an array to plane
+            {$unwind:'$section'},
+            //looking for grade inside 'section'
+            {$lookup:{
+                from:'grades',
+                localField:'section.gradeId',
+                foreignField:'_id',
+                as:'grade'
+            }},
+            //unwind grade
+            {$unwind:'$grade'},
+            {
+                $group: {
+                  _id: {
+                    grade: '$grade.grade',
+                    section: '$section.section'
+                  },
+                  studentCount: { $sum: 1 }
+                }
+            },
+            {
+                $project:{
+                    _id:0,
+                    grade:'$_id.grade',
+                    section:'$_id.section',
+                    studentCount:1
+                }
+
+            },
+            {$sort:{grade:1,section:1}}
+        ])
+        if(NumberOfStudents){
+            console.log(NumberOfStudents)
+            res.status(200).json(NumberOfStudents)
+        }else{
+            res.status(404).json({error:'Not found'})
+        }
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
 
 /**************************** For Student Family ********************************************/
 //get family with student id

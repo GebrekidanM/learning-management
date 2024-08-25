@@ -3,16 +3,21 @@ import CreateYear from './CreateYear';
 import Admin from './Admin';
 
 function DashboardIs() {
-    const [yearExists, setYearExists] = useState(""); // State to track if the academic year exists
+    const [yearExists, setYearExists] = useState(false);
+    const [loading,setLoading] = useState(true)
 
     useEffect(() => {
         const checkYear = async () => {
             try {
                 const response = await fetch('http://localhost:4000/class/check-academic-year');
                 const data = await response.json();
-                setYearExists(data);
+                if(response.ok){
+                    setYearExists(data);
+                }
             } catch (error) {
-                console.error('Failed to check academic year', error);
+                console.log(error)
+            }finally{
+                setLoading(false)
             }
         };
 
@@ -23,17 +28,11 @@ function DashboardIs() {
         setYearExists(false);
     };
 
-    if(yearExists === ""){
-         return <div>loading ...</div>
-    }
-
     return (
         <div>
-            {yearExists ? (
-                <Admin year={handleCreateYear} />
-            ) : (
-                <CreateYear />
-            )}
+            {loading ? <p className='loading'>loading . . .</p>:
+                yearExists ? <Admin year={handleCreateYear} /> : <CreateYear />
+            }
         </div>
     );
 }

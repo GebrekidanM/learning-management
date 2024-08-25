@@ -73,4 +73,8 @@
 .username {
   color: var(--white);
   text-transform: capitalize;
+}
+
+.buttonSetUp {
+  margin-top: 2rem;
 }/*# sourceMappingURL=Dashbord.module.css.map */

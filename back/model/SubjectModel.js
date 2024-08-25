@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const SubjectSchema = new mongoose.Schema({
     name:{type:String,required:true},
-    yearId:{type:mongoose.Schema.Types.ObjectId, ref:'Year',required:true}
+    sectionId:{type:mongoose.Schema.Types.ObjectId, ref:'Subject',required:true}
 })
 
 const Subject = mongoose.model('Subject',SubjectSchema)

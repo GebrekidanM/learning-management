@@ -1,4 +1,4 @@
-import React, { useContext} from 'react'
+import React, { useContext,useEffect,useState} from 'react'
 import style from "../css/Dashbord.module.css"
 import {useSearchParams, NavLink} from 'react-router-dom' 
 import Main from './pages/Main'
@@ -28,20 +28,30 @@ import CreateSectionSubject from './pages/component/component/CreateSectionSubje
 import Subject from './pages/Subject'
 
 
-function Admin() {
+function Admin({year}) {
   const [searchParams] = useSearchParams()
-  const {loggedUser} = useContext(AuthContext)  
-  const filterType = searchParams.get('type')
-  const sectionId = searchParams.get('sectionId')
-  const studentId = searchParams.get('studentId')
-  const teacherId = searchParams.get('teacherId')
-  const familyId = searchParams.get('familyId')
-  const family = searchParams.get('family')
+  const [loading,setLoading] = useState(false)
+  const {loggedUser} = useContext(AuthContext) 
+   
+
+  const { type: filterType, sectionId, studentId, teacherId, familyId, teacher, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
-  const teacher = searchParams.get('teacher')
-  const Id = searchParams.get('Id')
 
+  useEffect(()=>{
+    try {
+      setLoading(true)
+      if(loggedUser){
+      setLoading(false)
+    }
+    } catch (error) {
+      
+    }finally{
+      setLoading(false)
+    }
+    
+  },[loggedUser]);
+console.log(loggedUser)
 
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -81,36 +91,41 @@ function Admin() {
         }
         return <Teacher />;
       default:
-        return <Main/>;
+        return <Main  year={year} />;
     }}
 
   return (
-    <div className={style.dashContainer}>
-      <AdminNav filterType={filterType} username={loggedUser.username} />
+    <>
+    {loading ? <p className='loading'>Loading</p>
+    :
 
-      <div className={style.dashBox}>
-          {/** dashboard navigation */}
-          <div className={style.dashNav}>
-              <div className={style.dashNavBarContainer}>
-                <NavLink to={'?type=home'}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
-                <NavLink to={'?type=student'}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
-                <NavLink to={'?type=teacher'}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>
-                <NavLink to={'?type=parent'}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
-                <NavLink to={'?type=grade'}><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
-                <NavLink to={'?type=schedule'}><span>{<GrSchedules/>}</span><span>Schedule</span></NavLink>
-                <NavLink to={'?type=subject'}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
+       <div className={style.dashContainer}>
+          <AdminNav filterType={filterType} username={loggedUser.username} />
+          <div className={style.dashBox}>
+              {/** dashboard navigation */}
+              <div className={style.dashNav}>
+                  <div className={style.dashNavBarContainer}>
+                    <NavLink to={'?type=home'}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
+                    <NavLink to={'?type=student'}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
+                    <NavLink to={'?type=teacher'}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>
+                    <NavLink to={'?type=parent'}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
+                    <NavLink to={'?type=grade'}><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
+                    <NavLink to={'?type=schedule'}><span>{<GrSchedules/>}</span><span>Schedule</span></NavLink>
+                    <NavLink to={'?type=subject'}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
+                  </div>
               </div>
+              <div className={style.dashDisplay}>
+              {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />
+              
+              : filterType === 'student' && family?<CreateFamily studentId={family}/>
+              
+              : renderPages(filterType)
+              }
+            </div>
           </div>
-          <div className={style.dashDisplay}>
-          {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />
-           
-          : filterType === 'student' && family?<CreateFamily studentId={family}/>
-          
-          : renderPages(filterType)
-          }
         </div>
-      </div>
-    </div>
+    }
+    </>
   )
 }
 
