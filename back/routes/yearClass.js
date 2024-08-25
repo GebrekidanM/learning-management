@@ -134,7 +134,7 @@ router.get('/check-academic-year', async (req, res) => {
 
 //get all subjects
 
-router.get('/subjects',async(req,res)=>{
+router.get('/subjects/:sectionId',async(req,res)=>{
     
 })
 

@@ -39,7 +39,6 @@ function AddSectionSubject({teacherId}) {
             {error ? <p className='error'>{error}</p>
                :
                 <div>
-                
                     {sectionInfos && sectionInfos.map(sectionInfo=>(
                         <SectionCard style={style} sectionInfo={sectionInfo}/>
                     ))}

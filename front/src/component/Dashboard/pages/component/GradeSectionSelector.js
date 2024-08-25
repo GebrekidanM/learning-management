@@ -7,7 +7,8 @@ function GradeSectionSelector() {
     const [grades, setGrades] = useState([]);
     const [selectedGrade, setSelectedGrade] = useState(null);
     const [sections, setSections] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [loadingGrades, setLoadingGrades] = useState(false);
+    const [loadingSections, setLoadingSections] = useState(false);
     const [error, setError] = useState('');
     const [searchParams] = useSearchParams();
     const type = searchParams.get('type');
@@ -15,47 +16,31 @@ function GradeSectionSelector() {
 
     const navigate = useNavigate();
 
-    // Fetch all grades when the component mounts
-    useEffect(() => {
-        const fetchGrades = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch('http://localhost:4000/class/grades');
-                const json = await response.json();
-                if (response.ok) {
-                    setGrades(json);
-                } else {
-                    setError(json.error || 'Error fetching grades');
-                }
-            } catch (err) {
-                setError('Error fetching grades');
-            } finally {
-                setLoading(false);
+    const fetchData = async (url, setLoadingState, setDataState) => {
+        setLoadingState(true);
+        try {
+            const response = await fetch(url);
+            const json = await response.json();
+            if (response.ok) {
+                setDataState(json);
+                setError('');
+            } else {
+                setError(json.error || 'Error fetching data');
             }
-        };
-        fetchGrades();
+        } catch (err) {
+            setError('Error fetching data');
+        } finally {
+            setLoadingState(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData('http://localhost:4000/class/grades', setLoadingGrades, setGrades);
     }, []);
 
-    // Fetch sections when a grade is selected
     useEffect(() => {
         if (selectedGrade) {
-            const fetchSections = async () => {
-                setLoading(true);
-                try {
-                    const response = await fetch(`http://localhost:4000/class/grades/${selectedGrade._id}/sections`);
-                    const data = await response.json();
-                    if (response.ok) {
-                        setSections(data);
-                    } else {
-                        setError(data.error || 'Error fetching sections');
-                    }
-                } catch (err) {
-                    setError('Error fetching sections');
-                } finally {
-                    setLoading(false);
-                }
-            };
-            fetchSections();
+            fetchData(`http://localhost:4000/class/grades/${selectedGrade._id}/sections`, setLoadingSections, setSections);
         }
     }, [selectedGrade]);
 
@@ -70,11 +55,11 @@ function GradeSectionSelector() {
                     <div className={style.gradeSelector}>
                         <h2>Select a Grade</h2>
                         {error && <p className={'error'}>{error}</p>}
-                        {loading ? (
+                        {loadingGrades ? (
                             <p>Loading grades...</p>
                         ) : (
                             <div className={style.gradeListBox}>
-                                {grades?.map(grade => (
+                                {grades.map(grade => (
                                     <li 
                                         className={style.gradeList} 
                                         key={grade._id} 
@@ -86,10 +71,10 @@ function GradeSectionSelector() {
                         )}
                     </div>
 
-                    {selectedGrade && !loading && (
+                    {selectedGrade && !loadingGrades && (
                         <div className={style.gradeSelector} style={{ marginTop: "1rem" }}>
                             <h4>Sections for Grade {selectedGrade.grade}</h4>
-                            {loading ? (
+                            {loadingSections ? (
                                 <p>Loading sections...</p>
                             ) : (
                                 <div className={style.gradeListBox}>
@@ -110,8 +95,7 @@ function GradeSectionSelector() {
 
             {type === 'student' && sectionId && (
                 <div>
-                    hello
-                <CreateStudent sectionId={sectionId} />
+                    <CreateStudent sectionId={sectionId} />
                 </div>
             )}
         </div>

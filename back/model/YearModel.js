@@ -19,6 +19,9 @@ const SectionSchema = new mongoose.Schema({
     section: { type: String, required: true, enum: ['A', 'B', 'C', 'D', 'E', 'F'] },
     gradeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Grade', required: true }
 });
+// Create an index to ensure the combination of gradeId and section is unique
+SectionSchema.index({ gradeId: 1, section: 1 }, { unique: true });
+
 const Section = mongoose.model('Section', SectionSchema); // Model name should match the reference
 
 

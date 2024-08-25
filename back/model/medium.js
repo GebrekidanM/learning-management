@@ -1,12 +1,31 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
-const SectionTeacherSchema = new mongoose.Schema({
-    teacherId:{type:mongoose.Schema.Types.ObjectId, ref:'Teacher', required:true},
-    sections:[{
-        sectionId:{type:mongoose.Schema.Types.ObjectId, ref:'Section', required:true},
-        subjectIds:[{type:mongoose.Schema.Types.ObjectId, ref:'Subject', required:true}],
-    }],
-})
-const SectionTeacher = mongoose.model('GradeTeacher', SectionTeacherSchema)
+const TeacherSectionSubjectSchema = new mongoose.Schema({
+    teacherId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Teacher',
+        required: true
+    },
+    sectionId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Section',
+        required: true
+    },
+    subjectId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Subject',
+        required: true
+    },
+    yearId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Year',
+        required: true
+    }
+});
 
-module.exports = {SectionTeacher}
+// Ensure that each combination of teacher, section, and subject is unique
+TeacherSectionSubjectSchema.index({ teacherId: 1, sectionId: 1, subjectId: 1, yearId: 1 }, { unique: true });
+
+const TeacherSectionSubject = mongoose.model('TeacherSectionSubject', TeacherSectionSubjectSchema);
+
+module.exports = { TeacherSectionSubject };

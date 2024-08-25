@@ -1,69 +1,89 @@
-const router = require('express').Router()
-const { default: mongoose } = require('mongoose');
-const {SectionTeacher} = require('../model/medium')
+const express = require('express');
+const router = express.Router();
+const { TeacherSectionSubject } = require('../model/medium');
 
-router.get('/teacher/section/:teacherId', async (req, res) => {
-    const { teacherId } = req.params;
-
-    if(!mongoose.Types.ObjectId.isValid(teacherId)){
-        return res.status(400).json({error:"Invalid Id"})
-    }
+// Route to assign a subject to a teacher for a specific section
+router.post('/assign', async (req, res) => {
+    const { teacherId, sectionId, subjectId, yearId } = req.body;
 
     try {
-        const teacherSections = await SectionTeacher.findOne({ teacherId }).populate({
-            path: 'sections.sectionId', // Populate sectionId within sections array
-            populate: {
-                path: 'gradeId', // Further populate the gradeId within the section
-            },
-        }).populate({
-            path: 'sections.subjectIds', // Populate the subjectIds within sections array
+        const assignment = new TeacherSectionSubject({
+            teacherId,
+            sectionId,
+            subjectId,
+            yearId
         });
 
-        if (teacherSections) {
-            return res.status(200).json(teacherSections);
-        } else {
-            res.status(404).json({ error: 'No sections found for this teacher!' });
-        }
+        await assignment.save();
+        res.status(201).json({ message: 'Subject assigned to teacher successfully!', assignment });
     } catch (error) {
-        res.status(500).json({ error: 'Server error' });
+        res.status(400).json({ message: 'Error assigning subject', error: error.message });
     }
 });
 
-router.post('/add-sections-subjects/${teacherId}',async(req,res)=>{
+// Route to get all assignments for a teacher
+router.get('/teacher/:teacherId', async (req, res) => {
     const { teacherId } = req.params;
-    const { sections } = req.body;
 
     try {
-        // Find the teacher's existing record in SectionTeacher
-        let sectionTeacher = await SectionTeacher.findOne({ teacherId });
+        const assignments = await TeacherSectionSubject.find({ teacherId })
+            .populate('teacherId')
+            .populate('sectionId')
+            .populate('subjectId')
+            .populate('yearId');
 
-        if (!sectionTeacher) {
-            // If no record exists for the teacher, create a new one
-            sectionTeacher = new SectionTeacher({
-                teacherId,
-                sections: []
-            });
-        }
-
-        // Add the new sections and subjects to the teacher's record
-        sections.forEach(({ sectionId, subjectIds }) => {
-            const existingSection = sectionTeacher.sections.find(sec => sec.sectionId.toString() === sectionId);
-            if (existingSection) {
-                // If the section already exists, update its subjects
-                existingSection.subjectIds = [...new Set([...existingSection.subjectIds, ...subjectIds])];
-            } else {
-                // If the section doesn't exist, add a new section entry
-                sectionTeacher.sections.push({ sectionId, subjectIds });
-            }
-        });
-
-        // Save the updated SectionTeacher record
-        await sectionTeacher.save();
-
-        res.status(200).json({ message: 'Sections and subjects added successfully!' });
+        res.status(200).json(assignments);
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to add sections and subjects' });
+        res.status(400).json({ message: 'Error fetching assignments', error: error.message });
     }
-})
-module.exports = router
+});
+
+// Route to get all assignments for a section
+router.get('/section/:sectionId', async (req, res) => {
+    const { sectionId } = req.params;
+
+    try {
+        const assignments = await TeacherSectionSubject.find({ sectionId })
+            .populate('teacherId')
+            .populate('sectionId')
+            .populate('subjectId')
+            .populate('yearId');
+
+        res.status(200).json(assignments);
+    } catch (error) {
+        res.status(400).json({ message: 'Error fetching assignments', error: error.message });
+    }
+});
+
+// Route to update an assignment
+router.put('/update/:id', async (req, res) => {
+    const { id } = req.params;
+    const { teacherId, sectionId, subjectId, yearId } = req.body;
+
+    try {
+        const updatedAssignment = await TeacherSectionSubject.findByIdAndUpdate(id, {
+            teacherId,
+            sectionId,
+            subjectId,
+            yearId
+        }, { new: true });
+
+        res.status(200).json({ message: 'Assignment updated successfully', updatedAssignment });
+    } catch (error) {
+        res.status(400).json({ message: 'Error updating assignment', error: error.message });
+    }
+});
+
+// Route to delete an assignment
+router.delete('/delete/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        await TeacherSectionSubject.findByIdAndDelete(id);
+        res.status(200).json({ message: 'Assignment deleted successfully' });
+    } catch (error) {
+        res.status(400).json({ message: 'Error deleting assignment', error: error.message });
+    }
+});
+
+module.exports = router;
