@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import style from './css/detail.module.css'
-import {format } from "date-fns";
 import {useNavigate } from 'react-router-dom';
 import FamilyDetailInfo from './component/FamilyDetailInfo';
 
@@ -70,9 +69,6 @@ function StudentDetail({studentId}) {
       <div className={style.BoxContainer}>
         <div className={style.basicInfo}>
           <img src={`http://localhost:4000/uploads/${student.studentPhoto}`} alt='hello'/>
-          <time>
-              {student && format(new Date(student.createdAt), "MMM yyyy dd, HH:mm")}
-          </time>
           <div className={style.extraInfo}>
             <h5>{student.first} {student.middle} {student.last}</h5>
             <p>Gendar: {student.gender}</p>
@@ -99,7 +95,7 @@ function StudentDetail({studentId}) {
           ? 
           family.length > 1 ?
           family.map((fam)=>(
-              <FamilyDetailInfo style={style} student={student} fam={fam}/>
+              <FamilyDetailInfo  style={style} student={student} fam={fam}/>
             ))
             :
 

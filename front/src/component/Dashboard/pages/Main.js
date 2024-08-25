@@ -1,6 +1,7 @@
 import React from 'react'
 import style from '../../css/Dashbord.module.css'
 import NumberofStudent from './component/component/NumberofStudent'
+import StudentChart from './component/component/StudentChart'
 
 function Main({year}) {
   

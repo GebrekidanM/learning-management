@@ -1,9 +1,10 @@
 import React from 'react'
+import NumberofStudent from './component/component/NumberofStudent'
 
 function Grade() {
   return (
     <div>
-      Grade
+      <NumberofStudent />
     </div>
   )
 }
