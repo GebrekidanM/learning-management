@@ -42,10 +42,8 @@ function Admin({year}) {
     try {
       setLoading(true)
       if(loggedUser){
-      setLoading(false)
-    }
-    } catch (error) {
-      
+        setLoading(false)
+      }
     }finally{
       setLoading(false)
     }
@@ -114,14 +112,15 @@ console.log(loggedUser)
                     <NavLink to={'?type=subject'}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
                   </div>
               </div>
+
               <div className={style.dashDisplay}>
-              {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />
-              
-              : filterType === 'student' && family?<CreateFamily studentId={family}/>
-              
-              : renderPages(filterType)
-              }
-            </div>
+                {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />
+                
+                : filterType === 'student' && family?<CreateFamily studentId={family}/>
+                
+                : renderPages(filterType)
+                }
+              </div>
           </div>
         </div>
     }

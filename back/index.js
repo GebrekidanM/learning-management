@@ -33,6 +33,7 @@ const database = async () => {
 }
 
 database();
+
 app.use('/user',UserRouter)
 app.use('/member', MemberRouter)
 app.use('/class',ClassRouter)

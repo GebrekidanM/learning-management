@@ -42,6 +42,7 @@ router.get('/createOne',async (req,res)=>{
 
 router.post('/', async (req,res) => {
     const {username,password} = req.body
+
 try {
     const getUser = await Admin.findOne({username})
     if(!getUser) {

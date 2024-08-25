@@ -69,7 +69,7 @@ function GradeSectionSelector() {
                 <>
                     <div className={style.gradeSelector}>
                         <h2>Select a Grade</h2>
-                        {error && <p className={style.error}>{error}</p>}
+                        {error && <p className={'error'}>{error}</p>}
                         {loading ? (
                             <p>Loading grades...</p>
                         ) : (
