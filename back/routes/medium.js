@@ -1,17 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const { TeacherSectionSubject } = require('../model/medium');
+const { default: mongoose } = require('mongoose');
 
 // Route to assign a subject to a teacher for a specific section
 router.post('/assign', async (req, res) => {
-    const { teacherId, sectionId, subjectId, yearId } = req.body;
+    const { teacherId, sectionId, subjects } = req.body;
 
     try {
         const assignment = new TeacherSectionSubject({
             teacherId,
             sectionId,
-            subjectId,
-            yearId
+            subjects
         });
 
         await assignment.save();
@@ -29,8 +29,7 @@ router.get('/teacher/:teacherId', async (req, res) => {
         const assignments = await TeacherSectionSubject.find({ teacherId })
             .populate('teacherId')
             .populate('sectionId')
-            .populate('subjectId')
-            .populate('yearId');
+            .populate('subjects')
 
         res.status(200).json(assignments);
     } catch (error) {
@@ -47,13 +46,62 @@ router.get('/section/:sectionId', async (req, res) => {
             .populate('teacherId')
             .populate('sectionId')
             .populate('subjectId')
-            .populate('yearId');
 
         res.status(200).json(assignments);
     } catch (error) {
         res.status(400).json({ message: 'Error fetching assignments', error: error.message });
     }
 });
+
+//Route to get only one's teacher section
+router.get('/teacher/section/:teacherId',async(req,res)=>{
+    const {teacherId} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(teacherId)){
+        return res.status(400).json({error:"Not valid"})
+    }
+
+    try {
+        const sectionsWithSubjectsAndGrades = await TeacherSectionSubject.aggregate([
+            { $match: { teacherId: new mongoose.Types.ObjectId(teacherId) } },
+            {
+                $lookup: {
+                    from: 'sections', // Collection name for sections
+                    localField: 'sectionId',
+                    foreignField: '_id',
+                    as: 'sectionDetails'
+                }
+            },
+            { $unwind: '$sectionDetails' },
+            {
+                $lookup: {
+                    from: 'grades', // Collection name for grades
+                    localField: 'sectionDetails.gradeId',
+                    foreignField: '_id',
+                    as: 'gradeDetails'
+                }
+            },
+            { $unwind: '$gradeDetails' },
+            {
+                $lookup: {
+                    from: 'subjects', // Collection name for subjects
+                    localField: 'subjects',
+                    foreignField: '_id',
+                    as: 'subjectDetails'
+                }
+            }
+        ]);
+
+        if (sectionsWithSubjectsAndGrades.length > 0) {
+            res.status(200).json(sectionsWithSubjectsAndGrades);
+        } else {
+            res.status(404).json({ error: "No sections found for this section ID" });
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({ error: error.message });
+    }
+})
 
 // Route to update an assignment
 router.put('/update/:id', async (req, res) => {

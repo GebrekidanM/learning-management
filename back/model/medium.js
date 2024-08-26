@@ -11,16 +11,11 @@ const TeacherSectionSubjectSchema = new mongoose.Schema({
         ref: 'Section',
         required: true
     },
-    subjectId: {
+    subjects: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject',
         required: true
-    },
-    yearId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Year',
-        required: true
-    }
+    }]
 });
 
 // Ensure that each combination of teacher, section, and subject is unique

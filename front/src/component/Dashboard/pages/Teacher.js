@@ -3,7 +3,6 @@ import { Link, useSearchParams } from 'react-router-dom';
 import style from './css/pages.module.css';
 import CreateTeacher from './create/CreateTeacher';
 import Delete from './component/delete/Delete';
-import AssignSubjectForm from './component/component/AssignSubjectForm';
 
 function Teacher() {
   const [yearId, setYearId] = useState('');
@@ -16,7 +15,7 @@ function Teacher() {
   const [deleteCard, setDeleteCard] = useState(false);
   const [selectedTeacherId, setSelectedTeacherId] = useState('');
   const [refreshTrigger, setRefreshTrigger] = useState(false); // Add a state for refresh trigger
-  const [showAssign,setShowAssign] = useState(false)
+  
   // Generate new search params for the URL
   function generateNewSearchParams(key, value) {
     const type = new URLSearchParams(searchParams);
@@ -78,10 +77,6 @@ function Teacher() {
     setRefreshTrigger((prev) => !prev); // Toggle refresh trigger to refetch teachers
   };
 
-  const handleAsign = ()=>{
-    setShowAssign(!showAssign)
-  }
-
   return (
     <div className={style.pageContainer}>
       <div className={style.pagehead}>
@@ -127,8 +122,6 @@ function Teacher() {
                   ))}
               </tbody>
             </table>
-            <button className='button' onClick={handleAsign}>Add subject and section for a teacher</button>
-            {showAssign &&<AssignSubjectForm/>}
           </div>
         )}
         {deleteCard && (

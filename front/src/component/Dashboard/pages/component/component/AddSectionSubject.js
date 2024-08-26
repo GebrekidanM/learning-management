@@ -30,6 +30,8 @@ function AddSectionSubject({teacherId}) {
             fetchTeacherSections();
         }
     }, [teacherId]);
+
+    
   return (
     <>
         {loading ? <p>Loading</p>
@@ -38,9 +40,9 @@ function AddSectionSubject({teacherId}) {
             <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>
             {error ? <p className='error'>{error}</p>
                :
-                <div>
+                <div className={style.sectionCardContainer}>
                     {sectionInfos && sectionInfos.map(sectionInfo=>(
-                        <SectionCard style={style} sectionInfo={sectionInfo}/>
+                        <SectionCard key={sectionInfo._id} sectionInfo={sectionInfo}/>
                     ))}
                 </div>
             }

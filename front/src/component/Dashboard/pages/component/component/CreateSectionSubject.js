@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import { Dropdown } from 'primereact/dropdown';
+import { MultiSelect } from 'primereact/multiselect';
+import { Button } from 'primereact/button';
 
 function CreateSectionSubject({ teacherId }) {
     const [grades, setGrades] = useState([]);
     const [sections, setSections] = useState([]);
     const [subjects, setSubjects] = useState([]);
     const [selectedGrade, setSelectedGrade] = useState(null);
-    const [selectedSections, setSelectedSections] = useState([]);
+    const [selectedSection, setSelectedSection] = useState(null);
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
@@ -30,7 +33,6 @@ function CreateSectionSubject({ teacherId }) {
         fetchGrades();
     }, []);
 
-    // Fetch sections when a grade is selected
     useEffect(() => {
         if (selectedGrade) {
             const fetchSections = async () => {
@@ -53,58 +55,51 @@ function CreateSectionSubject({ teacherId }) {
         }
     }, [selectedGrade]);
 
-    // Fetch subjects
     useEffect(() => {
-        const fetchSubjects = async () => {
-            setLoading(true);
-            try {
-                const response = await fetch('http://localhost:4000/class/subjects');
-                const data = await response.json();
-                if (response.ok) {
-                    setSubjects(data);
-                } else {
-                    setError(data.error || 'Error fetching subjects');
+        if (selectedSection) {
+            const fetchSubjects = async () => {
+                setLoading(true);
+                try {
+                    const response = await fetch(`http://localhost:4000/class/subjects/${selectedSection._id}`);
+                    const data = await response.json();
+                    if (response.ok) {
+                        setSubjects(data);
+                    } else {
+                        setError(data.error || 'Error fetching subjects');
+                    }
+                } catch (err) {
+                    setError('Error fetching subjects');
+                } finally {
+                    setLoading(false);
                 }
-            } catch (err) {
-                setError('Error fetching subjects');
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchSubjects();
-    }, []);
+            };
+            fetchSubjects();
+        }
+    }, [selectedSection]);
 
     const handleGradeChange = (e) => {
-        const grade = grades.find(g => g._id === e.target.value);
-        setSelectedGrade(grade);
-        setSelectedSections([]);
+        setSelectedGrade(e.value);
+        setSelectedSection(null);
         setSelectedSubjects([]);
     };
 
     const handleSectionChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
-        setSelectedSections(selectedOptions);
+        setSelectedSection(e.value);
     };
 
     const handleSubjectChange = (e) => {
-        const selectedOptions = Array.from(e.target.selectedOptions).map(option => option.value);
-        setSelectedSubjects(selectedOptions);
+        setSelectedSubjects(e.value);
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await fetch(`http://localhost:4000/medium/add-sections-subjects/${teacherId}`, {
+            const response = await fetch(`http://localhost:4000/medium/assign`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    sections: selectedSections.map(sectionId => ({
-                        sectionId,
-                        subjectIds: selectedSubjects,
-                    })),
-                }),
+                body: JSON.stringify({ teacherId, sectionId: selectedSection, subjects: selectedSubjects })
             });
 
             const data = await response.json();
@@ -127,42 +122,24 @@ function CreateSectionSubject({ teacherId }) {
             <form onSubmit={handleSubmit}>
                 <div>
                     <label>Select Grade:</label>
-                    <select onChange={handleGradeChange}>
-                        <option value="">Select Grade</option>
-                        {grades.map(grade => (
-                            <option key={grade._id} value={grade._id}>
-                                Grade {grade.grade}
-                            </option>
-                        ))}
-                    </select>
+                    <Dropdown value={selectedGrade} options={grades} onChange={handleGradeChange} optionLabel="grade" placeholder="Select a Grade" className="w-full md:w-20rem" />
                 </div>
 
                 {selectedGrade && (
                     <div>
-                        <label>Select Sections:</label>
-                        <select onChange={handleSectionChange}>
-                            {sections.map(section => (
-                                <option key={section._id} value={section._id}>
-                                    {section.gradeId.grade} {section.section}
-                                </option>
-                            ))}
-                        </select>
+                        <label>Select Section:</label>
+                        <Dropdown value={selectedSection} options={sections} onChange={handleSectionChange} optionLabel="section" placeholder="Select a Section" className="w-full md:w-20rem" />
                     </div>
                 )}
 
-                <div>
-                    <label>Select Subjects:</label>
-                    <select multiple onChange={handleSubjectChange}>
-                        {subjects.map(subject => (
-                            <option key={subject._id} value={subject._id}>
-                                {subject.name}
-                            </option>
-                        ))}
-                    </select>
-                    
-                </div>
+                {selectedSection && (
+                    <div>
+                        <label>Select Subjects:</label>
+                        <MultiSelect value={selectedSubjects} options={subjects} onChange={handleSubjectChange} optionLabel="name" placeholder="Select Subjects" className="w-full md:w-20rem" display="chip" />
+                    </div>
+                )}
 
-                <button type="submit">Add Sections and Subjects</button>
+                <Button type="submit" label="Add Sections and Subjects" className="mt-4" />
             </form>
         </div>
     );

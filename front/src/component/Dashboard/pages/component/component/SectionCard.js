@@ -1,10 +1,12 @@
 import React from 'react'
-
-function SectionCard({sectionInfo,style}) {
+import style from '../css/SectionCard.module.css'
+function SectionCard({sectionInfo,key}) {
   return (
-    <div key={sectionInfo._id} style={style.sectionCardBox}>
-      <h1>{sectionInfo.sections.sectionId.gradeId.grade}{sectionInfo.sections.sectionId.section}</h1>
-      <p>{sectionInfo.subjectIds.map(subject=>subject.name).join(',')}</p>
+    <div key={key} className={style.sectionCard}>
+
+      <h1>{sectionInfo.gradeDetails.grade}{sectionInfo.sectionDetails.section}</h1>
+      <p>{sectionInfo.subjectDetails.map(subject=>subject.name).join(',')}</p>
+
     </div>
   )
 }
