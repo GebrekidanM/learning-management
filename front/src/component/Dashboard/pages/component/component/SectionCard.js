@@ -1,12 +1,10 @@
 import React from 'react'
 import style from '../css/SectionCard.module.css'
-function SectionCard({sectionInfo,key}) {
+function SectionCard({sectionInfo}) {
   return (
-    <div key={key} className={style.sectionCard}>
-
+    <div  className={style.sectionCard}>
       <h1>{sectionInfo.gradeDetails.grade}{sectionInfo.sectionDetails.section}</h1>
-      <p>{sectionInfo.subjectDetails.map(subject=>subject.name).join(',')}</p>
-
+      <p>{sectionInfo.subjectDetails.map(subject=>subject.name).join(' , ')}</p>
     </div>
   )
 }
