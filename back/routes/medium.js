@@ -4,20 +4,21 @@ const { TeacherSectionSubject } = require('../model/medium');
 const { default: mongoose } = require('mongoose');
 
 // Route to assign a subject to a teacher for a specific section
+// Route to assign a subject to a teacher for a specific section
 router.post('/assign', async (req, res) => {
     const { teacherId, sectionId, subjects } = req.body;
 
     try {
-        const assignment = new TeacherSectionSubject({
-            teacherId,
-            sectionId,
-            subjects
-        });
+        // Use findOneAndUpdate to either update the existing document or create a new one if it doesn't exist
+        const assignment = await TeacherSectionSubject.findOneAndUpdate(
+            { teacherId, sectionId },
+            { $set: { subjects } },
+            { new: true, upsert: true, setDefaultsOnInsert: true }
+        );
 
-        await assignment.save();
-        res.status(201).json({ message: 'Subject assigned to teacher successfully!', assignment });
+        res.status(201).json(assignment);
     } catch (error) {
-        res.status(400).json({ message: 'Error assigning subject', error: error.message });
+        res.status(400).json({ error: error.message });
     }
 });
 
