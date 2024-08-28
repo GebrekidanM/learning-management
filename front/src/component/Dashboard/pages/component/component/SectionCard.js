@@ -20,11 +20,10 @@ function SectionCard({sectionInfo,teacherId}) {
       <div className={style.delete} onClick={()=>handleDeleteCard(sectionInfo._id)}>
           {<MdDeleteForever/>}
       </div>
-      <DeleteSection 
+      {showDeleteCard && <DeleteSection
         id={selectedSectionInfoId}
         
-
-      />
+      />}
     </div>
   )
 }

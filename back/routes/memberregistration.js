@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const upload = require('../upload') 
 const {Student, Family} = require('../model/userModel')
 const {Section,Grade, Year} = require('../model/YearModel')
-const {Teacher} = require('../model/TeacherIssues/Teacher')
+const {Teacher} = require('../model/Teacher')
 
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {

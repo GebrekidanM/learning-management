@@ -5,7 +5,8 @@ const UserRouter = require('./routes/user')
 const MemberRouter = require('./routes/memberregistration')
 const ClassRouter = require('./routes/yearClass')
 const TeacherSectionSubject = require('./routes/medium')
-const TeacherRouter = require('./routes/TeachersIssue/Teacher')
+const TeacherRouter = require('./routes/Teacher')
+const ScoreRoute = require('./routes/ScoreRoute')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 
@@ -47,5 +48,5 @@ app.use('/member', MemberRouter)
 app.use('/class',ClassRouter)
 app.use('/medium',TeacherSectionSubject)
 app.use('/teacher',TeacherRouter)
-
+app.use('/score',ScoreRoute)
 
