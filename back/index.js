@@ -4,7 +4,8 @@ const cors = require('cors')
 const UserRouter = require('./routes/user')
 const MemberRouter = require('./routes/memberregistration')
 const ClassRouter = require('./routes/yearClass')
-const ClassTeacher = require('./routes/medium')
+const TeacherSectionSubject = require('./routes/medium')
+const TeacherRouter = require('./routes/TeachersIssue/Teacher')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 
@@ -34,11 +35,17 @@ const database = async () => {
 
 database();
 
+/*
+mongoose.connect('mongodb://localhost:27017/tibeb',()=>{
+    app.listen(4000, () => {
+        console.log('Server is running on port 4000');
+    });
+})
+*/
 app.use('/user',UserRouter)
 app.use('/member', MemberRouter)
 app.use('/class',ClassRouter)
-app.use('/medium',ClassTeacher)
-
-
+app.use('/medium',TeacherSectionSubject)
+app.use('/teacher',TeacherRouter)
 
 

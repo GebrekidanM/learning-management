@@ -23,7 +23,6 @@ import CreateFamily from './pages/create/CreateFamily'
 import TeacherDetail from './pages/component/TeacherDetail'
 import FamilyDetail from './pages/component/FamilyDetail'
 import FamilyEdit from './pages/component/edit/FamilyEdit'
-import AddSectionSubject from './pages/component/component/AddSectionSubject'
 import CreateSectionSubject from './pages/component/component/CreateSectionSubject'
 import Subject from './pages/Subject'
 
@@ -31,10 +30,9 @@ import Subject from './pages/Subject'
 function Admin({year}) {
   const [searchParams] = useSearchParams()
   const [loading,setLoading] = useState(false)
-  const {loggedUser} = useContext(AuthContext) 
-   
+  const {loggedUser} = useContext(AuthContext)
 
-  const { type: filterType, sectionId, studentId, teacherId, familyId, teacher, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, teacherId, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -49,7 +47,6 @@ function Admin({year}) {
     }
     
   },[loggedUser]);
-console.log(loggedUser)
 
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -80,9 +77,6 @@ console.log(loggedUser)
       case 'teacher':
         if (teacherId) {
           return <TeacherDetail teacherId={teacherId} />;
-        }
-        if(teacher){
-          return <AddSectionSubject teacherId={teacher}/>
         }
         if(Id){
           return <CreateSectionSubject teacherId={Id}/>

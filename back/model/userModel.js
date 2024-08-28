@@ -9,40 +9,6 @@ const AdminSchema = new mongoose.Schema ({
 
 const Admin = mongoose.model("User", AdminSchema)
 
-
-const TeacherSchema = new mongoose.Schema({
-    first: { type: String, required: true },
-    middle: { type: String, required: true },
-    last: { type: String, required: true },
-    gender: { type: String, required: true },
-    age: { type: Number, required: true },
-    region: { type: String, required: true },
-    city: { type: String, required: true },
-    subCity: { type: String, required: true },
-    wereda: { type: String, required: true },
-    houseNo: { type: Number, required: true },
-    teacherPhoto: { type: String, required: true },
-    experience: { type: Number, required: true },
-    email: {
-        type: String,
-        required: true,
-        unique: true, // Ensure email is unique
-        match: [/.+@.+\..+/, 'Please fill a valid email address'] // Email validation
-    },
-    phoneNo: {
-        type: String,
-        required: true,
-        match: [/^\d{10}$/, 'Please enter a valid phone number'] // Basic phone number validation
-    },
-    yearId: { type: mongoose.Schema.Types.ObjectId, ref: 'Year', required: true }
-});
-
-// Indexes
-TeacherSchema.index({ email: 1 });
-TeacherSchema.index({ phoneNo: 1 });
-
-const Teacher = mongoose.model('Teacher', TeacherSchema);
-
 const StudentSchema = new mongoose.Schema({
     first:{type:String,required:true},
     middle:{type:String,required:true},
@@ -82,4 +48,4 @@ const FamilySchema = new mongoose.Schema({
 })
 const Family = mongoose.model('Family',FamilySchema)
 
-module.exports = {Admin,Student,Family,Teacher}
+module.exports = {Admin,Student,Family}

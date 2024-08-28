@@ -54,6 +54,7 @@ a{
   color: var(--button);
   cursor: pointer;
 }
+
 .view a{
   font-weight: bold;
   color: green;

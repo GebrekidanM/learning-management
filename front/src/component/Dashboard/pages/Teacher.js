@@ -94,7 +94,7 @@ function Teacher() {
         ) : (
           <div>
             {loading && <p>Loading...</p>}
-            {error && <p className='error'>{error}</p>}
+            
             <table>
               <thead>
                 <tr>
@@ -105,6 +105,7 @@ function Teacher() {
                 </tr>
               </thead>
               <tbody>
+                {error && <p className='error'>{error}</p>}
                 {teachers.length > 0 &&
                   teachers.map((teacher, index) => (
                     <tr key={teacher._id}>

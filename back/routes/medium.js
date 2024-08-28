@@ -4,7 +4,6 @@ const { TeacherSectionSubject } = require('../model/medium');
 const { default: mongoose } = require('mongoose');
 
 // Route to assign a subject to a teacher for a specific section
-// Route to assign a subject to a teacher for a specific section
 router.post('/assign', async (req, res) => {
     const { teacherId, sectionId, subjects } = req.body;
 

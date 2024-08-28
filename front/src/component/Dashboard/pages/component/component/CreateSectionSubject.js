@@ -2,17 +2,21 @@ import React, { useState, useEffect } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
+import { useNavigate } from 'react-router-dom';
 
 function CreateSectionSubject({ teacherId }) {
     const [grades, setGrades] = useState([]);
     const [sections, setSections] = useState([]);
     const [subjects, setSubjects] = useState([]);
+    const [teacher,setTeacher] = useState('')
     const [selectedGrade, setSelectedGrade] = useState(null);
     const [selectedSection, setSelectedSection] = useState(null);
     const [selectedSubjects, setSelectedSubjects] = useState([]);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const navigate = useNavigate()
 
+    //fetching grades
     useEffect(() => {
         const fetchGrades = async () => {
             setLoading(true);
@@ -33,6 +37,7 @@ function CreateSectionSubject({ teacherId }) {
         fetchGrades();
     }, []);
 
+    //looking for sections by using selectedGrade
     useEffect(() => {
         if (selectedGrade) {
             const fetchSections = async () => {
@@ -55,6 +60,7 @@ function CreateSectionSubject({ teacherId }) {
         }
     }, [selectedGrade]);
 
+    //looking for subjects by using 'selectedSection'
     useEffect(() => {
         if (selectedSection) {
             const fetchSubjects = async () => {
@@ -76,6 +82,17 @@ function CreateSectionSubject({ teacherId }) {
             fetchSubjects();
         }
     }, [selectedSection]);
+
+    useEffect(()=>{
+        const fetchTeacher = async ()=>{
+            const response = await fetch(`http://localhost:4000/member/teacher/${teacherId}`)
+            const json = await response.json()
+            if(response.ok){
+                setTeacher(json)
+            }
+        }
+        fetchTeacher()
+    },[teacherId])
 
     const handleGradeChange = (e) => {
         setSelectedGrade(e.value);
@@ -104,7 +121,7 @@ function CreateSectionSubject({ teacherId }) {
 
             const data = await response.json();
             if (response.ok) {
-                alert('Sections and subjects added successfully!');
+                navigate(`/main?type=teacher&teacherId=${teacherId}`)
             } else {
                 setError(data.error || 'Error adding sections and subjects');
             }
@@ -116,31 +133,37 @@ function CreateSectionSubject({ teacherId }) {
     return (
         <div>
             <h2>Add Sections and Subjects to Teacher</h2>
-            {error && <p className="error">{error}</p>}
-            {loading && <p>Loading...</p>}
+            {loading ? <p>Loading...</p> 
+            
+            :
 
             <form onSubmit={handleSubmit}>
-                <div>
+                {error && <p className="error">{error}</p>}
+                {teacher && <div className='mb-3'><b>Teacher Name:</b> <u>{teacher.first} {teacher.middle} {teacher.last}</u></div>}
+                <div className='card flex flex-column gap-3 mb-3'>
                     <label>Select Grade:</label>
                     <Dropdown value={selectedGrade} options={grades} onChange={handleGradeChange} optionLabel="grade" placeholder="Select a Grade" className="w-full md:w-20rem" />
                 </div>
 
+            {/** select section from sections list */}
                 {selectedGrade && (
-                    <div>
+                    <div className='card flex flex-column  mb-3'>
                         <label>Select Section:</label>
-                        <Dropdown value={selectedSection} options={sections} onChange={handleSectionChange} optionLabel="section" placeholder="Select a Section" className="w-full md:w-20rem" />
+                        <Dropdown value={selectedSection} options={sections} onChange={handleSectionChange} optionLabel="section" placeholder="Select a Section" className="w-full md:w-20rem mt-4" />
                     </div>
                 )}
-
+        
+            {/** select subjects from subjects list */}
                 {selectedSection && (
-                    <div>
+                    <div className='card flex flex-column gap-1 mb-3'>
                         <label>Select Subjects:</label>
-                        <MultiSelect value={selectedSubjects} options={subjects} onChange={handleSubjectChange} optionLabel="name" placeholder="Select Subjects" className="w-full md:w-20rem" display="chip" />
+                        <MultiSelect value={selectedSubjects} options={subjects} onChange={handleSubjectChange} optionLabel="name" placeholder="Select Subjects" className="w-full md:w-20rem mt-4" display="chip" />
                     </div>
                 )}
 
-                <Button type="submit" label="Add Sections and Subjects" className="mt-4" />
+                <Button type="submit" label="Add Sections and Subjects" className={`button`} />
             </form>
+        }
         </div>
     );
 }

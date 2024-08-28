@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import style from './css/detail.module.css'
-import { useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
+import SectionCard from './component/SectionCard'
+import css from './css/SectionCard.module.css'
 
 function TeacherDetail({teacherId}) {
+  const [sectionInfos,setSectionInfos] = useState([])
+  const [errorInfo,setErrorInfo] = useState('')
+    const [loadingInfo,setLoadingInfo] = useState(false)
     const [error,setError] = useState('')
     const [loading,setLoading] = useState(false)
     const [teacher,setTeacher] = useState("")
-    const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchTeacher = async()=>{
@@ -28,12 +32,28 @@ function TeacherDetail({teacherId}) {
         fetchTeacher() 
     },[teacherId])
 
+   useEffect(() => {
+        const fetchTeacherSections = async () => {
+            setLoadingInfo(true);
+            try {
+                const response = await fetch(`http://localhost:4000/medium/teacher/section/${teacherId}`);
+                const json = await response.json();
+                if (response.ok) {
+                    setSectionInfos(json);
+                } else {
+                    setErrorInfo(json.error || 'Failed to fetch sections');
+                }
+            } catch (error) {
+                setErrorInfo(error.message);
+            } finally {
+                setLoadingInfo(false);
+            }
+        };
 
-    const handleAddClass = ()=>{
-        navigate(`/main?type=teacher&teacher=${teacherId}`)
-    }
-
-
+        if (teacherId) {
+            fetchTeacherSections();
+        }
+    }, [teacherId]);
     
   return (
     <div>
@@ -59,10 +79,23 @@ function TeacherDetail({teacherId}) {
               <p><i><b>Wereda:</b></i> {teacher.wereda}</p>
               <p><i><b>House No:</b></i> {teacher.houseNo}</p>
           </div>
-        </div>
-        <div className={style.addFamily}>
-          <button className='button' onClick={handleAddClass}>Add Class</button>
-        </div>
+        </div>   
+        <div>
+          {loadingInfo ? <p>Loading</p>
+          :
+          <div className={css.MainBox}>
+              <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>
+              {errorInfo ? <p className='error'>{errorInfo}</p>
+                :
+                  <div className={css.sectionCardContainer}>
+                      {sectionInfos && sectionInfos.map(sectionInfo=>(
+                          <SectionCard key={sectionInfo._id} teacherId={teacherId}  sectionInfo={sectionInfo}/>
+                      ))}
+                  </div>
+              }
+          </div>
+          }
+        </div>     
       </div>
       }
     </div>

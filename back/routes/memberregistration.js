@@ -1,9 +1,9 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
 const upload = require('../upload') 
-const {Student, Family, Teacher} = require('../model/userModel')
+const {Student, Family} = require('../model/userModel')
 const {Section,Grade, Year} = require('../model/YearModel')
-const { populate } = require('dotenv')
+const {Teacher} = require('../model/TeacherIssues/Teacher')
 
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {

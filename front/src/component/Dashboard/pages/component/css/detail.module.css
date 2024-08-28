@@ -1,4 +1,5 @@
 .BoxContainer {
+  margin-top: 2.5rem;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr;
@@ -10,7 +11,6 @@
   grid-row-start: 1;
   grid-row-end: 3;
   text-align: center;
-  margin-top: 2rem;
   border-radius: 0.3rem;
   background-color: rgb(212, 212, 212);
   -webkit-box-shadow: 3px 4px 3px rgba(0, 0, 0, 0.432);
@@ -29,7 +29,6 @@
   grid-row-start: 1;
   grid-row-end: 2;
   text-align: center;
-  margin-top: 2rem;
   border-radius: 0.3rem;
   background-color: rgb(212, 212, 212);
   -webkit-box-shadow: 3px 4px 3px rgba(0, 0, 0, 0.432);
