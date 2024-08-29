@@ -33,7 +33,7 @@ function Admin({year}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
 
-  const { type: filterType, sectionId, studentId, teacherId, detail, familyId, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, teacherId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -82,8 +82,8 @@ function Admin({year}) {
         if(Id){
           return <CreateSectionSubject teacherId={Id}/>
         }
-        if(detail){
-          <SectionCardDetail idForDetail={detail}/>
+        if(idForDetail){
+          return <SectionCardDetail idForDetail={idForDetail}/>
         }
         return <Teacher />;
       default:

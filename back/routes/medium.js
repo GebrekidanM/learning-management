@@ -102,6 +102,37 @@ router.get('/teacher/section/:teacherId',async(req,res)=>{
         return res.status(500).json({ error: error.message });
     }
 })
+//get Assign sections and subjects for a teacher by using that id
+router.get('/teacher/section/one/:idForDetail', async(req,res)=>{
+    const {idForDetail} = req.params
+
+    if(!mongoose.Types.ObjectId.isValid(idForDetail)){
+        return res.status(400).json({error:"Not valid"})
+    }
+    try {
+        const getTeacherSection = await TeacherSectionSubject.findById(idForDetail)
+        .populate('teacherId',['first', 'last', 'middle','gender'])
+        .populate({
+            path:'sectionId', 
+            populate:{
+                path:'gradeId',
+                select:'grade'
+            }
+        })
+        .populate('subjects')
+        
+
+        if(getTeacherSection){
+            res.status(200).json(getTeacherSection)
+        }else{
+            res.status(404).json({error:"There is Secction with this id"})
+        }
+        
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+    
+})
 
 // Route to update an assignment
 router.put('/update/:id', async (req, res) => {
