@@ -25,6 +25,7 @@ import FamilyDetail from './pages/component/FamilyDetail'
 import FamilyEdit from './pages/component/edit/FamilyEdit'
 import CreateSectionSubject from './pages/component/component/CreateSectionSubject'
 import Subject from './pages/Subject'
+import SectionCardDetail from './pages/component/component/SectionCardDetail'
 
 
 function Admin({year}) {
@@ -32,7 +33,7 @@ function Admin({year}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
 
-  const { type: filterType, sectionId, studentId, teacherId, familyId, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, teacherId, detail, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -80,6 +81,9 @@ function Admin({year}) {
         }
         if(Id){
           return <CreateSectionSubject teacherId={Id}/>
+        }
+        if(detail){
+          <SectionCardDetail idForDetail={detail}/>
         }
         return <Teacher />;
       default:
