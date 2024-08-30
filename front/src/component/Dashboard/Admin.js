@@ -27,6 +27,7 @@ import CreateSectionSubject from './pages/Grade/CreateSectionSubject'
 import Subject from './pages/Subject'
 import SectionCardDetail from './pages/Grade/SectionCardDetail'
 import MarkList from '../UI/MarkList'
+import CreateScore from './pages/Grade/CreateScore'
 
 
 function Admin({year}) {
@@ -34,21 +35,16 @@ function Admin({year}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
 
-  const { type: filterType, sectionId, studentId, subjectId,teacherId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
-  useEffect(()=>{
-    try {
-      setLoading(true)
-      if(loggedUser){
-        setLoading(false)
-      }
-    }finally{
-      setLoading(false)
+  useEffect(() => {
+    setLoading(true);
+    if (loggedUser) {
+      setLoading(false);
     }
-    
-  },[loggedUser]);
+  }, [loggedUser]);
 
   const renderPages = (filterType) => {
     switch (filterType) {
@@ -88,6 +84,9 @@ function Admin({year}) {
         }
         if(idForDetail){
           return <SectionCardDetail idForDetail={idForDetail}/>
+        }
+        if(addscoreSubjectId){
+          return <CreateScore subjectId={addscoreSubjectId}/>
         }
         return <Teacher />;
       default:

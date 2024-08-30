@@ -31,6 +31,10 @@ function SectionCardDetail({idForDetail}) {
     const handleMarklist = (subjectId)=>{
         navigate(`/main?type=teacher&subjectId=${subjectId}`)
     }
+    const handleAddScore = (subjectId)=>{
+        navigate(`/main?type=teacher&addscoreSubjectId=${subjectId}`)
+    }
+
 
   return loadingInfo ? <p className='loading'>Loading . . .</p> : (
     <div className='mt-3 w-full'>
@@ -42,16 +46,14 @@ function SectionCardDetail({idForDetail}) {
                         <span className='font-semibold text-cyan-900'> {sectionInfo.teacherId.gender === 'Male' ? 'Mr' : 'Mrs'} {sectionInfo.teacherId.first} {sectionInfo.teacherId.middle} {sectionInfo.teacherId.last}</span>
                     </p>
                     <div className='w-full'>
-                        <ul className='w-full '>
                             {sectionInfo.subjects.map( subject =>(
-                                <li key={subject._id}  className='m-3 flex flex-column font-bold cursor-pointer w-full '>
+                                <div key={subject._id}  className='m-3 flex flex-column w-full '>
                                     <span className=' flex justify-content-between align-items-center border-1 p-2 border-solid border-cyan-900 border-round-sm w-full ' onClick={()=>handleMarklist(subject._id)}>
-                                        {subject.name}
-                                        <button className='button '>Add score</button>
+                                        <h3 className='cursor-pointer'>{subject.name}</h3>
+                                        <button className='button' onClick={()=>handleAddScore(subject._id)}>Add score</button>
                                     </span>
-                                </li>
+                                </div>
                             ))}
-                        </ul>
                     </div>
                 </>}
                 

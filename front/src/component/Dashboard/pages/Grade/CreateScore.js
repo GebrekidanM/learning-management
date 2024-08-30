@@ -2,11 +2,12 @@ import React,{useState} from 'react'
 import { InputText } from "primereact/inputtext";
 import { FloatLabel } from "primereact/floatlabel";
 
-function CreateScore() {
+function CreateScore({subjectId}) {
     const [value,setValue] = useState(null)
     const [outOf,setOutOf] = useState(null)
     const [description,setDescription] = useState('')
 
+    //subjectId, studentId, teacherId 
   return (
     <div className='flex align-items-center justify-content-between w-full'>
       <form>
