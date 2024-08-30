@@ -2,12 +2,12 @@ import React, { useContext,useEffect,useState} from 'react'
 import style from "../css/Dashbord.module.css"
 import {useSearchParams, NavLink} from 'react-router-dom' 
 import Main from './pages/Main'
-import Student from './pages/Student'
+import Student from './pages/Student/Student'
 import Schedule from './pages/Schedule'
 import Family from './pages/Family/Family'
-import Teacher from './pages/Teacher'
+import Teacher from './pages/Teacher/Teacher'
 import Grade from './pages/Grade'
-import StudentEdit from './pages/component/edit/StudentEdit'
+import StudentEdit from './pages/Student/StudentEdit'
 
 //icons
 import { MdDashboard,MdFamilyRestroom  } from "react-icons/md";
@@ -17,15 +17,15 @@ import { PiStudent } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 import AdminNav from './pages/AdminNav'
 import { AuthContext } from '../../context/AuthContext'
-import CreateStudent from './pages/create/CreateStudent'
-import StudentDetail from './pages/component/StudentDetail'
-import CreateFamily from './pages/create/CreateFamily'
-import TeacherDetail from './pages/component/TeacherDetail'
-import FamilyDetail from './pages/component/FamilyDetail'
-import FamilyEdit from './pages/component/edit/FamilyEdit'
-import CreateSectionSubject from './pages/component/component/CreateSectionSubject'
+import CreateStudent from './pages/Student/CreateStudent'
+import StudentDetail from './pages/Student/StudentDetail'
+import CreateFamily from './pages/Family/CreateFamily'
+import TeacherDetail from './pages/Teacher/TeacherDetail'
+import FamilyDetail from './pages/Family/FamilyDetail'
+import FamilyEdit from './pages/Family/FamilyEdit'
+import CreateSectionSubject from './pages/Grade/CreateSectionSubject'
 import Subject from './pages/Subject'
-import SectionCardDetail from './pages/component/component/SectionCardDetail'
+import SectionCardDetail from './pages/Grade/SectionCardDetail'
 import MarkList from '../UI/MarkList'
 
 

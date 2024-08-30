@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import style from "./css/pages.module.css"
-import Delete from '../component/delete/Delete'
+import style from "../css/pages.module.css"
+import Delete from '../Delete/Delete'
 
 const Family = () => {
   const [error,setError] = useState('')

@@ -1,0 +1,39 @@
+.sectionCardContainer {
+  margin-top: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  gap: 1rem;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.sectionCard {
+  border: 1px solid var(--card);
+  border-radius: 0.4rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  gap: 1rem;
+  padding-inline: 0.5rem;
+}
+
+.sectionCard h1 {
+  color: var(--card);
+  cursor: pointer;
+}
+
+.subNumber {
+  padding: 0.5rem;
+  border: 1px solid var(--button);
+  border-radius: 0.25rem;
+}
+
+.delete {
+  color: red;
+  font-size: 1.5rem;
+  cursor: pointer;
+} /*# sourceMappingURL=SectionCard.module.css.map */

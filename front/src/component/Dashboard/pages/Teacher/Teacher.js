@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import style from './css/pages.module.css';
-import CreateTeacher from './create/CreateTeacher';
-import Delete from './component/delete/Delete';
+import style from '../css/pages.module.css';
+import CreateTeacher from './CreateTeacher';
+import Delete from '../Delete/Delete';
 
 function Teacher() {
   const [yearId, setYearId] = useState('');

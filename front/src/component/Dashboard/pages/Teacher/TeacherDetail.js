@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import style from './css/detail.module.css'
+import style from '../css/detail.module.css'
 import { Link } from 'react-router-dom'
-import SectionCard from './component/SectionCard'
-import css from './css/SectionCard.module.css'
+import SectionCard from '../Grade/SectionCard'
+import css from '../css/SectionCard.module.css'
 
 function TeacherDetail({teacherId}) {
   const [sectionInfos,setSectionInfos] = useState([])

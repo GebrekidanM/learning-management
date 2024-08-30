@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from "../css/GradeSectionSelector.module.css";
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import CreateStudent from '../create/CreateStudent';
+import CreateStudent from '../Student/CreateStudent';
 
 function GradeSectionSelector() {
     const [grades, setGrades] = useState([]);

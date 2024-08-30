@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import style from './css/detail.module.css'
+import style from '../css/detail.module.css'
 
 function FamilyDetail({familyId}) {
     const [error,setError] = useState('')

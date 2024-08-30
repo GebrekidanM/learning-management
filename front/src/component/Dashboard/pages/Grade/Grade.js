@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import style from '../css/pages.module.css';
 import { Link } from 'react-router-dom';
-import Delete from '../component/delete/Delete';
+import Delete from '../Delete/Delete';
 
 function Grade() {
     const [grades, setGrades] = useState([]);

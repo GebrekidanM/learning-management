@@ -11,8 +11,8 @@ function SectionCard({sectionInfo}) {
   }
 
   return (
-    <div className={style.sectionCard} onClick={handleShowDetail}>
-      <h1>{sectionInfo.gradeDetails.grade}{sectionInfo.sectionDetails.section}</h1>
+    <div className={style.sectionCard}>
+      <h1 onClick={handleShowDetail}>{sectionInfo.gradeDetails.grade}{sectionInfo.sectionDetails.section}</h1>
       <p>{sectionInfo.subjectDetails.map(subject => subject.name).join(' , ')}</p>
       <p className={style.subNumber}>{sectionInfo.subjectDetails.length}</p>
     </div>

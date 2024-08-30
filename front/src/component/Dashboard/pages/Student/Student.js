@@ -1,8 +1,8 @@
 import React from 'react'
 import {Link, useSearchParams} from 'react-router-dom'
-import style from "./css/pages.module.css"
-import GradeSectionSelector from './component/GradeSectionSelector'
-import Grade from './create/Grade'
+import style from "../css/pages.module.css"
+import GradeSectionSelector from '../Grade/GradeSectionSelector'
+import Grade from '../Grade/Grade'
 
 function Student() {
 

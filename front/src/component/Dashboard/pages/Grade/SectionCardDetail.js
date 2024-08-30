@@ -32,26 +32,29 @@ function SectionCardDetail({idForDetail}) {
         navigate(`/main?type=teacher&subjectId=${subjectId}`)
     }
 
-  return (
+  return loadingInfo ? <p className='loading'>Loading . . .</p> : (
     <div className='mt-3 w-full'>
         {sectionInfo && (
             <div className={style.title} >
-                <p>Grade <span className='font-semibold text-cyan-900'>{sectionInfo?.sectionId.gradeId.grade}{sectionInfo.sectionId.section}</span> 
-                    <span> Subjects of</span> 
-                    <span className='font-semibold text-cyan-900'> {sectionInfo.teacherId.gender === 'Male' ? 'Mr' : 'Mrs'} {sectionInfo.teacherId.first} {sectionInfo.teacherId.middle} {sectionInfo.teacherId.last}</span>
-                </p>
-                <div className='w-full'>
-                    <ul className='w-full '>
-                        {sectionInfo.subjects.map( subject =>(
-                            <li key={subject._id}  className='m-3 flex flex-column font-bold cursor-pointer w-full '>
-                                <span className=' flex justify-content-between align-items-center border-1 p-2 border-solid border-cyan-900 border-round-sm w-full ' onClick={()=>handleMarklist(subject._id)}>
-                                    {subject.name}
-                                    <button className='button '>Add score</button>
-                                </span>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {errorInfo ? <p className='error'></p> : <>
+                    <p>Grade <span className='font-semibold text-cyan-900'>{sectionInfo?.sectionId.gradeId.grade}{sectionInfo.sectionId.section}</span> 
+                        <span> Subjects of</span> 
+                        <span className='font-semibold text-cyan-900'> {sectionInfo.teacherId.gender === 'Male' ? 'Mr' : 'Mrs'} {sectionInfo.teacherId.first} {sectionInfo.teacherId.middle} {sectionInfo.teacherId.last}</span>
+                    </p>
+                    <div className='w-full'>
+                        <ul className='w-full '>
+                            {sectionInfo.subjects.map( subject =>(
+                                <li key={subject._id}  className='m-3 flex flex-column font-bold cursor-pointer w-full '>
+                                    <span className=' flex justify-content-between align-items-center border-1 p-2 border-solid border-cyan-900 border-round-sm w-full ' onClick={()=>handleMarklist(subject._id)}>
+                                        {subject.name}
+                                        <button className='button '>Add score</button>
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </>}
+                
             </div>
         )}
     </div>

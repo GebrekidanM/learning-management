@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import style from './css/detail.module.css'
+import style from '../css/detail.module.css'
 import {useNavigate } from 'react-router-dom';
-import FamilyDetailInfo from './component/FamilyDetailInfo';
+import FamilyDetailInfo from '../Family/FamilyDetailInfo';
 
 function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
