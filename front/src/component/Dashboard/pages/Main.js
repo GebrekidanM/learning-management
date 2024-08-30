@@ -1,6 +1,6 @@
 import React from 'react'
 import style from '../../css/Dashbord.module.css'
-import NumberofStudent from './component/component/NumberofStudent'
+import NumberofStudent from './Grade/NumberofStudent'
 
 function Main({year}) {
   

@@ -4,7 +4,7 @@ import {useSearchParams, NavLink} from 'react-router-dom'
 import Main from './pages/Main'
 import Student from './pages/Student'
 import Schedule from './pages/Schedule'
-import Family from './pages/Family'
+import Family from './pages/Family/Family'
 import Teacher from './pages/Teacher'
 import Grade from './pages/Grade'
 import StudentEdit from './pages/component/edit/StudentEdit'
@@ -26,6 +26,7 @@ import FamilyEdit from './pages/component/edit/FamilyEdit'
 import CreateSectionSubject from './pages/component/component/CreateSectionSubject'
 import Subject from './pages/Subject'
 import SectionCardDetail from './pages/component/component/SectionCardDetail'
+import MarkList from '../UI/MarkList'
 
 
 function Admin({year}) {
@@ -33,7 +34,7 @@ function Admin({year}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
 
-  const { type: filterType, sectionId, studentId, teacherId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, subjectId,teacherId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -78,6 +79,9 @@ function Admin({year}) {
       case 'teacher':
         if (teacherId) {
           return <TeacherDetail teacherId={teacherId} />;
+        }
+        if (subjectId) {
+          return <MarkList subjectId={subjectId} />;
         }
         if(Id){
           return <CreateSectionSubject teacherId={Id}/>
