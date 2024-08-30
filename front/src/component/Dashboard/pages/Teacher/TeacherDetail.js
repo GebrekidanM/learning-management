@@ -3,6 +3,7 @@ import style from '../css/detail.module.css'
 import { Link } from 'react-router-dom'
 import SectionCard from '../Grade/SectionCard'
 import css from '../css/SectionCard.module.css'
+import LoadingIndicator from '../../../common/LoadingIndicator'
 
 function TeacherDetail({teacherId}) {
   const [sectionInfos,setSectionInfos] = useState([])
@@ -54,10 +55,12 @@ function TeacherDetail({teacherId}) {
             fetchTeacherSections();
         }
     }, [teacherId]);
-    
+    if(loading){
+      return <LoadingIndicator/>
+    }
   return (
     <div>
-      {loading && <p>Loading...</p>}
+      
       {error && <p className='error'>{error}</p>}
       {teacher && 
       <div className={style.BoxContainer}>
@@ -81,7 +84,7 @@ function TeacherDetail({teacherId}) {
           </div>
         </div>   
         <div>
-          {loadingInfo ? <p>Loading</p>
+          {loadingInfo ? <LoadingIndicator/>
           :
           <div className={css.MainBox}>
               <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>

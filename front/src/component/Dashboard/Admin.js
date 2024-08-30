@@ -8,7 +8,6 @@ import Family from './pages/Family/Family'
 import Teacher from './pages/Teacher/Teacher'
 import Grade from './pages/Grade'
 import StudentEdit from './pages/Student/StudentEdit'
-
 //icons
 import { MdDashboard,MdFamilyRestroom  } from "react-icons/md";
 import { GrSchedules } from "react-icons/gr";
@@ -28,6 +27,7 @@ import Subject from './pages/Subject'
 import SectionCardDetail from './pages/Grade/SectionCardDetail'
 import MarkList from '../UI/MarkList'
 import CreateScore from './pages/Grade/CreateScore'
+import LoadingIndicator from '../common/LoadingIndicator'
 
 
 function Admin({year}) {
@@ -40,10 +40,15 @@ function Admin({year}) {
   const stuEdit = searchParams.get('action')
 
   useEffect(() => {
+    try {
     setLoading(true);
-    if (loggedUser) {
+      if (loggedUser) {
+        setLoading(false)
+        }
+    } finally{
       setLoading(false);
     }
+    
   }, [loggedUser]);
 
   const renderPages = (filterType) => {
@@ -93,11 +98,11 @@ function Admin({year}) {
         return <Main  year={year} />;
     }}
 
-  return (
-    <>
-    {loading ? <p className='loading'>Loading</p>
-    :
+    if(loading){
+      return <LoadingIndicator/>
+    }
 
+  return (
        <div className={style.dashContainer}>
           <AdminNav filterType={filterType} username={loggedUser.username} />
           <div className={style.dashBox}>
@@ -124,8 +129,6 @@ function Admin({year}) {
               </div>
           </div>
         </div>
-    }
-    </>
   )
 }
 

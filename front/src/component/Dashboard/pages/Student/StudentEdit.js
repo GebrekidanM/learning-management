@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import style from '../css/Edit.module.css';
 import { useNavigate } from 'react-router-dom';
 import { LiaUserEditSolid } from "react-icons/lia";
+import ErrorMessage from '../../../common/ErrorMessage';
+import LoadingIndicator from '../../../common/LoadingIndicator';
 
 function StudentEdit({ studentId }) {
     const [student, setStudent] = useState({
@@ -116,13 +118,16 @@ function StudentEdit({ studentId }) {
     const handleClick = () => {
         setShowFileInput(!showFileInput);
       };
+      if (error) {
+        return <ErrorMessage error={error} />;
+    }
+    if(loading){
+        return <LoadingIndicator/>
+      }
 
     return (
         <div className={style.container}>
-            {loading ? <p>Loading...</p>:
             <form onSubmit={handleSubmit}>
-                
-                {error && <p className='error'>{error}</p>}
                 <div className={style.basicInfo}>
                     <span className={style.imageHolder}>
                         <img 
@@ -263,12 +268,9 @@ function StudentEdit({ studentId }) {
                                 required
                             />
                         </div>
-                        
                     </div>
-                       
                 </div>
             </form>
-            }
         </div>
     );
 }

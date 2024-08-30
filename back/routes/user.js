@@ -6,13 +6,6 @@ const jwt = require('jsonwebtoken')
 // secretkey for jwt
 const secretKey= 'Samra@Kidam-07,16{$}{$}'
 
-
-
-//get all users
-router.get('/', async(req,res)=>{
-
-})
-
 //create one new user only for the first time
 router.get('/createOne',async (req,res)=>{
     const username = 'user'
@@ -76,17 +69,19 @@ try {
 
 router.get('/profile', (req,res)=>{
     const {user} = req.cookies
-    if(user){
-        // verify jwt to use the info
-
-        jwt.verify(user, secretKey, {expiresIn:'3d'}, (error, info) => {
-            if(error) {
-                return res.status(400).json({error:"Something is wrong, please try again!"})
-            } else {
-                res.status(200).json(info)
-            }
-        })
-    }
+    try {
+        if(user){
+            jwt.verify(user, secretKey, {expiresIn:'3d'}, (error, info) => {
+                if(error) {
+                    return res.status(400).json({error:"Something is wrong, please try again!"})
+                } else {
+                    res.status(200).json(info)
+                }
+            })
+        }        
+    } catch (error) {
+        res.status({error: error.message})
+    }  
 })
 
 // for logout

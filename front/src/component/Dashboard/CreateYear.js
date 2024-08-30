@@ -7,14 +7,12 @@ function CreateYear() {
   const [endPoint, setEndPoint] = useState('');
   const [yearName, setYearName] = useState('');
   const [serverError, setServerError] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError('');
-    setSuccessMessage('');
 
     // Date validation: Ensure end date is after start date
     if (new Date(startPoint) >= new Date(endPoint)) {
@@ -40,7 +38,6 @@ function CreateYear() {
       });
 
       if (response.ok) {
-        setSuccessMessage('Year created successfully!');
         setStartPoint('');
         setEndPoint('');
         setYearName('');

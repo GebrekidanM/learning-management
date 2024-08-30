@@ -3,7 +3,6 @@ import style from '../../css/Dashbord.module.css'
 import NumberofStudent from './Grade/NumberofStudent'
 
 function Main({year}) {
-  
 
   return (
     <div>

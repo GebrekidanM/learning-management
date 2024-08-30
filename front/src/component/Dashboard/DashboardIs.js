@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CreateYear from './CreateYear';
 import Admin from './Admin';
+import LoadingIndicator from '../common/LoadingIndicator';
 
 function DashboardIs() {
     const [yearExists, setYearExists] = useState(false);
@@ -27,12 +28,12 @@ function DashboardIs() {
     const handleCreateYear = () => {
         setYearExists(false);
     };
-
+    if(loading){
+        return <LoadingIndicator/>
+      }
     return (
         <div>
-            {loading ? <p className='loading'>loading . . .</p>:
-                yearExists ? <Admin year={handleCreateYear} /> : <CreateYear />
-            }
+            {yearExists ? <Admin year={handleCreateYear} /> : <CreateYear />}
         </div>
     );
 }

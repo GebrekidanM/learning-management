@@ -2,7 +2,7 @@ const router = require('express').Router()
 const mongoose = require('mongoose')
 const {Grade,Year,Section} = require('../model/YearModel');
 const { Subject } = require('../model/SubjectModel');
-
+const {Student} = require('../model/userModel')
 //create year and with that year grade
 const subjects = ["አማርኛ","ሒሳብ","አካባቢ ሳይንስ","የክወና እና እይታ ጥበብ","የሥነ ጥበባት ትምህርት","ጤሰማ","ስነ ምግባር","ኅብረተሰብ","English","Affan Oromo","Spoken","Grammer","Communication","Mathematics","General Science","Social Study","PVA","HPE"]
 
@@ -155,6 +155,27 @@ router.get('/subjects/:sectionId',async(req,res)=>{
     }
 })
 
+router.get('/subject/:subjectId',async(req,res)=>{
+    const {subjectId} = req.params
+    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+        return res.status(400).json({ error: "Invalid subject ID" });
+    }
+
+    try {
+        const subject = await Subject.findById(subjectId).populate({
+            path:'sectionId',
+            populate:{path:'gradeId'}
+        })
+        if(subject){
+            const students = await Student.find({sectionId:subject.sectionId._id.toString()}).select('first last middle age gender');
+            res.status(200).json({subject,students})
+        }else{
+            res.status(404).json({error:"Subject with Id is not found"})
+        }
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
 
 
 module.exports = router

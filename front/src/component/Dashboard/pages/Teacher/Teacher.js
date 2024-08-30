@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import style from '../css/pages.module.css';
 import CreateTeacher from './CreateTeacher';
 import Delete from '../Delete/Delete';
+import LoadingIndicator from '../../../common/LoadingIndicator';
 
 function Teacher() {
   const [yearId, setYearId] = useState('');
@@ -76,6 +77,9 @@ function Teacher() {
     setDeleteCard(false);
     setRefreshTrigger((prev) => !prev); // Toggle refresh trigger to refetch teachers
   };
+  if(loading){
+    return <LoadingIndicator/>
+  }
 
   return (
     <div className={style.pageContainer}>
@@ -92,9 +96,7 @@ function Teacher() {
         {teachType === 'createTeacher' ? (
           <CreateTeacher yearId={yearId} yearError={yearError} />
         ) : (
-          <div>
-            {loading && <p>Loading...</p>}
-            
+          <div>            
             <table>
               <thead>
                 <tr>

@@ -15,6 +15,7 @@ function generateNewSearchParams(key,value) {
   type.set(key,value)
   return `?${type.toString()}`
 }
+
   return (
     <div className={style.pageContainer}>
       <div className={style.pagehead}>

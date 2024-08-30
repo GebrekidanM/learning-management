@@ -3,6 +3,8 @@ import { Dropdown } from 'primereact/dropdown';
 import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
+import LoadingIndicator from '../../../common/LoadingIndicator';
+import ErrorMessage from '../../../common/ErrorMessage';
 
 function CreateSectionSubject({ teacherId }) {
     const [grades, setGrades] = useState([]);
@@ -129,16 +131,16 @@ function CreateSectionSubject({ teacherId }) {
             setError(err.message);
         }
     };
+    if(loading){
+        return <LoadingIndicator/>
+      }
+    
 
     return (
         <div>
             <h2>Add Sections and Subjects to Teacher</h2>
-            {loading ? <p>Loading...</p> 
-            
-            :
-
             <form onSubmit={handleSubmit}>
-                {error && <p className="error">{error}</p>}
+                {error && <ErrorMessage error={error} />}
                 {teacher && <div className='mb-3'><b>Teacher Name:</b> <u>{teacher.first} {teacher.middle} {teacher.last}</u></div>}
                 <div className='card flex flex-column gap-3 mb-3'>
                     <label>Select Grade:</label>
@@ -163,7 +165,6 @@ function CreateSectionSubject({ teacherId }) {
 
                 <Button type="submit" label="Add Sections and Subjects" className={`button`} />
             </form>
-        }
         </div>
     );
 }

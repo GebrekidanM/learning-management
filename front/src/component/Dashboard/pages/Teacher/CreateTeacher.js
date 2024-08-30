@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import style from '../css/pages.module.css';
 import { useNavigate } from 'react-router-dom';
+import LoadingIndicator from '../../../common/LoadingIndicator';
 
 function CreateTeacher({yearId,yearError}) {
     const [userData, setUserData] = useState({
@@ -141,6 +142,10 @@ function CreateTeacher({yearId,yearError}) {
             setLoading(false);
         }
     };
+
+    if(loading){
+        return <LoadingIndicator/>
+      }
 
     return (
         <div className={style.createBox}>

@@ -1,4 +1,6 @@
 import React,{useEffect,useState} from 'react'
+import LoadingIndicator from '../../../common/LoadingIndicator'
+import ErrorMessage from '../../../common/ErrorMessage'
 
 function NumberofStudent() {
     const [infos,setInfos] = useState([])
@@ -25,10 +27,11 @@ function NumberofStudent() {
     }
     NubmerOfStudent()
   },[])
+  
   return (
     <div>
       {
-        loading ? <p className='loading'>loading ...</p>
+        loading ? <LoadingIndicator/>
         :
         
           <div>
@@ -40,7 +43,7 @@ function NumberofStudent() {
                       <th> No. of students</th>
                     </tr>
                   </thead>
-                  {error ? <p className='error'>{error}</p>
+                  {error ? <ErrorMessage error={error}/>
                   :
                     infos && infos.map((info,index)=>(
                       <tbody key={index}>
@@ -51,7 +54,6 @@ function NumberofStudent() {
                           </tr>
                       </tbody>
                     ))
-                  
                   }
               </table>
               

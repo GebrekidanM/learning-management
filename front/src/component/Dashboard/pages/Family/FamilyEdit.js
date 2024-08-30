@@ -3,6 +3,8 @@ import style from '../css/Edit.module.css';
 import { LiaUserEditSolid } from "react-icons/lia";
 import {useNavigate} from 'react-router-dom';
 import { z } from 'zod';
+import LoadingIndicator from '../../../common/LoadingIndicator';
+import ErrorMessage from '../../../common/ErrorMessage';
 
 function FamilyEdit({ familyId }) {
   const [familyFirst, setFamilyFirst] = useState('');
@@ -126,9 +128,9 @@ function FamilyEdit({ familyId }) {
 
   return (
     <div className={style.container}>
-      {loading ? <p>Loading...</p> :
+      {loading ? <LoadingIndicator/> :
         <form  onSubmit={handleSubmit}>
-          {error && <p className='error'>{error}</p>}
+          {error && <ErrorMessage error={error}/>}
           <div className={style.basicInfo}>
             <span className={style.imageHolder}>
               <img src={imagePreview == null ? `http://localhost:4000/uploads/${familyPhoto}` : imagePreview} alt='Profile' />

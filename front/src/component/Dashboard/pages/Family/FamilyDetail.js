@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import style from '../css/detail.module.css'
+import LoadingIndicator from '../../../common/LoadingIndicator'
+import ErrorMessage from '../../../common/ErrorMessage'
 
 function FamilyDetail({familyId}) {
     const [error,setError] = useState('')
@@ -29,8 +31,8 @@ function FamilyDetail({familyId}) {
     
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {error && <p className='error'>{error}</p>}
+      {loading && <LoadingIndicator/>}
+      {error && <ErrorMessage error={error}/>}
       {family && family.map(family=>(
         <div key={family._id} className={style.BoxContainer}>
           <div className={style.basicInfo}>
@@ -49,7 +51,6 @@ function FamilyDetail({familyId}) {
             <p>Subcity: {family.studentId.subCity}</p>
             <p>Wereda: {family.studentId.wereda}</p>
             <p>House No: {family.studentId.houseNo}</p>
-
           </div>
         </div>
       ))

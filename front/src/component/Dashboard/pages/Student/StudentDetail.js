@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import style from '../css/detail.module.css'
 import {useNavigate } from 'react-router-dom';
 import FamilyDetailInfo from '../Family/FamilyDetailInfo';
+import LoadingIndicator from '../../../common/LoadingIndicator';
+import ErrorMessage from '../../../common/ErrorMessage';
 
 function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
@@ -59,12 +61,15 @@ function StudentDetail({studentId}) {
     const handleFamily = ()=>{
          navigate(`/main?type=student&family=${studentId}`)
     }
-
+    if(loading){
+      return <LoadingIndicator/>
+    }
+    if (error) {
+      return <ErrorMessage error={error} />;
+  }
 
   return (
     <div>
-      {loading && <p>Loading...</p>}
-      {error && <p className='error'>{error}</p>}
       {student && 
       <div className={style.BoxContainer}>
         <div className={style.basicInfo}>
@@ -88,8 +93,8 @@ function StudentDetail({studentId}) {
           </div>
         </div>
 
-          {familyLoading && <p>Loading...</p>}
-          {familyError && <p className={'error'}>{familyError}</p>}
+          {familyLoading && <LoadingIndicator/>}
+          {familyError && <ErrorMessage error={familyError}/>}
 
           {family.length > 0 
           ? 

@@ -9,24 +9,49 @@ const AdminSchema = new mongoose.Schema ({
 
 const Admin = mongoose.model("User", AdminSchema)
 
-const StudentSchema = new mongoose.Schema({
-    first:{type:String,required:true},
-    middle:{type:String,required:true},
-    last:{type:String,required:true},
-    gender:{type:String,required:true},
-    age:{type:Number,required:true},
-    sectionId:{type:mongoose.Schema.Types.ObjectId, ref:'Section',required:true},
-    region:{type:String,required:true},
-    city:{type:String,required:true},
-    subCity:{type:String,required:true},
-    wereda:{type:String,required:true},
-    houseNo:{type:Number,required:true},
-    studentPhoto:{type:String,required:true}
-    
-},
-{ timestamps: true } 
-)
-const Student = mongoose.model('Student',StudentSchema)
+const StudentSchema = new mongoose.Schema(
+  {
+    first: { type: String, required: true, trim: true },
+    middle: { type: String, required: true, trim: true },
+    last: { type: String, required: true, trim: true },
+    gender: { 
+      type: String, 
+      required: true, 
+      enum: ['Male', 'Female'],  
+    },
+    age: { 
+      type: Number, 
+      required: true, 
+      min: 1, 
+      max: 120,  
+    },
+    sectionId: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'Section', 
+      required: true,
+    },
+    region: { type: String, required: true, trim: true },
+    city: { type: String, required: true, trim: true },
+    subCity: { type: String, required: true, trim: true },
+    wereda: { type: String, required: true, trim: true },
+    houseNo: { type: Number, required: true, min: 1 },
+    studentPhoto: { 
+      type: String, 
+      required: true,
+      validate: {
+        validator: function(v) {
+          return /^(ftp|http|https):\/\/[^ "]+$/.test(v);
+        },
+        message: props => `${props.value} is not a valid URL!`
+      }
+    }
+  },
+  { timestamps: true }
+);
+
+StudentSchema.index({ sectionId: 1 });
+
+const Student = mongoose.model('Student', StudentSchema);
 
 const FamilySchema = new mongoose.Schema({
     familyPhoto:{type:String,required:true},

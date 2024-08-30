@@ -2,6 +2,8 @@ import React,{useState,useEffect} from 'react'
 import {Link} from 'react-router-dom'
 import style from "../css/pages.module.css"
 import Delete from '../Delete/Delete'
+import LoadingIndicator from '../../../common/LoadingIndicator'
+import ErrorMessage from '../../../common/ErrorMessage'
 
 const Family = () => {
   const [error,setError] = useState('')
@@ -53,7 +55,6 @@ const handleDeleteSuccess = () => {
 
   return (
     <div className={style.pageContainer}>
-              {loading && <p>loading</p>}
 
               <table style={{marginTop:"2rem"}}>
               <thead>
@@ -64,12 +65,14 @@ const handleDeleteSuccess = () => {
                   <th>Family Type</th>
                   <th colSpan={"3"}> Action</th>
                 </tr>
-              </thead>
-              {error && <p className='error'>{error}</p>}
-                
+              </thead>      
+  
+              {loading && <LoadingIndicator/>}
+              {error && <ErrorMessage error={error}/>}
+
                 {families.length > 0 && families.map((family,index)=>(
-                <tbody>  
-                  <tr key={family._id}>
+                <tbody key={family._id}>  
+                  <tr >
                     <td>{index + 1}</td>
                     <td>{family.familyFirst} {family.familyMiddle}</td>
                     <td>{family.studentId.first} {family.studentId.middle}</td>

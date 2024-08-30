@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import style from "../css/GradeSectionSelector.module.css";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import CreateStudent from '../Student/CreateStudent';
+import LoadingIndicator from '../../../common/LoadingIndicator';
 
 function GradeSectionSelector() {
     const [grades, setGrades] = useState([]);
@@ -55,9 +56,7 @@ function GradeSectionSelector() {
                     <div className={style.gradeSelector}>
                         <h2>Select a Grade</h2>
                         {error && <p className={'error'}>{error}</p>}
-                        {loadingGrades ? (
-                            <p>Loading grades...</p>
-                        ) : (
+                        {loadingGrades ? <LoadingIndicator/> : (
                             <div className={style.gradeListBox}>
                                 {grades.map(grade => (
                                     <li 
@@ -75,7 +74,7 @@ function GradeSectionSelector() {
                         <div className={style.gradeSelector} style={{ marginTop: "1rem" }}>
                             <h4>Sections for Grade {selectedGrade.grade}</h4>
                             {loadingSections ? (
-                                <p>Loading sections...</p>
+                                <LoadingIndicator/>
                             ) : (
                                 <div className={style.gradeListBox}>
                                     {sections.map(section => (

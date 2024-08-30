@@ -1,0 +1,14 @@
+<form>
+          <FloatLabel>
+              <InputNumber id="score" value={value} onValueChange={(e) => setValue(e.value)} />
+              <label htmlFor="score">Score</label>
+          </FloatLabel>
+          <FloatLabel>
+              <InputNumber id="outOf" value={outOf} onValueChange={(e) => setOutOf(e.value)} />
+              <label htmlFor="outOf">OutOf</label>
+          </FloatLabel>
+          <FloatLabel>
+              <InputText id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+              <label htmlFor="description">Description</label>
+          </FloatLabel>
+        </form>
