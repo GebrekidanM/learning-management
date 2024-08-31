@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Card } from 'primereact/card';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
 import './styles.css'; 
 
 function ListOfStudents({ subjectId }) {
+    const navigate = useNavigate()
     const [error, setError] = useState('');
     const [subjectInfo, setSubjectInfo] = useState(null);
     const [students, setStudents] = useState([]);
@@ -42,10 +43,18 @@ function ListOfStudents({ subjectId }) {
         };
     }, [subjectId]);
 
+    const handleAddScore = (studentId,first,middle,sectionId)=>{
+
+        navigate(`/main?type=teacher&info=${teacherId._id}`,{state:{subjectId,sectionId,studentId,first,middle}})
+    }
+
+    if(loading){
+        return <LoadingIndicator/>
+    }
     return (
         <div className="p-4">
             {subjectInfo && (
-                <Card title={`Mark list of Grade ${subjectInfo.sectionId.gradeId.grade}${subjectInfo.sectionId.section} ${subjectInfo.name}`}>
+                <Card  title={`Mark list of Grade ${subjectInfo.sectionId.gradeId.grade}${subjectInfo.sectionId.section} ${subjectInfo.name}`}>
                     <table>
                         <thead>
                             <tr>
@@ -55,19 +64,23 @@ function ListOfStudents({ subjectId }) {
                                 <th>Sex</th>
                             </tr>
                         </thead>
-                        {loading && <LoadingIndicator/>}
-                        {error && <ErrorMessage error={error}/>}
                         
-                                {students.length>0 && students.map((student,index)=>(
-                                   <tbody key={student._id}>
-                                       <tr  className='transition-colors transition-duration-500 cursor-pointer hover:bg-cyan-900 hover:text-white'>
-                                         <td>{index + 1}</td>
-                                         <td>{student.first} {student.middle} {student.last}</td>
-                                         <td>{student.age}</td>
-                                         <td>{student.gender}</td>
-                                       </tr>
-                                    </tbody>
-                                ))}
+                        {error ? <ErrorMessage error={error}/>:
+                        <tbody>
+                            {students.map((student, index) => (
+                                <tr 
+                                    key={student._id} 
+                                    onClick={() => handleAddScore(student._id,student.first,student.middle,subjectInfo.sectionId._id)} 
+                                    className='transition-colors transition-duration-500 cursor-pointer hover:bg-cyan-900 hover:text-white'
+                                >
+                                    <td>{index + 1}</td>
+                                    <td>{student.first} {student.middle} {student.last}</td>
+                                    <td>{student.age}</td>
+                                    <td>{student.gender}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        }
                     </table>
                 </Card>
             )}

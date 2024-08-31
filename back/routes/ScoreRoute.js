@@ -24,4 +24,50 @@ router.get('/subject/:subjectId',async(req,res)=>{
 
 })
 
+/// Route to add a new score or update if exists
+router.post('/', async (req, res) => {
+    const { studentId, subjectId, sectionId, teacherId, value, outOf, description } = req.body;
+
+    try {
+        // Find if a score document exists for the given student, subject, and section
+        let existingScore = await Score.findOne({ studentId, subjectId, sectionId });
+
+        if (existingScore) {
+            // Update the existing document by pushing a new score
+            await Score.updateOne(
+                { _id: existingScore._id },
+                {
+                    $push: {
+                        scores: {
+                            teacherId,
+                            value,
+                            outOf,
+                            description
+                        }
+                    }
+                }
+            );
+            res.status(200).json({ message: 'Score updated successfully.' });
+        } else {
+            // Create a new score document
+            const newScore = await Score.create({
+                studentId,
+                subjectId,
+                sectionId,
+                scores: [
+                    {
+                        teacherId,
+                        value,
+                        outOf,
+                        description
+                    }
+                ]
+            });
+            res.status(201).json({ message: 'Score created successfully.', newScore });
+        }
+    } catch (error) {
+        console.error('Error adding/updating score:', error);
+        res.status(500).json({ message: 'An error occurred while processing the score.', error });
+    }
+});
 module.exports = router

@@ -28,6 +28,7 @@ import SectionCardDetail from './pages/Grade/SectionCardDetail'
 import MarkList from '../UI/MarkList'
 import LoadingIndicator from '../common/LoadingIndicator'
 import ListOfStudents from './pages/Grade/ListOfStudents'
+import CreateScore from './pages/Score/CreateScore'
 
 
 function Admin({year}) {
@@ -35,7 +36,7 @@ function Admin({year}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
 
-  const { type: filterType, sectionId, studentId, subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -80,6 +81,9 @@ function Admin({year}) {
       case 'teacher':
         if (teacherId) {
           return <TeacherDetail teacherId={teacherId} />;
+        }
+        if(info){
+          return <CreateScore teacherId={info} />
         }
         if (subjectId) {
           return <MarkList subjectId={subjectId} />;
