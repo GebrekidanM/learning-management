@@ -56,7 +56,7 @@ function SectionCardDetail({idForDetail}) {
                                 <div key={subject._id}  className='m-3 flex flex-column w-full '>
                                     <span className=' flex justify-content-between align-items-center border-1 p-2 border-solid border-cyan-900 border-round-sm w-full '>
                                         <h3 className='cursor-pointer' onClick={()=>handleMarklist(subject._id)}>{subject.name}</h3>
-                                        <button className='button' onClick={()=>handleAddScore(subject._id)}>Add score</button>
+                                        <button className='button' onClick={()=>handleAddScore(subject._id)}>List of students</button>
                                     </span>
                                 </div>
                             ))}

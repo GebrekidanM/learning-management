@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Card } from 'primereact/card';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
+import './styles.css'; 
 
 function CreateScore({ subjectId }) {
     const [error, setError] = useState('');
@@ -43,36 +42,34 @@ function CreateScore({ subjectId }) {
         };
     }, [subjectId]);
 
-    // Loading State
-    if(loading){
-      return <LoadingIndicator/>
-    }
-
-    // Error State
-    if (error) {
-      return <ErrorMessage error={error} />;
-  }
-
-    // Function to display order number based on the index
-    const orderNumberTemplate = (rowData, { rowIndex }) => {
-        return <span>{rowIndex + 1}</span>; // Displaying order number starting from 1
-    };
-
-    const fullNameTemplate = (rowData) => {
-      return `${rowData.first} ${rowData.middle} ${rowData.last}`;
-  };
-    // Render subject and students data
-
     return (
         <div className="p-4">
             {subjectInfo && (
                 <Card title={`Mark list of Grade ${subjectInfo.sectionId.gradeId.grade}${subjectInfo.sectionId.section} ${subjectInfo.name}`}>
-                    <DataTable value={students} responsiveLayout="scroll" key={subjectInfo._id}>
-                        <Column style={{width:"2rem"}} field="order" header="No." body={orderNumberTemplate}></Column>
-                        <Column field="fullName" header="Full Name" body={fullNameTemplate}></Column>
-                        <Column style={{width:"2rem"}} field="age" header="Age"></Column>
-                        <Column style={{width:"3rem"}} field="gender" header="Gender"></Column>
-                    </DataTable>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Full Name</th>
+                                <th>Age</th>
+                                <th>Sex</th>
+                            </tr>
+                        </thead>
+                        {loading && <LoadingIndicator/>}
+                        {error && <ErrorMessage error={error}/>}
+                        
+                                {students.length>0 && students.map((student,index)=>(
+                                   <tbody key={student._id}>
+                                       <tr>
+                                         <td>{index + 1}</td>
+                                         <td>{student.first} {student.middle} {student.last}</td>
+                                         <td>{student.age}</td>
+                                         <td>{student.gender}</td>
+                                       </tr>
+                                    </tbody>
+                                ))}
+                           
+                    </table>
                 </Card>
             )}
         </div>
