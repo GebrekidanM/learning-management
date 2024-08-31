@@ -5,7 +5,7 @@ import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
 import './styles.css'; 
 
-function CreateScore({ subjectId }) {
+function ListOfStudents({ subjectId }) {
     const [error, setError] = useState('');
     const [subjectInfo, setSubjectInfo] = useState(null);
     const [students, setStudents] = useState([]);
@@ -60,7 +60,7 @@ function CreateScore({ subjectId }) {
                         
                                 {students.length>0 && students.map((student,index)=>(
                                    <tbody key={student._id}>
-                                       <tr>
+                                       <tr  className='transition-colors transition-duration-500 cursor-pointer hover:bg-cyan-900 hover:text-white'>
                                          <td>{index + 1}</td>
                                          <td>{student.first} {student.middle} {student.last}</td>
                                          <td>{student.age}</td>
@@ -68,7 +68,6 @@ function CreateScore({ subjectId }) {
                                        </tr>
                                     </tbody>
                                 ))}
-                           
                     </table>
                 </Card>
             )}
@@ -76,4 +75,4 @@ function CreateScore({ subjectId }) {
     );
 }
 
-export default CreateScore;
+export default ListOfStudents;

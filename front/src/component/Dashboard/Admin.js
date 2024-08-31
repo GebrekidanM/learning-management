@@ -26,8 +26,8 @@ import CreateSectionSubject from './pages/Grade/CreateSectionSubject'
 import Subject from './pages/Subject'
 import SectionCardDetail from './pages/Grade/SectionCardDetail'
 import MarkList from '../UI/MarkList'
-import CreateScore from './pages/Grade/CreateScore'
 import LoadingIndicator from '../common/LoadingIndicator'
+import ListOfStudents from './pages/Grade/ListOfStudents'
 
 
 function Admin({year}) {
@@ -91,7 +91,7 @@ function Admin({year}) {
           return <SectionCardDetail idForDetail={idForDetail}/>
         }
         if(addscoreSubjectId){
-          return <CreateScore subjectId={addscoreSubjectId}/>
+          return <ListOfStudents subjectId={addscoreSubjectId}/>
         }
         return <Teacher />;
       default:
