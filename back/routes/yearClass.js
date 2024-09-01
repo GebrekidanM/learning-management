@@ -154,7 +154,7 @@ router.get('/subjects/:sectionId',async(req,res)=>{
         res.status(500).json({ error: error.message }); // Handle any server errors
     }
 })
-
+//get all students result with 
 router.get('/subject/:subjectId',async(req,res)=>{
     const {subjectId} = req.params
     if (!mongoose.Types.ObjectId.isValid(subjectId)) {

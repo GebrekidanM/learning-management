@@ -6,7 +6,7 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
-
+import { useNavigate } from 'react-router-dom';
 
 
 function CreateScore({teacherId}) {
@@ -14,17 +14,18 @@ function CreateScore({teacherId}) {
     const [outOf,setOutOf] = useState('')
     const [description,setDescription] = useState('')
     const [error,setError] = useState('')
+    const [round,setRound] = useState('')
     const [loading,setLoading] = useState(false)
     const location = useLocation();
-    const { subjectId, studentId ,first,middle,sectionId} = location.state|| {};
-
+    const { subjectId, studentId ,first,middle} = location.state|| {};
+    const navigate = useNavigate()
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
 
         try {
-            const response = await fetch('http://localhost:4000/score', { // Replace with your API endpoint
+            const response = await fetch('http://localhost:4000/score', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,27 +34,25 @@ function CreateScore({teacherId}) {
                     teacherId,
                     subjectId,
                     studentId,
-                    sectionId,
                     value,
                     outOf,
+                    round,
                     description,
                 }),
             });
-
-            const result = await response.json();
-
-            if (!response.ok) {
-                throw new Error(result.message || 'Failed to submit score');
+            const json = await response.json()
+            if(response.ok){
+                navigate(-1)
+            }else{
+                setError(json.error)
             }
+          
 
-            // Handle successful submission
-
-        } catch (error) {
-            setError(error.message || 'An unexpected error occurred');
         } finally {
             setLoading(false);
         }
     };
+
     if(loading){
         return <LoadingIndicator/>
     }
@@ -74,6 +73,10 @@ function CreateScore({teacherId}) {
               <div className='flex flex-column gap-2'>
                     <label htmlFor="description">Description</label>
                     <InputText style={{ border: '1px solid cyan-900' }} id="description" value={description} onChange={(e) => setDescription(e.target.value)}/>
+              </div>
+              <div className='flex flex-column gap-2'>
+                    <label>Round:</label>
+                    <InputNumber style={{ borderColor: 'cyan-900' }}  value={round} onValueChange={(e) => setRound(e.value)} />
               </div>
               <Button label='Submit' className='button'/>
         </form>

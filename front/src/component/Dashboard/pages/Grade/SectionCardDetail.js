@@ -31,8 +31,8 @@ function SectionCardDetail({idForDetail}) {
          
     }, [idForDetail]);
 
-    const handleMarklist = (subjectId)=>{
-        navigate(`/main?type=teacher&subjectId=${subjectId}`)
+    const handleMarklist = (subjectId,subjectName)=>{
+        navigate(`/main?type=teacher&subjectId=${subjectId}`,{state:{grade:sectionInfo.sectionId.gradeId.grade,section:sectionInfo.sectionId.section,subjectName}})
     }
     const handleListOfStudents = (subjectId)=>{
         navigate(`/main?type=teacher&addscoreSubjectId=${subjectId}`,{state:{teacherId:sectionInfo.teacherId}})
@@ -55,7 +55,7 @@ function SectionCardDetail({idForDetail}) {
                             {sectionInfo.subjects.map( subject =>(
                                 <div key={subject._id}  className='m-3 flex flex-column w-full '>
                                     <span className=' flex justify-content-between align-items-center border-1 p-2 border-solid border-cyan-900 border-round-sm w-full '>
-                                        <h3 className='cursor-pointer' onClick={()=>handleMarklist(subject._id)}>{subject.name}</h3>
+                                        <h3 className='cursor-pointer' onClick={()=>handleMarklist(subject._id,subject.name)}>{subject.name}</h3>
                                         <button className='button' onClick={()=>handleListOfStudents(subject._id)}>List of students</button>
                                     </span>
                                 </div>

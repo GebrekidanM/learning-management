@@ -3,7 +3,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Card } from 'primereact/card';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
-import './styles.css'; 
 
 function ListOfStudents({ subjectId }) {
     const navigate = useNavigate()
@@ -45,7 +44,7 @@ function ListOfStudents({ subjectId }) {
 
     const handleAddScore = (studentId,first,middle,sectionId)=>{
 
-        navigate(`/main?type=teacher&info=${teacherId._id}`,{state:{subjectId,sectionId,studentId,first,middle}})
+        navigate(`/main?type=teacher&info=${teacherId._id}`,{state:{subjectId,studentId,first,middle}})
     }
 
     if(loading){
