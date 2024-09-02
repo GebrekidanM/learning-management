@@ -106,6 +106,7 @@ function Admin({year}) {
       return <LoadingIndicator/>
     }
 
+
   return (
        <div className={style.dashContainer}>
           <AdminNav filterType={filterType} username={loggedUser.username} />
@@ -113,13 +114,13 @@ function Admin({year}) {
               {/** dashboard navigation */}
               <div className={style.dashNav}>
                   <div className={style.dashNavBarContainer}>
-                    <NavLink to={'?type=home'}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
-                    <NavLink to={'?type=student'}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
-                    <NavLink to={'?type=teacher'}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>
-                    <NavLink to={'?type=parent'}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
-                    <NavLink to={'?type=grade'}><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
-                    <NavLink to={'?type=schedule'}><span>{<GrSchedules/>}</span><span>Schedule</span></NavLink>
-                    <NavLink to={'?type=subject'}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
+                    <NavLink to={'?type=home'} className={filterType === 'home' ? 'text-yellow-500 font-bold' : ''}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
+                    <NavLink to={'?type=student' } className={ filterType === 'student' ? 'text-yellow-500 font-bold' : ''}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
+                    <NavLink to={'?type=teacher'} className={filterType === 'teacher' ? 'text-yellow-500 font-bold' : ''}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>
+                    <NavLink to={'?type=parent'} className={filterType === 'parent' ? 'text-yellow-500 font-bold' : ''}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
+                    <NavLink to={'?type=grade'} className={filterType === 'grade' ? 'text-yellow-500 font-bold' : '' }><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
+                    <NavLink to={'?type=schedule'} className={filterType === 'schedule' ? 'text-yellow-500 font-bold' : ''}><span>{<GrSchedules/>}</span><span>Schedule</span></NavLink>
+                    <NavLink to={'?type=subject'} className={filterType === 'subject' ? 'text-yellow-500 font-bold' : ''}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
                   </div>
               </div>
 

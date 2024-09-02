@@ -37,13 +37,7 @@ const StudentSchema = new mongoose.Schema(
     houseNo: { type: Number, required: true, min: 1 },
     studentPhoto: { 
       type: String, 
-      required: true,
-      validate: {
-        validator: function(v) {
-          return /^(ftp|http|https):\/\/[^ "]+$/.test(v);
-        },
-        message: props => `${props.value} is not a valid URL!`
-      }
+      required: true
     }
   },
   { timestamps: true }

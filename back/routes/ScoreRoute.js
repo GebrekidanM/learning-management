@@ -25,22 +25,36 @@ router.get('/subject/:subjectId',async(req,res)=>{
     
 
 })
-
 // get scores using subject id
 router.get('/:subjectId', async (req, res) => {
-    const subjectId = req.params.subjectId;
+    const { subjectId } = req.params;
+
     try {
         const scores = await Score.find({ subjectId })
-            .populate({path:'studentId',select:('first middle last age gender')})
-            .populate({path:'teacherId',select:('first middle last')});
+            .populate({ path: 'studentId', select: 'first middle last age gender' })
+            .populate({ path: 'teacherId', select: 'first middle last' });
 
-        // Extract unique months and exam details
-        const months = [...new Set(scores.map(score => new Date(score.date).toLocaleString('default', { month: 'long' })))];
-        const exams = [...new Set(scores.map(score => ({ description: score.description, outOf: score.outOf })))];
+        if (scores.length === 0) {
+            return res.status(404).json({ error: 'No scores found for this subject' });
+        }
+
+        // Extract unique months in chronological order
+        const months = [...new Set(scores.map(score => 
+            new Date(score.date).toLocaleString('default', { month: 'long' })
+        ))].sort((a, b) => new Date(`${a} 01, 2020`) - new Date(`${b} 01, 2020`)); // Sorting by month order
+
+        // Extract unique exams
+        const examSet = new Map();
+        scores.forEach(score => {
+            if (!examSet.has(score.description)) {
+                examSet.set(score.description, { description: score.description, outOf: score.outOf });
+            }
+        });
+        const exams = Array.from(examSet.values());
 
         res.json({ scores, months, exams });
     } catch (err) {
-        res.status(500).send('Server Error');
+        res.status(500).json({ error: 'Server error occurred while fetching scores' });
     }
 });
 

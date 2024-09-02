@@ -42,7 +42,7 @@ function ListOfStudents({ subjectId }) {
         };
     }, [subjectId]);
 
-    const handleAddScore = (studentId,first,middle,sectionId)=>{
+    const handleAddScore = (studentId,first,middle)=>{
 
         navigate(`/main?type=teacher&info=${teacherId._id}`,{state:{subjectId,studentId,first,middle}})
     }

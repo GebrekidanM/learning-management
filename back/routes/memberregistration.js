@@ -17,6 +17,7 @@ router.post('/student', upload.single('studentPhoto'), async (req, res) => {
             res.status(400).json({error:"Something is wrong!"})
         }
     } catch (error) {
+        console.log(error)
         res.status(500).json({error:"Server error"})
     }
 });
@@ -170,7 +171,7 @@ router.get('/teachers', async (req, res) => {
 
 //update student information
 
-router.patch('/student/update/:studentId', upload.single('studentPhoto'), async (req, res) => {
+router.patch('/student/updat/:studentId', upload.single('studentPhoto'), async (req, res) => {
     const { studentId } = req.params;
     const updates = req.body;
 
