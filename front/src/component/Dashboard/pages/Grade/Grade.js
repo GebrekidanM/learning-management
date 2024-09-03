@@ -6,6 +6,9 @@ import { Message } from 'primereact/message';
 import { Link } from 'react-router-dom';
 import Delete from '../Delete/Delete';
 import style from '../css/pages.module.css';
+import GradeDropdown from './ForGrade/GradeDropDown';
+import SectionDropdown from './ForGrade/SectionDropDown';
+
 
 function Grade() {
     const [grades, setGrades] = useState([]);
@@ -37,7 +40,7 @@ function Grade() {
         };
         fetchGrades();
     }, []);
-
+    
     // Fetch sections for the selected grade
     const fetchSections = async (gradeId) => {
         setActiveGradeId(gradeId);
@@ -64,6 +67,7 @@ function Grade() {
         setStudents([]);
         setStudentsError('');
         setActiveSectionId(sectionId);
+
         try {
             const response = await fetch(`http://localhost:4000/member/students/${sectionId}`);
             const json = await response.json();
@@ -99,50 +103,24 @@ function Grade() {
             {gradeError && <Message severity="error" text={gradeError} />}
             
             {grades.length > 0 && (
-                <div className={style.gradeContainer}>
-                    <h2>Select a Grade</h2>
+                <div className='mb-3'>
                     <div className={style.gradeBox}>
-                        {grades.map((grade) => (
-                            <Button
-                                className={`button ${activeGradeId === grade._id ? 'activeButton' : ''}`}
-                                key={grade._id}
-                                onClick={() => fetchSections(grade._id)}
-                            >
-                                Grade {grade.grade}
-                            </Button>
-                        ))}
+                        <GradeDropdown grades={grades} activeGradeId={activeGradeId}   fetchSections={fetchSections}/>
+                        {activeGradeId && <SectionDropdown sections={sections}  fetchStudents={fetchStudents}/>}
                     </div>
-                </div>
+                </div>                
             )}
 
             {sectionsError && <Message severity="error" text={sectionsError} />}
-
-            {sections.length > 0 && (
-                <div className={style.sectionContainer}>
-                    <h2>Select a Section</h2>
-                    <div className={style.sectionBox}>
-                        {sections.map((section) => (
-                            <Button
-                                className={`button ${activeSectionId === section._id ? 'activeButton' : ''}`}
-                                key={section._id}
-                                onClick={() => fetchStudents(section._id)}
-                            >
-                                Section {section.section}
-                            </Button>
-                        ))}
-                    </div>
-                </div>
-            )}
-
+            
             {studentsError && <Message severity="error" text={studentsError} />}
 
             {students.length > 0 && (
                 <div className={style.studentContainer}>
-                    <h3>Students in Section</h3>
-                    <DataTable value={students} paginator rows={10} className="p-datatable-gridlines">
-                        <Column field="index" header="No" body={(data, { rowIndex }) => rowIndex + 1} />
+                    <DataTable value={students} paginator rows={5} className="p-datatable-gridlines">
+                        <Column style={{width:'2rem'}} field="index" header="No" body={(data, { rowIndex }) => rowIndex + 1} />
                         <Column field="name" header="Name" body={(data) => `${data.first} ${data.middle} ${data.last}`} />
-                        <Column header="Action" body={(data) => (
+                        <Column className='flex gap-3' header="Action" body={(data) => (
                             <>
                                 <Button 
                                     className="p-button p-button-danger p-mr-2"

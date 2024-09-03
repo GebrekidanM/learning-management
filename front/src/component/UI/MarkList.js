@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import LoadingIndicator from '../common/LoadingIndicator';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../common/ErrorMessage';
+import { Card } from 'primereact/card';
 
 function MarkList({ subjectId }) {
     const [markListInfo, setMarkListInfo] = useState([]);
@@ -41,33 +42,38 @@ function MarkList({ subjectId }) {
 
         fetchMarkList();
     }, [subjectId]);
-
+ 
     const IndexGenerator = (max = 100) => Math.floor(Math.random() * max);
 
     const renderHeaders = () => (
         <tr>
-            <th rowSpan={2}>No</th>
-            <th rowSpan={2}>Student Name</th>
-            <th rowSpan={2}>Age</th>
-            <th rowSpan={2}>Sex</th>
-            <th rowSpan={2}>Teacher Name</th>
+            <th rowSpan={2} className='w-2rem'>No</th>
+            <th rowSpan={2} className='w-10rem'>Student Name</th>
+            <th rowSpan={2} className='w-2rem'>Age</th>
+            <th rowSpan={2} className='w-3rem'>Sex</th>
+            <th rowSpan={2} className='w-10rem'>Teacher Name</th>
             {months.map((month, index) => (
-                <th key={index} colSpan={exams.length} className='text-center'>{month}</th>
+                <th key={index} colSpan={exams.filter(exam=>exam.month === month).length} className='text-center'>{month}</th>
             ))}
         </tr>
     );
 
     const renderSubHeaders = () => (
         <tr>
-            {months.flatMap(month => (
-                exams.map(exam => (
-                    <th key={`${month}-${exam.description}-${IndexGenerator()}`}>
-                        {exam.description} ({exam.outOf})
-                    </th>
-                ))
+            {months.map((month) => (
+                exams
+                    .filter((exam) => exam.month === month) // Filter exams for the current month
+                    .map((exam, index) => (
+                        <th  key={`${month}-${exam.description}-${exam.outOf}-${exam.round}-${IndexGenerator()}-${index}`} className='text-xs w-4rem'>
+                        {exam.description.slice(0, 3)} ({exam.outOf})<br />
+                            <span className='text-xs text-yellow-500'>Eval. {exam.round}</span>
+                        </th>
+                    ))
             ))}
         </tr>
     );
+    
+    
 
     const renderRows = () => {
         const groupedScores = markListInfo.reduce((acc, info) => {
@@ -80,15 +86,17 @@ function MarkList({ subjectId }) {
                     scoresByMonth: {},
                 };
             }
+
             const month = new Date(info.date).toLocaleString('default', { month: 'long' });
-            if (!acc[studentId].scoresByMonth[month]) {
-                acc[studentId].scoresByMonth[month] = {};
-            }
-            if (!acc[studentId].scoresByMonth[month][info.description]) {
-                acc[studentId].scoresByMonth[month][info.description] = {};
-            }
-            acc[studentId].scoresByMonth[month][info.description][info.round] = info.value;
-            return acc;
+                 // Check if there are no entries for any month in scoresByMonth
+                 if (!acc[studentId].scoresByMonth[month]) {
+                    acc[studentId].scoresByMonth[month] = {}; // Initialize the month if it does not exist
+                }
+                
+                // Add the score for the specific exam identified by description, outOf, and round
+                const examKey = `${info.description}-${info.outOf}-${info.round}-${month}`;
+                acc[studentId].scoresByMonth[month][examKey] = info.value;
+                return acc;
         }, {});
 
         return Object.values(groupedScores).map((studentData, index) => (
@@ -98,14 +106,17 @@ function MarkList({ subjectId }) {
                 <td>{studentData.student.age}</td>
                 <td>{studentData.student.gender}</td>
                 <td>{studentData.teacher.first} {studentData.teacher.middle}</td>
-                {months.flatMap(month => (
-                    exams.map(exam => (
-                        <td key={`${studentData.student._id}-${month}-${exam.description}-${IndexGenerator()}`}>
-                            {studentData.scoresByMonth[month] && studentData.scoresByMonth[month][exam.description]
-                                ? Object.values(studentData.scoresByMonth[month][exam.description]).join(' | ')
-                                : '-'}
-                        </td>
-                    ))
+                {months.map(month => (
+                    exams
+                        .filter(exam => exam.month === month) // Ensure each exam is aligned with its month
+                        .map(exam => (
+                            <td key={`${studentData.student._id}-${exam.description}-${exam.outOf}-${exam.round}-${month}`}>
+                                {studentData.scoresByMonth[month] &&
+                                studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
+                                    ? studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
+                                    : '-'}
+                            </td>
+                        ))
                 ))}
             </tr>
         ));
@@ -115,7 +126,8 @@ function MarkList({ subjectId }) {
         <div>
             <h3 className='text-center'>Mark List of <span className='text-green-500'>{subjectName} Grade {grade}{section}</span> students</h3>
             {error ? <ErrorMessage error={error} /> :
-                <table>
+            <Card className='w-full overflow-x-auto'>
+                <table className='w-full'>
                     <thead>
                         {renderHeaders()}
                         {renderSubHeaders()}
@@ -124,6 +136,8 @@ function MarkList({ subjectId }) {
                         {renderRows()}
                     </tbody>
                 </table>
+            </Card>
+
             }
         </div>
     );

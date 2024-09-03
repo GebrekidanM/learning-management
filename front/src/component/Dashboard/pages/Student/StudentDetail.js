@@ -80,6 +80,7 @@ function StudentDetail({studentId}) {
             <p>Age: {student.age}</p>
             <p> Grade: {student.sectionId.gradeId.grade}{student.sectionId.section}</p>
             <p>Acadamic year: {student.sectionId.gradeId.yearId.yearName}</p>
+            <div className='button'>See Result</div>
           </div>
         </div>
         <div className={style.adressInfo}>

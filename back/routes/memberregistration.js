@@ -5,12 +5,17 @@ const {Student, Family} = require('../model/userModel')
 const {Section,Grade, Year} = require('../model/YearModel')
 const {Teacher} = require('../model/Teacher')
 
+//function to change capitalization
+function capitalizeFirstLetter(str) {
+    if (!str) return ''; // Handle empty or null strings
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId } = req.body;
     const studentPhoto = req.file.filename
     try {
-        const student = await Student.create({first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
+        const student = await Student.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), gender, age, region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
         if(student){
             res.status(200).json(student)
         }else{
@@ -85,20 +90,22 @@ router.get('/',async(req,res)=>{
 
 
 //get student by sectionId
-
-router.get('/students/:sectionId',async(req,res)=>{
-    const {sectionId} = req.params
-    try {
-        const students = await Student.find({sectionId});
-        if(students == ""){
-           return res.status(404).json({error:"There is no student in this class"})
-        }
-        res.status(200).json(students);
-        
-    } catch (error) {
-        res.status(500).json({ error: error.message });
+router.get('/students/:sectionId', async (req, res) => {
+    const { sectionId } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(sectionId)){
+        res.status(400).json({error:"InValid setion Id"})
     }
-})
+    try {
+        const students = await Student.find({sectionId}).sort({first:1})
+        if (students.length === 0) {
+            return res.status(404).json({ error: "There are no students in this class" });
+        }
+
+        res.status(200).json(students);
+    } catch (error) {
+        res.status(500).json({ error: 'An internal server error occurred. Please try again later.' });
+    }
+});
 
 /**********************************For teacher**************************************/
 
@@ -106,7 +113,7 @@ router.post('/teacher', upload.single('teacherPhoto'), async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo} = req.body;
     const teacherPhoto = req.file.filename
     try {
-        const student = await Teacher.create({first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
+        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
         if(student){
             res.status(200).json(student)
         }else{
@@ -299,7 +306,7 @@ router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
     const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,studentId} = req.body
     const familyPhoto = req.file.filename
     try {
-        const family = await Family.create({familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,familyPhoto,studentId})
+        const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),familyType,familyEmail,familyPhone,familyPhoto,studentId})
         if(!family){
             return res.status(400).json({error:"Something is wrong please try again"})
         }

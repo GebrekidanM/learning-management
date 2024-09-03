@@ -134,18 +134,15 @@ input, select {
 }
 
 /******************************** For grade, section and student list*******************************/
-.gradeContainer {
-  width: 100%;
-}
-
 .gradeBox {
-  width: 100%;
+  width: 50%;
+  margin-inline: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
 }
 
 .sectionContainer {
@@ -167,7 +164,7 @@ table {
 }
 
 td, th {
-  border: 1px solid #ffffff;
+  border: 1px solid var(--button);
   text-align: left;
   padding: 8px;
 }

@@ -32,7 +32,12 @@ function SectionCardDetail({idForDetail}) {
     }, [idForDetail]);
 
     const handleMarklist = (subjectId,subjectName)=>{
-        navigate(`/main?type=teacher&subjectId=${subjectId}`,{state:{grade:sectionInfo.sectionId.gradeId.grade,section:sectionInfo.sectionId.section,subjectName}})
+        navigate(`/main?type=teacher&subjectId=${subjectId}`,{state:{
+            grade:sectionInfo.sectionId.gradeId.grade,
+            section:sectionInfo.sectionId.section,
+            subjectName,
+            teacherId:sectionInfo.teacherId
+        }})
     }
     const handleListOfStudents = (subjectId)=>{
         navigate(`/main?type=teacher&addscoreSubjectId=${subjectId}`,{state:{teacherId:sectionInfo.teacherId}})

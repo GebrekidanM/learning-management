@@ -3,7 +3,7 @@ const { Score } = require('../model/ScoreModel')
 
 const router = require('express').Router()
 
-router.get('/subject/:subjectId',async(req,res)=>{
+router.get('/sstudent/:subjectId',async(req,res)=>{
     const {subjectId} = req.params
 
     if (!mongoose.Types.ObjectId.isValid(subjectId)) {
@@ -46,12 +46,19 @@ router.get('/:subjectId', async (req, res) => {
         // Extract unique exams
         const examSet = new Map();
         scores.forEach(score => {
-            if (!examSet.has(score.description)) {
-                examSet.set(score.description, { description: score.description, outOf: score.outOf });
+            const month =  new Date(score.date).toLocaleString('default', { month: 'long' });
+            const key = `${score.description}-${score.outOf}-${score.round}-${month}`; // Combine description, outOf, and round
+            if (!examSet.has(key)) {
+                examSet.set(key, { 
+                    description: score.description, 
+                    outOf: score.outOf, 
+                    round: score.round,
+                    month
+                });
             }
         });
-        const exams = Array.from(examSet.values());
 
+        const exams = Array.from(examSet.values());
         res.json({ scores, months, exams });
     } catch (err) {
         res.status(500).json({ error: 'Server error occurred while fetching scores' });
