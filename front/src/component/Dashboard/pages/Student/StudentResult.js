@@ -3,7 +3,7 @@ import URL from '../../../UI/URL'
 import LoadingIndicator from '../../../common/LoadingIndicator'
 import ErrorMessage from '../../../common/ErrorMessage'
 import { Card } from 'primereact/card'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 function StudentResult({studentId}) {
     const [students,setStudents] = useState([])
@@ -11,6 +11,7 @@ function StudentResult({studentId}) {
     const [months,setMonths] = useState([])
     const [loading,setLoading] = useState(false)
     const [error,setError] = useState('')
+    const navigate = useNavigate()
     const location = useLocation()
     const {first,middle,last} = location.state || {}
 
@@ -48,7 +49,7 @@ function StudentResult({studentId}) {
             <th rowSpan={2} className='w-2rem'>No.</th>
             <th rowSpan={2} className='w-10rem'>Subject</th>
             {months.map((month,index)=>(
-                <th key={month+index} colSpan={exams.filter(exam=>exam.month === month).length}  className='text-center'>{month}</th>
+                <th key={`${month+index}`} colSpan={exams.filter(exam=>exam.month === month).length}  className='text-center'>{month}</th>
             ))}
             <th colSpan={2} className='text-center'>Final</th>
         </tr>
@@ -60,7 +61,7 @@ function StudentResult({studentId}) {
             exams
                 .filter(exam=>exam.month === month)
                 .map(exam=>(
-                    <th key={exam.round} className='w-2rem'>{`${exam.description}(${exam.outOf})`}<br/> Eval: {exam.round}</th>
+                    <th key={`${exam.round+month}`} className='w-2rem'>{`${exam.description}(${exam.outOf})`}<br/> Eval: {exam.round}</th>
                 ))
             )
         )}
@@ -119,9 +120,14 @@ function StudentResult({studentId}) {
                 )
             })
         }
+
+    const HandleReportCard = ()=>{
+        navigate(`/main?type=student&card=${studentId}`,{state:{student:students,exams,months}})
+    }
+
     
   return (
-    <Card title={`Marklist of Student ${first} ${middle} ${last}`} className='w-full overflow-x-auto mt-5 text-center'>
+    <Card title={`Marklist of Student ${first} ${middle} ${last}`} className='w-full overflow-x-auto mt-5'>
       <table>
         <thead>
             <MainHeader/>
@@ -131,6 +137,7 @@ function StudentResult({studentId}) {
             <RenderRow/>
         </tbody>
       </table>
+      <button className='button mt-3'onClick={HandleReportCard}>See Report Card</button>
     </Card>
   )
 }

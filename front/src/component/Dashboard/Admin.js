@@ -30,6 +30,7 @@ import LoadingIndicator from '../common/LoadingIndicator'
 import ListOfStudents from './pages/Grade/ListOfStudents'
 import CreateScore from './pages/Score/CreateScore'
 import StudentResult from './pages/Student/StudentResult'
+import ReportCard from './pages/ReportCard/ReportCard'
 
 
 function Admin({year}) {
@@ -37,7 +38,7 @@ function Admin({year}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
 
-  const { type: filterType, sectionId, studentId, result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -63,6 +64,9 @@ function Admin({year}) {
         }
         if(result){
           return <StudentResult studentId={result}/>
+        }
+        if(card){
+          return <ReportCard studentId={card}/>
         }
         if (stuEdit) {
           return <StudentEdit studentId={stuEdit} />;
