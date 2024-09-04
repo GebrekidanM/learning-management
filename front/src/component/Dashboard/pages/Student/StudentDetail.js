@@ -66,7 +66,10 @@ function StudentDetail({studentId}) {
     }
     if (error) {
       return <ErrorMessage error={error} />;
-  }
+    }
+    const handleResult = ()=>{
+      navigate(`/main?type=student&result=${studentId}`,{state:{first:student.first,last:student.last,middle:student.middle}})
+    }
 
   return (
     <div>
@@ -80,7 +83,7 @@ function StudentDetail({studentId}) {
             <p>Age: {student.age}</p>
             <p> Grade: {student.sectionId.gradeId.grade}{student.sectionId.section}</p>
             <p>Acadamic year: {student.sectionId.gradeId.yearId.yearName}</p>
-            <div className='button'>See Result</div>
+            <div className='button' onClick={handleResult} >See Result</div>
           </div>
         </div>
         <div className={style.adressInfo}>

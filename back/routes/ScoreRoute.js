@@ -3,24 +3,78 @@ const { Score } = require('../model/ScoreModel')
 
 const router = require('express').Router()
 
-router.get('/sstudent/:subjectId',async(req,res)=>{
-    const {subjectId} = req.params
+router.get('/student/:studentId',async(req,res)=>{
+    const {studentId} = req.params
 
-    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+    if (!mongoose.Types.ObjectId.isValid(studentId)) {
         res.status(400).json({error:"Invalid Id"})
     }
 
     try {
-        const subject = await Score.find({subjectId})
-                        .populate({path:'studentId', select:'first middle last age gender'})
-         
-         if(subject.length == 0){
-            res.status(404).json({error:"Not Found"})
-        }else{
-            res.status(200).json(subject)
+         const students = await Score.aggregate([
+            {$match:{studentId:new mongoose.Types.ObjectId(studentId)}},
+            {$lookup:{
+                from:'students',
+                localField:"studentId",
+                foreignField:'_id',
+                as:'student'
+            }},
+            {$unwind:'$student'},
+            {
+                $lookup:{
+                    from:'subjects',
+                    localField:'subjectId',
+                    foreignField:'_id',
+                    as:'subjects'
+                }
+            },
+            {$unwind:'$subjects'},
+            {
+                $project:{
+                    _id:1,
+                    value:1,
+                    outOf:1,
+                    description:1,
+                    round:1,
+                    date:1,
+                    'student._id':1,
+                    'student.first':1,
+                    'student.middle':1,
+                    'student.last':1,
+                    'student.age':1,
+                    'student.gender':1,
+                    'subjects._id':1,
+                    'subjects.name':1
+                }
+            }
+         ])
+         if(students.length == 0){
+            return res.status(404).json({error:"No scores found for this Student"})
         }
+
+        const months = [...new Set(students.map(student=>(
+            new Date(student.date).toLocaleString('default',{month:'long'})
+        )))]
+
+        const examSet = new Map()
+        students.map(student=>{
+            const month = new Date(student.date).toLocaleString('default',{month:'long'})
+            const key = `${student.description}-${student.outOf}-${student.round}-${month}`
+            if(!examSet.has(key)){
+                examSet.set(key,{
+                    description: student.description,
+                    outOf:student.outOf,
+                    round:student.round,
+                    month
+                })
+            }
+        })
+
+        const exams = [...examSet.values()]
+        res.status(200).json({students,months,exams})
+
     } catch (error) {
-        res.status(500).json({error:error.message})
+        res.status(500).json({error:"Hi"+error.message})
     }
     
 
