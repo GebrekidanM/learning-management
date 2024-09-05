@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import style from '../css/detail.module.css'
 import LoadingIndicator from '../../../common/LoadingIndicator'
 import ErrorMessage from '../../../common/ErrorMessage'
+import URL from '../../../UI/URL'
 
 function FamilyDetail({familyId}) {
     const [error,setError] = useState('')
@@ -13,7 +14,7 @@ function FamilyDetail({familyId}) {
         const fetchFamily = async()=>{
             setLoading(true)
             try {
-               const response = await fetch(`http://localhost:4000/member/family/own/${id}`)
+               const response = await fetch(`${URL()}/member/family/own/${id}`)
                const json = await response.json()
                if(response.ok){
                  return setFamily(json)
@@ -36,7 +37,7 @@ function FamilyDetail({familyId}) {
       {family && family.map(family=>(
         <div key={family._id} className={style.BoxContainer}>
           <div className={style.basicInfo}>
-            <img src={`http://localhost:4000/uploads/${family?.familyPhoto}`} alt='hello'/>
+            <img src={`${URL()}/uploads/${family?.familyPhoto}`} alt='hello'/>
             <div className={style.extraInfo}>
               <h5>{family.familyFirst} {family.familyMiddle} {family.familyLast}</h5>
               <p>Family type: {family.familyType}</p>

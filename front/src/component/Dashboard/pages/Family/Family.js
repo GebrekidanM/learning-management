@@ -4,6 +4,7 @@ import style from "../css/pages.module.css"
 import Delete from '../Delete/Delete'
 import LoadingIndicator from '../../../common/LoadingIndicator'
 import ErrorMessage from '../../../common/ErrorMessage'
+import URL from '../../../UI/URL'
 
 const Family = () => {
   const [error,setError] = useState('')
@@ -17,7 +18,7 @@ const Family = () => {
   const fetchFamily = async ()=>{
     try {
       setLoading(true)
-        const response = await fetch('http://localhost:4000/member/families')
+        const response = await fetch(`${URL()}/member/families`)
         const json = await response.json()
         if(response.ok){
           setFamilies(json)

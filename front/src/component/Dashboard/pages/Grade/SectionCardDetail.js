@@ -3,6 +3,7 @@ import style from '../css/SectionCard.module.css'
 import { useNavigate } from 'react-router-dom'
 import LoadingIndicator from '../../../common/LoadingIndicator'
 import ErrorMessage from '../../../common/ErrorMessage'
+import URL from '../../../UI/URL'
 
 function SectionCardDetail({idForDetail}) {
     const [sectionInfo, setSectionInfo] = useState(null)
@@ -14,7 +15,7 @@ function SectionCardDetail({idForDetail}) {
         const fetchTeacherSections = async () => {
             setLoadingInfo(true);
             try {
-                const response = await fetch(`http://localhost:4000/medium/teacher/section/one/${idForDetail}`);
+                const response = await fetch(`${URL()}/medium/teacher/section/one/${idForDetail}`);
                 const json = await response.json();
                 if (response.ok) {
                     setSectionInfo(json);

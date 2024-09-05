@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import style from "../css/Createyear.module.css";
 import { useNavigate } from 'react-router-dom';
+import URL from '../UI/URL';
 
 function CreateYear() {
   const [startPoint, setStartPoint] = useState('');
@@ -10,6 +11,7 @@ function CreateYear() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
+  console.log(URL())
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError('');
@@ -26,10 +28,10 @@ function CreateYear() {
       yearName: parseInt(yearName),
     };
 
-    setIsSubmitting(true);  // Disable the button during submission
+    setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:4000/class/create-year', {
+      const response = await fetch(`${URL()}/class/create-year`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,21 +39,20 @@ function CreateYear() {
         body: JSON.stringify(yearData),
       });
 
+      const json = await response.json()
+
       if (response.ok) {
         setStartPoint('');
         setEndPoint('');
         setYearName('');
-        // Navigate to /main and refresh the page
-        navigate('/main');
-        window.location.reload();  // Refresh the page after navigation
+        navigate(`/create-semester?yearId=${json._id}`)
       } else {
-        const json = await response.json();
         setServerError(json.error || 'Failed to create year.');
       }
     } catch (error) {
       setServerError('An error occurred: ' + error.message);
     } finally {
-      setIsSubmitting(false);  // Re-enable the button after submission
+      setIsSubmitting(false); 
     }
   };
 
@@ -86,6 +87,7 @@ function CreateYear() {
             required
           />
         </div>
+
         <button
           type="submit"
           className={style.button}

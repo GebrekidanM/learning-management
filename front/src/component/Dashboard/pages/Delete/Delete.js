@@ -1,11 +1,12 @@
 import React from 'react';
 import style from '../css/delete.module.css';
+import URL from '../../../UI/URL';
 
 function Delete({ first, middle, role, id, setDeleteCard, onDeleteSuccess }) {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`http://localhost:4000/member/delete/${id}`, {
+            const response = await fetch(`${URL()}/member/delete/${id}`, {
                 method: "DELETE"
             });
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import style from '../css/pages.module.css';
 import { useNavigate } from 'react-router-dom';
+import URL from '../../../UI/URL';
 
 function CreateStudent({ sectionId }) {
     const [userData, setUserData] = useState({
@@ -102,7 +103,7 @@ function CreateStudent({ sectionId }) {
         data.set('sectionId',userData.sectionId)
 
         try {
-            const response = await fetch('http://localhost:4000/member/student', {
+            const response = await fetch(`${URL()}/member/student`, {
                 method: 'POST',
                 body: data,
             });

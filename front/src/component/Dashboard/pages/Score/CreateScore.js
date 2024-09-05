@@ -7,7 +7,7 @@ import { Button } from 'primereact/button';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
 import { useNavigate } from 'react-router-dom';
-
+import URL from '../../../UI/URL'
 
 function CreateScore({teacherId}) {
     const [value,setValue] = useState('')
@@ -25,7 +25,7 @@ function CreateScore({teacherId}) {
         setError('');
 
         try {
-            const response = await fetch('http://localhost:4000/score', {
+            const response = await fetch(`${URL()}/score`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

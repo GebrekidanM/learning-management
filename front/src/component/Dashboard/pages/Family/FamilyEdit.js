@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom';
 import { z } from 'zod';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
+import URL from '../../../UI/URL';
 
 function FamilyEdit({ familyId }) {
   const [familyFirst, setFamilyFirst] = useState('');
@@ -27,7 +28,7 @@ function FamilyEdit({ familyId }) {
     const fetchFamily = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:4000/member/family/only/${id}`);
+        const response = await fetch(`${URL()}/member/family/only/${id}`);
         const json = await response.json();
         if (response.ok) {
           setFamilyFirst(json[0].familyFirst);
@@ -109,7 +110,7 @@ function FamilyEdit({ familyId }) {
     }
 
     try {
-        const response = await fetch(`http://localhost:4000/member/family/update/${familyId}`, {
+        const response = await fetch(`${URL()}/member/family/update/${familyId}`, {
             method: 'PATCH',
             body: data,
         });
@@ -133,7 +134,7 @@ function FamilyEdit({ familyId }) {
           {error && <ErrorMessage error={error}/>}
           <div className={style.basicInfo}>
             <span className={style.imageHolder}>
-              <img src={imagePreview == null ? `http://localhost:4000/uploads/${familyPhoto}` : imagePreview} alt='Profile' />
+              <img src={imagePreview == null ? `${URL()}/uploads/${familyPhoto}` : imagePreview} alt='Profile' />
               {showFileInput && <input type='file' accept='image/*' onChange={handleFileChange} />}
               <span className={style.clickEdit} onClick={handleClick}>{<LiaUserEditSolid />}</span>
             </span>

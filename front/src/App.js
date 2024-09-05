@@ -4,6 +4,7 @@ import Signup from "./component/pages/signup";
 import {Routes,Route,useLocation} from "react-router-dom"
 import { AuthProvider } from "./context/AuthContext";
 import DashboardIs from "./component/Dashboard/DashboardIs";
+import CreateSemester from "./component/Dashboard/CreateSemester";
 
 
 function App () {
@@ -14,6 +15,7 @@ function App () {
       <Routes>
         <Route path={'/login'} element={<Login />}/>
         <Route path={'/signup'} element={<Signup />}/>
+        <Route path={'/create-semester'} element={<CreateSemester/>}/> 
         <Route path={'/main'} element={<DashboardIs />}/>
       </Routes>
     </AuthProvider>

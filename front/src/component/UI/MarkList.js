@@ -3,6 +3,7 @@ import LoadingIndicator from '../common/LoadingIndicator';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ErrorMessage from '../common/ErrorMessage';
 import { Card } from 'primereact/card';
+import URL from './URL'
 
 function MarkList({ subjectId }) {
     const [markListInfo, setMarkListInfo] = useState([]);
@@ -23,7 +24,7 @@ function MarkList({ subjectId }) {
         const fetchMarkList = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:4000/score/${subjectId}`);
+                const response = await fetch(`${URL()}/score/${subjectId}`);
                 const json = await response.json();
                 if (response.ok) {
                     setMarkListInfo(json.scores);

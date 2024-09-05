@@ -3,7 +3,7 @@ import style from "../css/GradeSectionSelector.module.css";
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import CreateStudent from '../Student/CreateStudent';
 import LoadingIndicator from '../../../common/LoadingIndicator';
-
+import URL from '../../../UI/URL';
 function GradeSectionSelector() {
     const [grades, setGrades] = useState([]);
     const [selectedGrade, setSelectedGrade] = useState(null);
@@ -36,12 +36,12 @@ function GradeSectionSelector() {
     };
 
     useEffect(() => {
-        fetchData('http://localhost:4000/class/grades', setLoadingGrades, setGrades);
+        fetchData(`${URL()}/class/grades`, setLoadingGrades, setGrades);
     }, []);
 
     useEffect(() => {
         if (selectedGrade) {
-            fetchData(`http://localhost:4000/class/grades/${selectedGrade._id}/sections`, setLoadingSections, setSections);
+            fetchData(`${URL()}/class/grades/${selectedGrade._id}/sections`, setLoadingSections, setSections);
         }
     }, [selectedGrade]);
 

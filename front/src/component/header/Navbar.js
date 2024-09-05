@@ -4,6 +4,7 @@ import style from "../css/Navbar.module.css"
 import {Link, Navigate} from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import { MdDashboard } from "react-icons/md";
+import URL from '../UI/URL'
 
 function Navbar() {
   const { loggedUser,setLoggedUser } = useContext(AuthContext)
@@ -12,7 +13,7 @@ function Navbar() {
   //create user for the first time
   useEffect(() => {
     const createNew = async()=>{
-        await fetch('http://localhost:4000/user/createOne',{credentials:"include"})
+        await fetch(`${URL()}/user/createOne`,{credentials:"include"})
     }
     createNew()
   },[])
@@ -20,7 +21,7 @@ function Navbar() {
   //get information of the logged user
   useEffect(() => {
     const getInfo = async()=>{
-        const response = await fetch('http://localhost:4000/user/profile', {credentials:"include"})
+        const response = await fetch(`${URL()}/user/profile`, {credentials:"include"})
         const json = await response.json()
         if(response.ok){
           setLoggedUser(json)
@@ -32,7 +33,7 @@ function Navbar() {
 
 // logout system
   const logout = async() => {
-    const response = await fetch("http://localhost:4000/user/logout", { credentials: "include" })
+    const response = await fetch(`${URL()}/user/logout`, { credentials: "include" })
     if(response.ok){
       setLoggedUser('')
     }

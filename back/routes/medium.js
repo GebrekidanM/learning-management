@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { TeacherSectionSubject } = require('../model/medium');
 const { default: mongoose } = require('mongoose');
+const { Score } = require('../model/ScoreModel');
 
 // Route to assign a subject to a teacher for a specific section
 router.post('/assign', async (req, res) => {
@@ -162,6 +163,122 @@ router.delete('/delete/:id', async (req, res) => {
         res.status(200).json({ message: 'Assignment deleted successfully' });
     } catch (error) {
         res.status(400).json({ message: 'Error deleting assignment', error: error.message });
+    }
+});
+/*************************************All in one********************************************/
+/**
+ * Grade
+ * sections in that grade with students
+ * subjects in that class with teacher's name of the subject
+ */
+router.get('/allinone', async (req, res) => {
+    try {
+        const grades = await Score.aggregate([
+            // Step 1: Lookup Students
+            {
+                $lookup: {
+                    from: 'students',
+                    localField: 'studentId',
+                    foreignField: '_id',
+                    as: 'student'
+                }
+            },
+            { $unwind: '$student' },
+
+            // Step 2: Lookup Sections
+            {
+                $lookup: {
+                    from: 'sections',
+                    localField: 'student.sectionId',
+                    foreignField: '_id',
+                    as: 'section'
+                }
+            },
+            { $unwind: '$section' },
+
+            // Step 3: Lookup Grades
+            {
+                $lookup: {
+                    from: 'grades',
+                    localField: 'section.gradeId',
+                    foreignField: '_id',
+                    as: 'grade'
+                }
+            },
+            { $unwind: '$grade' },
+
+            // Step 4: Lookup Teachers
+            {
+                $lookup: {
+                    from: 'teachers',
+                    localField: 'teacherId',
+                    foreignField: '_id',
+                    as: 'teacher'
+                }
+            },
+            { $unwind: '$teacher' },
+
+            // Step 5: Lookup Subjects
+            {
+                $lookup: {
+                    from: 'subjects',
+                    localField: 'subjectId',
+                    foreignField: '_id',
+                    as: 'subject'
+                }
+            },
+            { $unwind: '$subject' },
+
+            // Step 6: Grouping Data by Grade
+            {
+                $group: {
+                    _id: '$grade._id',
+                    grade: { $first: '$grade.grade' },
+                    sections: {
+                        $push: {
+                            _id: '$section._id',
+                            name: '$section.section',
+                            subjects: {
+                                $push: {
+                                    _id: '$subject._id',
+                                    name: '$subject.name',
+                                    teacher: {
+                                        _id: '$teacher._id',
+                                        first: '$teacher.first',
+                                        last: '$teacher.last'
+                                    }
+                                }
+                            },
+                            students: {
+                                $push: {
+                                    _id: '$student._id',
+                                    first: '$student.first',
+                                    middle: '$student.middle',
+                                    last: '$student.last',
+                                    age: '$student.age',
+                                    gender: '$student.gender'
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+
+            // Step 7: Optional Projection
+            {
+                $project: {
+                    _id: 1,
+                    grade: 1,
+                    sections: 1
+                }
+            }
+        ]);
+
+        // Sending the grouped data as response
+        res.status(200).json(grades);
+    } catch (error) {
+        console.error('Error fetching grades:', error); // Log the error
+        res.status(500).json({ error: 'An error occurred while fetching grades.' });
     }
 });
 

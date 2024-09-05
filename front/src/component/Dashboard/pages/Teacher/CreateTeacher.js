@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import style from '../css/pages.module.css';
 import { useNavigate } from 'react-router-dom';
 import LoadingIndicator from '../../../common/LoadingIndicator';
-
+import URL from '../../../UI/URL';
 function CreateTeacher({yearId,yearError}) {
     const [userData, setUserData] = useState({
         first: "",
@@ -126,7 +126,7 @@ function CreateTeacher({yearId,yearError}) {
         data.set('yearId',userData.yearId)
 
         try {
-            const response = await fetch('http://localhost:4000/member/teacher', {
+            const response = await fetch(`${URL()}/member/teacher`, {
                 method: 'POST',
                 body: data,
             });

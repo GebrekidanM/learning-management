@@ -4,6 +4,7 @@ import style from '../css/pages.module.css';
 import CreateTeacher from './CreateTeacher';
 import Delete from '../Delete/Delete';
 import LoadingIndicator from '../../../common/LoadingIndicator';
+import URL from '../../../UI/URL';
 
 function Teacher() {
   const [yearId, setYearId] = useState('');
@@ -28,7 +29,7 @@ function Teacher() {
   useEffect(() => {
     const checkYear = async () => {
       try {
-        const response = await fetch('http://localhost:4000/class/check-academic-year');
+        const response = await fetch(`${URL()}/class/check-academic-year`);
         const json = await response.json();
         if (response.ok) {
           setYearId(json);
@@ -46,7 +47,7 @@ function Teacher() {
   const fetchTeachers = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:4000/member/teachers');
+      const response = await fetch(`${URL()}/member/teachers`);
       const json = await response.json();
       if (response.ok) {
         setTeachers(json);

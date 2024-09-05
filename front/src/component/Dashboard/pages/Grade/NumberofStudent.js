@@ -1,6 +1,7 @@
 import React,{useEffect,useState} from 'react'
 import LoadingIndicator from '../../../common/LoadingIndicator'
 import ErrorMessage from '../../../common/ErrorMessage'
+import URL from '../../../UI/URL'
 
 function NumberofStudent() {
     const [infos,setInfos] = useState([])
@@ -11,7 +12,7 @@ function NumberofStudent() {
     const NubmerOfStudent = async () =>{
       try {
         setLoading(true)
-        const response = await fetch('http://localhost:4000/member/numberOfStudent') 
+        const response = await fetch(`${URL()}/member/numberOfStudent`) 
           const json = await response.json()
           if(response.ok){
             setInfos(json)

@@ -8,7 +8,7 @@ import Delete from '../Delete/Delete';
 import style from '../css/pages.module.css';
 import GradeDropdown from './ForGrade/GradeDropDown';
 import SectionDropdown from './ForGrade/SectionDropDown';
-
+import URL from '../../../UI/URL';
 
 function Grade() {
     const [grades, setGrades] = useState([]);
@@ -27,7 +27,7 @@ function Grade() {
     useEffect(() => {
         const fetchGrades = async () => {
             try {
-                const response = await fetch('http://localhost:4000/class/grades');
+                const response = await fetch(`${URL()}/class/grades`);
                 const json = await response.json();
                 if (response.ok) {
                     setGrades(json);
@@ -50,7 +50,7 @@ function Grade() {
         setStudentsError('');
 
         try {
-            const response = await fetch(`http://localhost:4000/class/sections/${gradeId}`);
+            const response = await fetch(`${URL()}/class/sections/${gradeId}`);
             const json = await response.json();
             if (response.ok) {
                 setSections(json);
@@ -69,7 +69,7 @@ function Grade() {
         setActiveSectionId(sectionId);
 
         try {
-            const response = await fetch(`http://localhost:4000/member/students/${sectionId}`);
+            const response = await fetch(`${URL()}/member/students/${sectionId}`);
             const json = await response.json();
             if (response.ok) {
                 setStudents(json);

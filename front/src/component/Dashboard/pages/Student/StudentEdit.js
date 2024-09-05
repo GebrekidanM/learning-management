@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { LiaUserEditSolid } from "react-icons/lia";
 import ErrorMessage from '../../../common/ErrorMessage';
 import LoadingIndicator from '../../../common/LoadingIndicator';
+import URL from '../../../UI/URL';
 
 function StudentEdit({ studentId }) {
     const [student, setStudent] = useState({
@@ -30,7 +31,7 @@ function StudentEdit({ studentId }) {
         const fetchStudent = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:4000/member/student/only/${studentId}`);
+                const response = await fetch(`${URL()}/member/student/only/${studentId}`);
                 const data = await response.json();
                 if (response.ok) {
                     setStudent({
@@ -99,7 +100,7 @@ function StudentEdit({ studentId }) {
         }
 
         try {
-            const response = await fetch(`http://localhost:4000/member/student/updat/${studentId}`, {
+            const response = await fetch(`${URL()}/member/student/updat/${studentId}`, {
                 method: 'PATCH',
                 body: formData,
             });
@@ -131,7 +132,7 @@ function StudentEdit({ studentId }) {
                 <div className={style.basicInfo}>
                     <span className={style.imageHolder}>
                         <img 
-                            src={imagePreview == null ? `http://localhost:4000/uploads/${studentPhoto}` : imagePreview} alt='Profile' />
+                            src={imagePreview == null ? `${URL()}/uploads/${studentPhoto}` : imagePreview} alt='Profile' />
                             {showFileInput && <input type='file' accept='image/*' onChange={handleFileChange} />}
                             <span className={style.clickEdit} onClick={handleClick}>{<LiaUserEditSolid />}</span>
                     </span>

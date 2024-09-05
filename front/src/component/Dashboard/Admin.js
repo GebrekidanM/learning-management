@@ -33,10 +33,11 @@ import StudentResult from './pages/Student/StudentResult'
 import ReportCard from './pages/ReportCard/ReportCard'
 
 
-function Admin({year}) {
+function Admin({year,yearId,semesterId}) {
   const [searchParams] = useSearchParams()
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
+ 
 
   const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
@@ -73,7 +74,7 @@ function Admin({year}) {
         }
         return <Student />;
       case 'grade':
-        return <Grade />;
+        return <Grade  semesterId={semesterId} yearId={yearId}/>;
       case 'schedule':
         return <Schedule />;
       case 'subject':

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import SectionCard from '../Grade/SectionCard'
 import css from '../css/SectionCard.module.css'
 import LoadingIndicator from '../../../common/LoadingIndicator'
+import URL from '../../../UI/URL'
 
 function TeacherDetail({teacherId}) {
   const [sectionInfos,setSectionInfos] = useState([])
@@ -17,7 +18,7 @@ function TeacherDetail({teacherId}) {
         const fetchTeacher = async()=>{
             setLoading(true)
             try {
-               const response = await fetch(`http://localhost:4000/member/teacher/${teacherId}`)
+               const response = await fetch(`${URL()}/member/teacher/${teacherId}`)
                const json = await response.json()
                if(response.ok){
                  return setTeacher(json)
@@ -37,7 +38,7 @@ function TeacherDetail({teacherId}) {
         const fetchTeacherSections = async () => {
             setLoadingInfo(true);
             try {
-                const response = await fetch(`http://localhost:4000/medium/teacher/section/${teacherId}`);
+                const response = await fetch(`${URL()}/medium/teacher/section/${teacherId}`);
                 const json = await response.json();
                 if (response.ok) {
                     setSectionInfos(json);
@@ -65,7 +66,7 @@ function TeacherDetail({teacherId}) {
       {teacher && 
       <div className={style.BoxContainer}>
         <div className={style.basicInfo}>
-          <img src={`http://localhost:4000/uploads/${teacher.teacherPhoto}`} alt='hello'/>
+          <img src={`${URL()}/uploads/${teacher.teacherPhoto}`} alt='hello'/>
           <div className={style.extraInfo}>
             <h5>{teacher.first} {teacher.middle} {teacher.last}</h5>
             <p>Gendar: {teacher.gender}</p>

@@ -4,6 +4,7 @@ import {useNavigate } from 'react-router-dom';
 import FamilyDetailInfo from '../Family/FamilyDetailInfo';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
+import URL from '../../../UI/URL';
 
 function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
@@ -18,7 +19,7 @@ function StudentDetail({studentId}) {
         const fetchAstudent = async()=>{
             setLoading(true)
             try {
-               const response = await fetch(`http://localhost:4000/member/student/${studentId}`)
+               const response = await fetch(`${URL()}/member/student/${studentId}`)
                const json = await response.json()
                if(response.ok){
                   setStudent(json.student)
@@ -39,7 +40,7 @@ function StudentDetail({studentId}) {
       const fetchAfamily = async()=>{
         setFamilyLoading(true)
         try {
-            const response = await fetch(`http://localhost:4000/member/family/${studentId}`)
+            const response = await fetch(`${URL()}/member/family/${studentId}`)
             const json = await response.json()
 
             if(response.ok){
@@ -76,7 +77,7 @@ function StudentDetail({studentId}) {
       {student && 
       <div className={style.BoxContainer}>
         <div className={style.basicInfo}>
-          <img src={`http://localhost:4000/uploads/${student.studentPhoto}`} alt='hello'/>
+          <img src={`${URL()}/uploads/${student.studentPhoto}`} alt='hello'/>
           <div className={style.extraInfo}>
             <h5>{student.first} {student.middle} {student.last}</h5>
             <p>Gendar: {student.gender}</p>

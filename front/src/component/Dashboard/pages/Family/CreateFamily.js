@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import style from '../css/pages.module.css'
 import {useNavigate} from 'react-router-dom'
+import URL from '../../../UI/URL'
 
 function CreateFamily({studentId}) {
     const navigate = useNavigate()
@@ -37,7 +38,7 @@ function CreateFamily({studentId}) {
         data.set('familyType',member.familyType)
         data.set('studentId',member.studentId)
         data.set('familyPhoto',familyPhoto[0])
-        const response = await fetch('http://localhost:4000/member/family', {
+        const response = await fetch(`${URL()}/member/family`, {
             method: 'POST',
             body: data,
         });

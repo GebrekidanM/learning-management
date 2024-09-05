@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Card } from 'primereact/card';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
-
+import URL from '../../../UI/URL';
 function ListOfStudents({ subjectId }) {
     const navigate = useNavigate()
     const [error, setError] = useState('');
@@ -18,7 +18,7 @@ function ListOfStudents({ subjectId }) {
         const fetchSubject = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`http://localhost:4000/class/subject/${subjectId}`);
+                const response = await fetch(`${URL()}/class/subject/${subjectId}`);
                 const json = await response.json();
                 if (response.ok && isMounted) {
                     setSubjectInfo(json.subject);

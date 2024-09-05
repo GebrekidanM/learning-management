@@ -1,13 +1,13 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
-const {Grade,Year,Section} = require('../model/YearModel');
+const {Grade,Year,Section,Semester} = require('../model/YearModel');
 const { Subject } = require('../model/SubjectModel');
 const {Student} = require('../model/userModel')
-//create year and with that year grade
-const subjects = ["አማርኛ","ሒሳብ","አካባቢ ሳይንስ","የክወና እና እይታ ጥበብ","የሥነ ጥበባት ትምህርት","ጤሰማ","ስነ ምግባር","ኅብረተሰብ","English","Affan Oromo","Spoken","Grammer","Communication","Mathematics","General Science","Social Study","PVA","HPE"]
 
+//create year and with that year grade
 router.post('/create-year', async (req, res) => {
     const yearData = req.body;
+
     try {
         const existingYear = await Year.findOne({ yearName: yearData.yearName });
 
@@ -15,49 +15,98 @@ router.post('/create-year', async (req, res) => {
             // Create the year
             const year = await Year.create(yearData);
 
-            // Create grades for the year
-            const grades = Array.from({ length: 8 }, (_, i) => ({
-                grade: i + 1,
-                yearId: year._id
-            }));
-
-            const createdGrades = await Grade.insertMany(grades);
-
-            // Create sections for each grade
-            const sectionLabels = ['A', 'B', 'C', 'D', 'E', 'F'];
-            const sections = createdGrades.flatMap(grade =>
-                sectionLabels.map(label => ({
-                    section: label,
-                    gradeId: grade._id
-                }))
-            );
-
-           const section = await Section.insertMany(sections);
-           if(section) {
-            const subject = section.flatMap(sec=>(
-                subjects.map(sub=>({
-                    name:sub,
-                    sectionId:sec._id
-                }))
-            ))
-                await Subject.insertMany(subject)
-           };
-
-            res.status(201).json({ message: 'Year, grades, and sections inserted successfully.' });
+            res.status(201).json(year);
         } else {
-            res.status(409).json({ error: 'Year already exists. No new grades or sections were inserted.' });
+            res.status(409).json({ error: 'Year already exists. No new grades, sections, or semesters were inserted.' });
         }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
-//get grade
-/**********************************************For grades and sections************************************************ */
-//get grades with students 
 
+router.post('/semester/create', async(req,res)=>{
+    const { name, startDate, endDate,yearId } = req.body; // Assuming semester data is included in the request body
+
+    try {
+        const semester = {
+            name: name, // Default to 'Semester 1' if not provided
+            startDate: startDate,
+            endDate: endDate,
+            yearId: yearId, // Associate the semester with the year
+        };
+
+        const createdSemester = await Semester.create(semester);
+
+        const grade = {
+            grade: 1, // Adjust the grade level as needed
+            yearId: yearId,
+            semesterId:createdSemester._id,
+        };
+
+        const createdGrade = await Grade.create(grade);
+
+        // Create one section for the created grade
+        const section = {
+            section: 'A', // Adjust the section label as needed
+            gradeId: createdGrade._id
+        };
+
+        const createdSection = await Section.create(section);
+
+        const subjects = ['Math', 'English']; // Adjust the subjects as needed
+
+        // Create subjects for the created section
+        const subjectData = subjects.map(sub => ({
+            name: sub,
+            sectionId: createdSection._id
+        }));
+
+        await Subject.insertMany(subjectData);
+
+        res.status(200).json(createdSemester)
+
+    } catch (error) {
+        res.status(500).json({error:error.message})
+        
+    }
+})
+
+/**********************************************For grades and sections************************************************ */
+//get semesters
+router.get('/semesters', async(req,res)=>{
+    try {
+        const semesters = await Semester.find({})
+        if(semesters){
+            res.status(200).json(semesters)
+        }else{
+            res.status(404).json({error:"No semester at all!"})
+        }
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
+
+//get grades
+router.get('/grades/:semesterId',async(req,res)=>{
+    try {
+        const grades = await Grade.find({}).populate('yearId')
+
+        if(grades){
+            res.status(200).json(grades)
+        }else{
+            res.status(404).json({error:"No grade"})
+        }
+    } catch (error) {
+        res.status(500).json({error:error.massege})
+    }
+})
+
+
+//get grades
 router.get('/grades',async(req,res)=>{
     try {
         const grades = await Grade.find({}).populate('yearId')
+
         if(grades){
             res.status(200).json(grades)
         }else{

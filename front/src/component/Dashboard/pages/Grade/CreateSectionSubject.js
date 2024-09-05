@@ -5,6 +5,7 @@ import { Button } from 'primereact/button';
 import { useNavigate } from 'react-router-dom';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
+import URL from '../../../UI/URL';
 
 function CreateSectionSubject({ teacherId }) {
     const [grades, setGrades] = useState([]);
@@ -23,7 +24,7 @@ function CreateSectionSubject({ teacherId }) {
         const fetchGrades = async () => {
             setLoading(true);
             try {
-                const response = await fetch('http://localhost:4000/class/grades');
+                const response = await fetch(`${URL()}/class/grades`);
                 const json = await response.json();
                 if (response.ok) {
                     setGrades(json);
@@ -45,7 +46,7 @@ function CreateSectionSubject({ teacherId }) {
             const fetchSections = async () => {
                 setLoading(true);
                 try {
-                    const response = await fetch(`http://localhost:4000/class/grades/${selectedGrade._id}/sections`);
+                    const response = await fetch(`${URL()}/class/grades/${selectedGrade._id}/sections`);
                     const data = await response.json();
                     if (response.ok) {
                         setSections(data);
@@ -68,7 +69,7 @@ function CreateSectionSubject({ teacherId }) {
             const fetchSubjects = async () => {
                 setLoading(true);
                 try {
-                    const response = await fetch(`http://localhost:4000/class/subjects/${selectedSection._id}`);
+                    const response = await fetch(`${URL()}/class/subjects/${selectedSection._id}`);
                     const data = await response.json();
                     if (response.ok) {
                         setSubjects(data);
@@ -87,7 +88,7 @@ function CreateSectionSubject({ teacherId }) {
 
     useEffect(()=>{
         const fetchTeacher = async ()=>{
-            const response = await fetch(`http://localhost:4000/member/teacher/${teacherId}`)
+            const response = await fetch(`${URL()}/member/teacher/${teacherId}`)
             const json = await response.json()
             if(response.ok){
                 setTeacher(json)
