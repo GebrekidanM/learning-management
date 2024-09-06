@@ -1,4 +1,4 @@
-const getBaseURL = ()=>{
+const URL = ()=>{
     return `http://localhost:4000`
 } 
-export default getBaseURL
+export default URL

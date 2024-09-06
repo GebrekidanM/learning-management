@@ -86,10 +86,31 @@ router.get('/semesters', async(req,res)=>{
     }
 })
 
+//get semester
+router.get('/semester/:yearId', async(req,res)=>{
+    try {
+        const {yearId} = req.params
+        if(!mongoose.Types.ObjectId.isValid(yearId)){
+            res.status(400).json({error:"Year Id is invalid!"})
+        }
+        const semester = await Semester.find({yearId}).sort({createdAt:-1}).limit(1)
+
+        if (semester.length === 0) {
+            return res.status(404).json({ error: "No semesters found for the provided Year ID." });
+        }
+
+        // Send the found semester
+        res.status(200).json(semester[0]);
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
+
 //get grades
 router.get('/grades/:semesterId',async(req,res)=>{
     try {
-        const grades = await Grade.find({}).populate('yearId')
+        const {semesterId} = req.params
+        const grades = await Grade.find({semesterId})
 
         if(grades){
             res.status(200).json(grades)
@@ -100,7 +121,25 @@ router.get('/grades/:semesterId',async(req,res)=>{
         res.status(500).json({error:error.massege})
     }
 })
+//creating grade
+router.post('/create/grade', async(req,res)=>{
+    const {yearId,semesterId,grade} = req.body
+    try {
+        const grade = await findOne({yearId,semesterId})
+        if(grade){
+            return res.status({error:"A grade is found in this Year and semester!"})
+        }
+        const createdGrade = await Grade.create({yearId,semesterId,grade})
+        if(createdGrade){
+            res.status(202).json(createdGrade)
+        }else{
+            res.status(400).json({error:'Something is wrong, please try again'})
+        }
 
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
 
 //get grades
 router.get('/grades',async(req,res)=>{

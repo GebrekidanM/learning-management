@@ -41,7 +41,7 @@ function CreateSemester() {
             setStartDate('');
             setEndDate('');
             setName('');
-            navigate('/main',{state:{yearId,semesterId:json.createdSemester._id}}); 
+            navigate('/main',{state:{yearId,semesterId:json._id}}); 
         } else {
             setServerError(json.error || 'Failed to create semester.');
         }

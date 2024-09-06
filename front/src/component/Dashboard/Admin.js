@@ -39,7 +39,7 @@ function Admin({year,yearId,semesterId}) {
   const {loggedUser} = useContext(AuthContext)
  
 
-  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId } = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -63,6 +63,7 @@ function Admin({year,yearId,semesterId}) {
         if (studentId) {
           return <StudentDetail studentId={studentId} />;
         }
+
         if(result){
           return <StudentResult studentId={result}/>
         }
@@ -74,6 +75,9 @@ function Admin({year,yearId,semesterId}) {
         }
         return <Student />;
       case 'grade':
+        if (gradeId) {
+          return <StudentDetail gradeId={studentId} />;
+        }
         return <Grade  semesterId={semesterId} yearId={yearId}/>;
       case 'schedule':
         return <Schedule />;

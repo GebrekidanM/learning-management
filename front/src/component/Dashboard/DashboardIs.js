@@ -8,49 +8,93 @@ import { useLocation } from 'react-router-dom';
 
 function DashboardIs() {
     const [yearExists, setYearExists] = useState(false);
-    const [loading,setLoading] = useState(false)
-    const [error,setError] = useState('')
-    const location = useLocation()
-    const {yearId,semesterId} = location.state || {}
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [semester, setSemester] = useState('');
+    const location = useLocation();
+    const { yearId, semesterId } = location.state || {};
 
+    // Effect to check if a year exists or set based on location state
     useEffect(() => {
         const checkYear = async () => {
+            setLoading(true);
             try {
-                setLoading(true)
                 const response = await fetch(`${URL()}/class/check-academic-year`);
                 const data = await response.json();
-                if(response.ok){
-                    setYearExists(data);
+                
+                if (response.ok) {
+                    setYearExists(data); // Assuming data contains an `exists` flag
+                } else {
+                    setError(data.error || 'Failed to fetch academic year data.');
                 }
             } catch (error) {
-                setError(error)
-            }finally{
-                setLoading(false)
+                setError(error.message || 'An error occurred while checking the academic year.');
+            } finally {
+                setLoading(false);
             }
         };
-        if(!yearId){
+
+        // Check for year existence only if yearId is not provided in location state
+        if (!yearId) {
             checkYear();
-        }else{
-            setYearExists(true)
+        } else {
+            setYearExists(yearId);
         }
-        
-    }, []);
+    }, [yearId]);
+
+    // Effect to fetch the latest semester for the specified or existing year
+    useEffect(() => {
+        const fetchSemester = async () => {
+            if (!yearId && !yearExists) return;
+
+            setLoading(true);
+            try {
+                const response = await fetch(`${URL()}/class/semester/${yearId || yearExists}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    setSemester(data._id);
+                } else {
+                    setError(data.error || 'Failed to fetch semester data.');
+                }
+            } catch (error) {
+                setError(error.message || 'An error occurred while fetching the semester.');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        // Fetch the semester only if semesterId is not provided in location state
+        if (!semesterId) {
+            fetchSemester();
+        } else {
+            setSemester(semesterId);
+        }
+    }, [semesterId, yearId, yearExists]);
 
     const handleCreateYear = () => {
         setYearExists(false);
+    };
+
+    if (loading) {
+        return <LoadingIndicator />;
     }
 
-    if(loading){
-        return <LoadingIndicator/>
-    }
-
-    if(error){
-        return <ErrorMessage error={error}/>
+    if (error) {
+        return <ErrorMessage error={error} />;
     }
 
     return (
         <div>
-            {yearExists ? <Admin year={handleCreateYear} yearId={yearId} semesterId={semesterId} /> : <CreateYear />}
+            {yearExists ? (
+                <Admin 
+                    year={handleCreateYear} 
+                    yearId={yearId || yearExists} 
+                    semesterId={semester} 
+                />
+            ) : (
+                <CreateYear />
+            )}
         </div>
     );
 }

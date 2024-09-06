@@ -11,7 +11,6 @@ function CreateYear() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  console.log(URL())
   const handleSubmit = async (e) => {
     e.preventDefault();
     setServerError('');
