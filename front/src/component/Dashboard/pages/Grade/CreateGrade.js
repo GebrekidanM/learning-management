@@ -17,23 +17,22 @@ function CreateGrade({yearId,semesterId,setShowCreateGrade}) {
 
         try {
             setLoading(true)
-        const response = await fetch(`${URL()}/class/create/grade`,{
-            method:'POST',
-            headers: {
-            'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({yearId,semesterId,grade})
-        })
+            const response = await fetch(`${URL()}/class/create/grade`,{
+                    method:'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({yearId,semesterId,grade})
+                }
+            )
 
-        const json = response.json()
-        if(response.ok){
-
-            navigate(`/main?type=grade?gradeId=${json._id}`)
-        }
-        
+            const json = await response.json()
+            if(response.ok){
+                navigate(`/main?type=grade&gradeId=${json._id}`)
+            }else{
+                setError(json.error)
+            }
         } catch (error) {
-        setError(error.message)
-        }finally{
+            setError(error.message)
+        } finally{
             setLoading(false)
         }
     }

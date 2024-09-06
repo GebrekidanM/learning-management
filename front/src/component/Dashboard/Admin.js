@@ -31,6 +31,7 @@ import ListOfStudents from './pages/Grade/ListOfStudents'
 import CreateScore from './pages/Score/CreateScore'
 import StudentResult from './pages/Student/StudentResult'
 import ReportCard from './pages/ReportCard/ReportCard'
+import CreateSection from './pages/Grade/CreateSection'
 
 
 function Admin({year,yearId,semesterId}) {
@@ -76,7 +77,7 @@ function Admin({year,yearId,semesterId}) {
         return <Student />;
       case 'grade':
         if (gradeId) {
-          return <StudentDetail gradeId={studentId} />;
+          return <CreateSection gradeId={gradeId} />;
         }
         return <Grade  semesterId={semesterId} yearId={yearId}/>;
       case 'schedule':

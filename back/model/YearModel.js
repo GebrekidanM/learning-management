@@ -64,7 +64,7 @@ const gradeSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'Grade is required.'],
         min: [1, 'Grade must be at least 1.'],
-        max: [8, 'Grade cannot exceed 8.']
+        max: [12, 'Grade cannot exceed 12.']
     },
     yearId: {
         type: mongoose.Schema.Types.ObjectId,

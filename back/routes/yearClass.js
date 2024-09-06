@@ -124,12 +124,21 @@ router.get('/grades/:semesterId',async(req,res)=>{
 //creating grade
 router.post('/create/grade', async(req,res)=>{
     const {yearId,semesterId,grade} = req.body
+
+    // Check for missing required fields
+    if (!yearId || !semesterId || !grade) {
+        return res.status(400).json({ error: 'Year ID, Semester ID, and Grade are required!' });
+    }
+   
     try {
-        const grade = await findOne({yearId,semesterId})
-        if(grade){
-            return res.status({error:"A grade is found in this Year and semester!"})
+        const getGrade = await Grade.findOne({grade,semesterId,gradeId})
+
+        if(getGrade){
+            return res.status(400).json({error:"A grade is found in this Year and semester!"})
         }
+
         const createdGrade = await Grade.create({yearId,semesterId,grade})
+        
         if(createdGrade){
             res.status(202).json(createdGrade)
         }else{
@@ -137,7 +146,12 @@ router.post('/create/grade', async(req,res)=>{
         }
 
     } catch (error) {
-        res.status(500).json({error:error.message})
+        if (error instanceof mongoose.Error.ValidationError) {
+            const error = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error });
+        }
+        
+        res.status(500).json({ error: error.message });
     }
 })
 
@@ -187,7 +201,34 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
     }
 });
 
+//create sections
 
+router.post('/create/sections',async(req,res)=>{
+    const {section,gradeId} = req.body
+
+    try {
+            for(const sec of section ){
+                const getSection = await Section.findOne({sec,gradeId})
+                
+                if(getSection){
+                    return res.status(400).json({error: "The Section is already exist!"})
+                 }
+            }
+                 const CreatedSections = await Section.insertMany(section.map(sec=>({section:sec,gradeId})))
+           
+                 res.status(200).json(CreatedSections)
+        
+    } catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            const error = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error });
+        }
+        
+        res.status(500).json({ error: error.message });
+    }
+})
+
+// get sections
 router.get('/sections', async(req,res)=>{
     try {
         const sections = await Section.find({}).populate('gradeId')
