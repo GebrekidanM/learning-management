@@ -4,6 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import CreateStudent from '../Student/CreateStudent';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
+
 function GradeSectionSelector() {
     const [grades, setGrades] = useState([]);
     const [selectedGrade, setSelectedGrade] = useState(null);
@@ -60,7 +61,7 @@ function GradeSectionSelector() {
                             <div className={style.gradeListBox}>
                                 {grades.map(grade => (
                                     <li 
-                                        className={style.gradeList} 
+                                        className={`${style.gradeList} bg-white text-cyan-900 border-cyan-900 border-1`} 
                                         key={grade._id} 
                                         onClick={() => setSelectedGrade(grade)}>
                                         Grade {grade.grade}
@@ -79,7 +80,7 @@ function GradeSectionSelector() {
                                 <div className={style.gradeListBox}>
                                     {sections.map(section => (
                                         <li 
-                                            className={style.gradeList} 
+                                            className={`bg-white text-cyan-900 border-cyan-900 border-1 ${style.gradeList}`} 
                                             key={section._id}
                                             onClick={() => handleSectionClick(section._id)}>
                                             {section.section}

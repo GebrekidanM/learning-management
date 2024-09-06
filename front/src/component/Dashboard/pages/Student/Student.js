@@ -25,7 +25,7 @@ function generateNewSearchParams(key,value) {
         </div>
         <Link 
             to={generateNewSearchParams('stuType','createStudent')}  
-            className={style.button}>Add new</Link>
+            className={'button bg-white text-cyan-900 w-3 border-cyan-900 border-1'}>Add new student</Link>
       </div>
       <div>
         {stuType === 'createStudent' ?

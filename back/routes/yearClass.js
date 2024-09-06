@@ -205,7 +205,6 @@ router.get('/grades/:gradeId/sections', async (req, res) => {
 
 router.post('/create/sections',async(req,res)=>{
     const {section,gradeId} = req.body
-
     try {
             for(const sec of section ){
                 const getSection = await Section.findOne({sec,gradeId})

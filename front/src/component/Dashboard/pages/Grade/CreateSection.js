@@ -48,14 +48,14 @@ function CreateSection({gradeId}) {
     e.preventDefault()
     try {
         setLoading(true)
-        const response = await fetch(`${URL()}/create/sections`,{
+        const response = await fetch(`${URL()}/class/create/sections`,{
             method:'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({section,gradeId})
         })
         const json = await response.json()
         if(response.ok){
-            navigate('/main?type=grade',{state:{success:"You created Sections successfully!"}})
+            navigate('/main?type=grade')
         }else{
             setError(json.error)
         }
