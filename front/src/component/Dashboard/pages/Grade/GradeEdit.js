@@ -7,6 +7,8 @@ import { Column } from 'primereact/column'
 import { Button } from 'primereact/button'
 import { Link } from 'react-router-dom'
 import DeleteSection from '../Delete/DeleteSection'
+import { ToastContainer,toast } from 'react-toastify';
+
 
 function GradeEdit({semesterId}) {
     const [grades,setGrades] = useState([])
@@ -14,6 +16,7 @@ function GradeEdit({semesterId}) {
     const [loading,setLoading] = useState(false)
     const [deleteCard,setDeleteCard] = useState(false)
     const [selectedGradeId,setSelectedGrade] = useState('')
+    const [refresh,setRefresh] = useState(false)
 
     useEffect(()=>{
         
@@ -35,15 +38,22 @@ function GradeEdit({semesterId}) {
         } 
         
         fetchGrades()
-    },[semesterId])
+    },[semesterId,refresh])
 
     const handleDeleteCard = (id)=>{
-        selectedGradeId(id)
+        setSelectedGrade(id)
         setDeleteCard(true);
     }
 
     const handleDeleteSuccess = ()=>{
-        setDeleteCard(false)
+        toast.success('Grade deleted successfully.', {
+            onClose: () => {
+              // Delay refresh or navigation until after the toast is shown
+              setDeleteCard(false);
+              setRefresh((prev) => !prev); // Refresh the data
+            },
+            autoClose: 3000, 
+        })
     }
 
     if(loading){
@@ -52,6 +62,8 @@ function GradeEdit({semesterId}) {
 
   return (
     <div>
+        <ToastContainer/>
+
         {error && <ErrorMessage error={error}/>}
 
         <DataTable value={grades} className="mt-4" paginator rows={10} responsiveLayout="scroll">
@@ -62,18 +74,20 @@ function GradeEdit({semesterId}) {
                     className="p-button p-button-danger p-mr-2"
                     icon="pi pi-trash" 
                     onClick={() => handleDeleteCard(data._id)}/>
-                <Link to={`/main?type=grade&action=${data._id}`}>
-                    <Button className="p-button p-button-secondary p-mr-2">Edit</Button>
-                </Link>
-                <Link to={`/main?type=grade&gradeId=${data._id}`}>
-                    <Button className="p-button p-button-info">View</Button>
+                <Link to={{
+                            pathname: `/main`,
+                            search: `?type=grade&gradeViewId=${data._id}`,
+                            }}
+                          state={{ grade: data.grade }}>
+                          
+                    <Button className="p-button p-button-info">View Sections</Button>
                 </Link>
             </>
         )} />
       </DataTable>
       {deleteCard && <DeleteSection 
                     setDeleteCard={setDeleteCard}
-                    name={grades.find(student => student._id === selectedGradeId)?.first}
+                    name={grades.find(grade => grade._id === selectedGradeId)?.grade}
                     id={selectedGradeId}
                     onDeleteSuccess={handleDeleteSuccess}
                 />}

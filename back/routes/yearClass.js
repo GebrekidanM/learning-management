@@ -154,7 +154,23 @@ router.post('/create/grade', async(req,res)=>{
         res.status(500).json({ error: error.message });
     }
 })
+//Delete grade
+router.delete('/grade/delete/:id', async(req,res)=>{
+    const {id} = req.params
+    try {
+        const deletedGrade = await Grade.findByIdAndDelete(id)
 
+        if(!deletedGrade){
+           return res.status(404).json({error:"No grade with this Id!"})
+        }
+
+        await Section.deleteMany({gradeId:id})
+        res.status(200).json("Successfully Deleted")
+
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
 //get grades
 router.get('/grades',async(req,res)=>{
     try {

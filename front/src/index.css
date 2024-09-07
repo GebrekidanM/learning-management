@@ -37,7 +37,7 @@ a{
   color:var(--white);
   min-width: 5rem;
   font-weight:bold ;
-  transition: 1s;
+  transition: 0.5s;
 }
 .button:hover{
   cursor: pointer;
