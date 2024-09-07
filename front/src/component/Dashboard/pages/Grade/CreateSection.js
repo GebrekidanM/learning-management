@@ -55,7 +55,7 @@ function CreateSection({gradeId}) {
         })
         const json = await response.json()
         if(response.ok){
-            navigate('/main?type=grade')
+            navigate('/main?type=grade',{state:{success:"You created Sections successfully!"}})
         }else{
             setError(json.error)
         }

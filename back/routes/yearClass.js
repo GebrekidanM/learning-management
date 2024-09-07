@@ -131,7 +131,7 @@ router.post('/create/grade', async(req,res)=>{
     }
    
     try {
-        const getGrade = await Grade.findOne({grade,semesterId,gradeId})
+        const getGrade = await Grade.findOne({grade,semesterId,yearId})
 
         if(getGrade){
             return res.status(400).json({error:"A grade is found in this Year and semester!"})
@@ -207,7 +207,7 @@ router.post('/create/sections',async(req,res)=>{
     const {section,gradeId} = req.body
     try {
             for(const sec of section ){
-                const getSection = await Section.findOne({sec,gradeId})
+                const getSection = await Section.findOne({section:sec,gradeId})
                 
                 if(getSection){
                     return res.status(400).json({error: "The Section is already exist!"})

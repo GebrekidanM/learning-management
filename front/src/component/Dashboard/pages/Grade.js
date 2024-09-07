@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import URL from '../../UI/URL'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import LoadingIndicator from '../../common/LoadingIndicator'
 import ErrorMessage from '../../common/ErrorMessage'
 import CreateGrade from './Grade/CreateGrade'
 import { Dropdown } from 'primereact/dropdown';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Grade({semesterId,yearId}) {
   const [showCreateGrade,setShowCreateGrade] = useState(false)
@@ -13,12 +15,14 @@ function Grade({semesterId,yearId}) {
   const [error,setError] = useState('')
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
-
+  const location = useLocation()
+  const {success} = location.state || {}
 
   useEffect(() => {
     const fetchGrades = async () => {
       try {
         setLoading(true);
+        setError('')
         const response = await fetch(`${URL()}/class/grades/${semesterId}`);
         const json = await response.json();
         if (response.ok) {
@@ -38,6 +42,13 @@ function Grade({semesterId,yearId}) {
     }
   }, [semesterId]);
   
+  if (success) {
+    toast.success(success, {
+      onClose: () => navigate(`${location.pathname}${location.search}`, { replace: true, state: {} }),
+      autoClose: 3000, // Duration in milliseconds
+    });
+  }
+
   const gradeOptions = grades.map(grade=>({
     label: `Grade ${grade.grade}`,
     value:grade.grade
@@ -50,8 +61,25 @@ function Grade({semesterId,yearId}) {
   const handleAddGradeCard = ()=>{
     setShowCreateGrade(true)
   }
+  const handleGrade= (e) =>{
+    const select = grades.find(grade=>grade.grade === e.value)
+      setSelectedGrade(select)
+  }
   
 
+  const handleSectionCreating = ()=>{
+    navigate(`/main?type=grade&gradeId=${selectedGrade._id}`)
+  }
+
+  const handleEditGrade = ()=>{
+    navigate(`/main?type=grade&gradeEdit=${semesterId}`)
+
+  }
+  const handleEditSemester=()=>{
+    navigate(`/main?type=grade&semesterEdit=${yearId}`)
+
+
+  }
 
   if(loading){
     return <LoadingIndicator/>
@@ -59,9 +87,16 @@ function Grade({semesterId,yearId}) {
 
   return (
     <div>
-      <div className='flex justify-content-between mt-6 w-10 mx-auto' >
-        <div className='button bg-white text-cyan-900 w-3 border-cyan-900 border-1' onClick={handleCreateSemester}>Create Semester</div>
-        <div className='button bg-white text-cyan-900 w-3 border-cyan-900 border-1' onClick={handleAddGradeCard}>Add Grade</div>
+      <ToastContainer/>
+      <div className='flex justify-content-between mt-6 w-10 mx-auto gap-6' >
+        <div className='w-6 flex flex-column gap-3'>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleCreateSemester}>Add new Semester</div>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleAddGradeCard}>Add new Grade</div>
+        </div>
+        <div className='w-6 flex flex-column gap-3'>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleEditSemester}>Edit Semester</div>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleEditGrade}>Edit Grade</div>
+        </div>
       </div>
       {error && <ErrorMessage error={error}/>}
 
@@ -69,12 +104,17 @@ function Grade({semesterId,yearId}) {
         grades &&
         <div className="w-10 mx-auto mt-3">
          <Dropdown 
-            value={selectedGrade} 
-            onChange={e=>setSelectedGrade(e.value)} 
+            value={selectedGrade?.grade} 
+            onChange={handleGrade} 
             options={gradeOptions} 
             optionLabel={"label"} 
             placeholder="Select A grade"
             className="mt-3 bg-white text-cyan-900 w-3 border-cyan-900 border-1"/>
+          {selectedGrade &&
+            <div 
+                onClick={handleSectionCreating}
+                className='button mt-3 bg-white text-cyan-900 w-3 border-cyan-900 border-1'>Create section</div>
+          }
         </div>
       )}
       {showCreateGrade && <CreateGrade yearId={yearId} setShowCreateGrade={setShowCreateGrade} semesterId={semesterId}/>}

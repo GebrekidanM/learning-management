@@ -32,6 +32,7 @@ import CreateScore from './pages/Score/CreateScore'
 import StudentResult from './pages/Student/StudentResult'
 import ReportCard from './pages/ReportCard/ReportCard'
 import CreateSection from './pages/Grade/CreateSection'
+import GradeEdit from './pages/Grade/GradeEdit'
 
 
 function Admin({year,yearId,semesterId}) {
@@ -40,7 +41,7 @@ function Admin({year,yearId,semesterId}) {
   const {loggedUser} = useContext(AuthContext)
  
 
-  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId } = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -78,6 +79,12 @@ function Admin({year,yearId,semesterId}) {
       case 'grade':
         if (gradeId) {
           return <CreateSection gradeId={gradeId} />;
+        }
+        if (semesterEdit) {
+          return <CreateSection yearId={semesterEdit} />;
+        }
+        if (gradeEdit) {
+          return <GradeEdit semesterId={gradeEdit} />;
         }
         return <Grade  semesterId={semesterId} yearId={yearId}/>;
       case 'schedule':
