@@ -3,6 +3,7 @@ import style from '../css/pages.module.css';
 import { useNavigate } from 'react-router-dom';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
+import ErrorMessage from '../../../common/ErrorMessage';
 function CreateTeacher({yearId,yearError}) {
     const [userData, setUserData] = useState({
         first: "",
@@ -152,6 +153,8 @@ function CreateTeacher({yearId,yearError}) {
             {yearError && <p className='error'>{yearError}</p>}
             <form onSubmit={handleSubmit}>
                 <h2>Teacher's information</h2>
+                {errors.form && <ErrorMessage error={errors.form}/>}
+
                 <div className={style.inLineBox}>
                     <div className={style.info}>
                         <label>First name:</label>
@@ -232,6 +235,8 @@ function CreateTeacher({yearId,yearError}) {
                                value={userData.email} 
                                onChange={handleOnChange}/>
                       </div>
+                </div>
+                <div className={style.inLineBox}>
                       <div className={style.info}>
                         <label>Experience:</label>
                         <input type='number' 
@@ -285,6 +290,7 @@ function CreateTeacher({yearId,yearError}) {
                         />
                         {errors.subCity && <span className={style.error}>{errors.subCity}</span>}
                     </div>
+                    
                     <div className={style.info}>
                         <label>Wereda:</label>
                         <input
@@ -310,7 +316,6 @@ function CreateTeacher({yearId,yearError}) {
                     </div>
                 </div>
 
-                {errors.form && <div className={style.error}>{errors.form}</div>}
                 <button type="submit" disabled={loading} className={style.button}>
                     {loading ? 'Submitting...' : 'Submit'}
                 </button>

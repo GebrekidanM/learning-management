@@ -17,7 +17,7 @@ function Password(name){
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId } = req.body;
     const studentPhoto = req.file.filename
-    const password = Password(first)
+    const password = Password(capitalizeFirstLetter(first))
     try {
         const student = await Student.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
         if(student){
@@ -26,8 +26,12 @@ router.post('/student', upload.single('studentPhoto'), async (req, res) => {
             res.status(400).json({error:"Something is wrong!"})
         }
     } catch (error) {
-        console.log(error)
-        res.status(500).json({error:"Server error"})
+        if (error instanceof mongoose.Error.ValidationError) {
+            const error = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error });
+        }
+        
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -116,17 +120,21 @@ router.get('/students/:sectionId', async (req, res) => {
 router.post('/teacher', upload.single('teacherPhoto'), async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo} = req.body;
     const teacherPhoto = req.file.filename 
-
+    const password= Password(capitalizeFirstLetter(first))
     try {
-        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
+        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
         if(student){
             res.status(200).json(student)
         }else{
             res.status(400).json({error:"Something is wrong!"})
         }
     } catch (error) {
-        console.log(error)
-        res.status(500).json({error:error.message})
+        if (error instanceof mongoose.Error.ValidationError) {
+            const validationErrors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: validationErrors });
+        }
+        
+        res.status(500).json({ error: error.message });
     }
 });
 
@@ -310,15 +318,21 @@ router.get('/family/only/:id',async(req,res)=>{
 router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
     const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,studentId} = req.body
     const familyPhoto = req.file.filename
+    const password = Password(capitalizeFirstLetter(familyFirst))
+
     try {
-        const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),familyType,familyEmail,familyPhone,familyPhoto,studentId})
+        const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),password,familyType,familyEmail,familyPhone,familyPhoto,studentId})
         if(!family){
             return res.status(400).json({error:"Something is wrong please try again"})
         }
         res.status(200).json(family)
     } catch (error) {
-        console.log(error)
-        res.status(500).json({error:error.message})
+        if (error instanceof mongoose.Error.ValidationError) {
+            const error = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error });
+        }
+        
+        res.status(500).json({ error: error.message });
     }
 })
 
@@ -405,6 +419,5 @@ router.delete('/delete/:id', async (req, res) => {
         return res.status(500).json({ error: error.message });
     }
 });
-
 
 module.exports = router

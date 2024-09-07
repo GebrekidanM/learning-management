@@ -29,10 +29,8 @@
 .gradeList {
   text-decoration: none;
   cursor: pointer;
-  background-color: var(--card);
   padding-block: 0.3rem;
   padding-inline: 2rem;
-  color: var(--white);
   text-align: center;
   border-radius: 0.2rem;
   list-style: none;

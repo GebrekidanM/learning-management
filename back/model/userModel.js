@@ -51,7 +51,7 @@ const StudentSchema = new mongoose.Schema(
     password: {
       type: String,
       minlength: [8, 'Password must be at least 8 characters long.'],
-      maxlength: [14, 'Password cannot exceed 14 characters.'],
+      maxlength: [30, 'Password cannot exceed 30 characters.'],
       required: [true, 'Password is required.'],
       validate: {
         validator: function (value) {
@@ -111,7 +111,7 @@ const FamilySchema = new mongoose.Schema({
     password: {
       type: String,
       minlength: [8, 'Password must be at least 8 characters long.'],
-      maxlength: [14, 'Password cannot exceed 14 characters.'],
+      maxlength: [30, 'Password cannot exceed 30 characters.'],
       required: [true, 'Password is required.'],
       validate: {
         validator: function (value) {

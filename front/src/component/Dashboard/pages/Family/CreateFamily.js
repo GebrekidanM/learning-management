@@ -50,7 +50,7 @@ function CreateFamily({studentId}) {
   return (
     <div className={style.createBox}>
         <form onSubmit={handleSubmit}>
-        <h3>Family Members information</h3>
+            <h3>Family Members information</h3>
             <div className={style.familyBox}>
               <div className={style.inLineBox}>
                   <div className={style.info}>    
@@ -75,57 +75,31 @@ function CreateFamily({studentId}) {
                         </div>
                       <div className={style.info}>
                           <label>Last Name:</label>
-                          <input
-                              type='text'
-                              name="familyLast"
-                              value={member.familyLast}
-                              onChange={handleFamilyChange}
-                              required
-                          />
+                          <input type='text' name="familyLast" value={member.familyLast} onChange={handleFamilyChange} required/>
                       </div>
                     </div>
                   <div className={style.inLineBox}>                  
                         <div className={style.info}>
                           <label>Family Type:</label>
-                          <input
-                              type='text'
-                              name="familyType"
-                              value={member.familyType}
-                              onChange={handleFamilyChange}
-                              required
-                          />
+                          <input type='text' name="familyType" value={member.familyType} onChange={handleFamilyChange} required/>
                       </div>
                       <div className={style.info}>
                           <label>Family Phone Number:</label>
-                          <input
-                              type='number'
-                              name="familyPhone"
-                              value={member.familyPhone}
-                              onChange={handleFamilyChange}
-                              min="1"
-                              required
-                          />
+                          <input type='number' name="familyPhone" value={member.familyPhone} onChange={handleFamilyChange} min="1" required/>
                       </div>
                       <div className={style.info}>
                         <label>Email:</label>
-                        <input type='email' 
-                               name='familyEmail' 
-                               value={member.familyEmail} 
-                               onChange={handleFamilyChange}/>
+                        <input type='email' name='familyEmail' value={member.familyEmail} onChange={handleFamilyChange}/>
                       </div>
                       <div className={style.info}>
                         <label>Family Photo:</label>
-                        <input
-                          type='file'
-                          name="familyPhoto"
-                          onChange={handleFamilyFileChange}
-                          required
-                      />
-                  </div>
+                        <input type='file' name="familyPhoto" onChange={handleFamilyFileChange} required/>
+                       </div>
+                    </div>
+                    
                 </div>
-            </div>
-            <button type="submit"  className={'button'}>Register</button>  
-            </form>    
+                 <button type="submit"  className={'button'}>Register</button>  
+        </form>    
     </div>
   )
 }
