@@ -10,12 +10,16 @@ function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
+function Password(name){
+    return name + '@011';
+}
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'), async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId } = req.body;
     const studentPhoto = req.file.filename
+    const password = Password(first)
     try {
-        const student = await Student.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), gender, age, region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
+        const student = await Student.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
         if(student){
             res.status(200).json(student)
         }else{
@@ -111,7 +115,8 @@ router.get('/students/:sectionId', async (req, res) => {
 
 router.post('/teacher', upload.single('teacherPhoto'), async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo} = req.body;
-    const teacherPhoto = req.file.filename
+    const teacherPhoto = req.file.filename 
+
     try {
         const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
         if(student){

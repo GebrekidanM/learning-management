@@ -11,9 +11,27 @@ const Admin = mongoose.model("User", AdminSchema)
 
 const StudentSchema = new mongoose.Schema(
   {
-    first: { type: String, required: true, trim: true },
-    middle: { type: String, required: true, trim: true },
-    last: { type: String, required: true, trim: true },
+    first: {
+      type: String,
+      required: [true, 'First name is required.'],
+      trim: true,
+      minlength: [2, 'First name must be at least 2 characters long.'],
+      maxlength: [50, 'First name cannot exceed 50 characters.'],
+    },
+    middle: {
+      type: String,
+      required: [true, 'Middle name is required.'],
+      trim: true,
+      minlength: [2, 'Middle name must be at least 2 characters long.'],
+      maxlength: [50, 'Middle name cannot exceed 50 characters.'],
+    },
+    last: {
+      type: String,
+      required: [true, 'Last name is required.'],
+      trim: true,
+      minlength: [2, 'Last name must be at least 2 characters long.'],
+      maxlength: [50, 'Last name cannot exceed 50 characters.'],
+    },
     gender: { 
       type: String, 
       required: true, 
@@ -29,6 +47,18 @@ const StudentSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'Section', 
       required: true,
+    },
+    password: {
+      type: String,
+      minlength: [8, 'Password must be at least 8 characters long.'],
+      maxlength: [14, 'Password cannot exceed 14 characters.'],
+      required: [true, 'Password is required.'],
+      validate: {
+        validator: function (value) {
+          return /^(?=.*[A-Z])(?=.*\d).*$/.test(value);
+        },
+        message: 'Password must contain at least one uppercase letter and one number.',
+      },
     },
     region: { type: String, required: true, trim: true },
     city: { type: String, required: true, trim: true },
@@ -49,10 +79,47 @@ const Student = mongoose.model('Student', StudentSchema);
 
 const FamilySchema = new mongoose.Schema({
     familyPhoto:{type:String,required:true},
-    familyFirst:{type:String,required:true},
-    familyMiddle:{type:String,required:true},
-    familyType:{type:String,required:true},
-    familyLast:{type:String,required:true},
+    familyFirst: {
+      type: String,
+      required: [true, 'Family first name is required.'],
+      trim: true,
+      minlength: [2, 'Family first name must be at least 2 characters long.'],
+      maxlength: [50, 'Family first name cannot exceed 50 characters.'],
+    },
+    familyMiddle: {
+      type: String,
+      required: [true, 'Family middle name is required.'],
+      trim: true,
+      minlength: [2, 'Family middle name must be at least 2 characters long.'],
+      maxlength: [50, 'Family middle name cannot exceed 50 characters.'],
+    },
+    familyType: {
+      type: String,
+      required: [true, 'Family type is required.'],
+      trim: true,
+      enum: ['Parent', 'Sibling', 'Spouse', 'Child', 'Other'],
+      minlength: [2, 'Family type must be at least 2 characters long.'],
+      maxlength: [30, 'Family type cannot exceed 30 characters.'],
+    },
+    familyLast: {
+      type: String,
+      required: [true, 'Family last name is required.'],
+      trim: true,
+      minlength: [2, 'Family last name must be at least 2 characters long.'],
+      maxlength: [50, 'Family last name cannot exceed 50 characters.'],
+    },
+    password: {
+      type: String,
+      minlength: [8, 'Password must be at least 8 characters long.'],
+      maxlength: [14, 'Password cannot exceed 14 characters.'],
+      required: [true, 'Password is required.'],
+      validate: {
+        validator: function (value) {
+          return /^(?=.*[A-Z])(?=.*\d).*$/.test(value);
+        },
+        message: 'Password must contain at least one uppercase letter and one number.',
+      },
+    },
     familyEmail: {
         type: String,
         required: true,
