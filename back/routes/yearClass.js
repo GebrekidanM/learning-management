@@ -257,6 +257,21 @@ router.get('/sections', async(req,res)=>{
     }
 })
 
+//Delete section
+
+router.delete('/section/delete/:sectionId', async(req,res)=>{
+    const {sectionId} = req.params
+    try {
+        const DeletedSection = await Section.findByIdAndDelete(sectionId)
+        if(!DeletedSection){
+            res.status(404).json({error:"No section with this Id"})
+        }
+        res.status(200).json('Deleted!')
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
+
 // check is the year exist or not
 
 router.get('/check-academic-year', async (req, res) => {

@@ -79,7 +79,7 @@ function GradeEdit({semesterId}) {
                             search: `?type=grade&gradeViewId=${data._id}`,
                             }}
                           state={{ grade: data.grade }}>
-                          
+
                     <Button className="p-button p-button-info">View Sections</Button>
                 </Link>
             </>
@@ -89,6 +89,7 @@ function GradeEdit({semesterId}) {
                     setDeleteCard={setDeleteCard}
                     name={grades.find(grade => grade._id === selectedGradeId)?.grade}
                     id={selectedGradeId}
+                    type="Grade"
                     onDeleteSuccess={handleDeleteSuccess}
                 />}
       

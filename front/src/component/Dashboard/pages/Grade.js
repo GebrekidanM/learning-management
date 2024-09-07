@@ -90,12 +90,12 @@ function Grade({semesterId,yearId}) {
       <ToastContainer/>
       <div className='flex justify-content-between mt-6 w-10 mx-auto gap-6' >
         <div className='w-6 flex flex-column gap-3'>
-          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleCreateSemester}>Add new Semester</div>
-          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleAddGradeCard}>Add new Grade</div>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1 hover:bg-cyan-900 hover:text-white' onClick={handleCreateSemester}>Add new Semester</div>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1 hover:bg-cyan-900 hover:text-white' onClick={handleAddGradeCard}>Add new Grade</div>
         </div>
         <div className='w-6 flex flex-column gap-3'>
-          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleEditSemester}>Edit Semester</div>
-          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1' onClick={handleEditGrade}>Edit Grade</div>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1 hover:bg-cyan-900 hover:text-white' onClick={handleEditSemester}>Edit Semester</div>
+          <div className='button bg-white text-cyan-900 w-full border-cyan-900 border-1 hover:bg-cyan-900 hover:text-white' onClick={handleEditGrade}>Edit Grade</div>
         </div>
       </div>
       {error && <ErrorMessage error={error}/>}
