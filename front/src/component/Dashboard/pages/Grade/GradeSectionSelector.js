@@ -5,7 +5,7 @@ import CreateStudent from '../Student/CreateStudent';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
 
-function GradeSectionSelector() {
+function GradeSectionSelector({semesterId}) {
     const [grades, setGrades] = useState([]);
     const [selectedGrade, setSelectedGrade] = useState(null);
     const [sections, setSections] = useState([]);
@@ -37,12 +37,12 @@ function GradeSectionSelector() {
     };
 
     useEffect(() => {
-        fetchData(`${URL()}/class/grades`, setLoadingGrades, setGrades);
-    }, []);
+        fetchData(`${URL()}/class/grades/${semesterId}`, setLoadingGrades, setGrades);
+    }, [semesterId]);
 
     useEffect(() => {
         if (selectedGrade) {
-            fetchData(`${URL()}/class/grades/${selectedGrade._id}/sections`, setLoadingSections, setSections);
+            fetchData(`${URL()}/class/sections/${selectedGrade._id}`, setLoadingSections, setSections);
         }
     }, [selectedGrade]);
 

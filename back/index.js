@@ -7,6 +7,7 @@ const ClassRouter = require('./routes/yearClass')
 const TeacherSectionSubject = require('./routes/medium')
 const TeacherRouter = require('./routes/Teacher')
 const ScoreRoute = require('./routes/ScoreRoute')
+const SubectRoute = require('./routes/Subject')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 
@@ -49,4 +50,6 @@ app.use('/class',ClassRouter)
 app.use('/medium',TeacherSectionSubject)
 app.use('/teacher',TeacherRouter)
 app.use('/score',ScoreRoute)
+app.use('/subject',SubjectRoute)
+
 

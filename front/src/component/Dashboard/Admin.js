@@ -66,7 +66,6 @@ function Admin({year,yearId,semesterId}) {
         if (studentId) {
           return <StudentDetail studentId={studentId} />;
         }
-
         if(result){
           return <StudentResult studentId={result}/>
         }
@@ -76,7 +75,7 @@ function Admin({year,yearId,semesterId}) {
         if (stuEdit) {
           return <StudentEdit studentId={stuEdit} />;
         }
-        return <Student />;
+        return <Student semesterId={semesterId}/>;
       case 'grade':
         if (gradeId) {
           return <CreateSection gradeId={gradeId} />;
@@ -94,7 +93,7 @@ function Admin({year,yearId,semesterId}) {
       case 'schedule':
         return <Schedule />;
       case 'subject':
-        return <Subject />;
+        return <Subject semesterId={semesterId}/>;
       case 'parent':
         if (familyId) {
           return <FamilyDetail familyId={familyId} />;

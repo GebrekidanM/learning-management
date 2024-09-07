@@ -4,7 +4,7 @@ import style from "../css/pages.module.css"
 import GradeSectionSelector from '../Grade/GradeSectionSelector'
 import Grade from '../Grade/Grade'
 
-function Student() {
+function Student({semesterId}) {
 
   const [searchParams] = useSearchParams()
   const stuType = searchParams.get('stuType')
@@ -29,7 +29,7 @@ function generateNewSearchParams(key,value) {
       </div>
       <div>
         {stuType === 'createStudent' ?
-            <GradeSectionSelector/>
+            <GradeSectionSelector semesterId={semesterId}/>
           : <Grade/>
         }
       </div>

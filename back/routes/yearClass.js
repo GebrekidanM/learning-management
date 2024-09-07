@@ -72,21 +72,7 @@ router.post('/semester/create', async(req,res)=>{
 })
 
 /**********************************************For grades and sections************************************************ */
-//get semesters
-router.get('/semesters', async(req,res)=>{
-    try {
-        const semesters = await Semester.find({})
-        if(semesters){
-            res.status(200).json(semesters)
-        }else{
-            res.status(404).json({error:"No semester at all!"})
-        }
-    } catch (error) {
-        res.status(500).json({error:error.message})
-    }
-})
-
-//get semester
+//get semesters in one year
 router.get('/semester/:yearId', async(req,res)=>{
     try {
         const {yearId} = req.params
@@ -171,20 +157,6 @@ router.delete('/grade/delete/:id', async(req,res)=>{
         res.status(500).json({error:error.message})
     }
 })
-//get grades
-router.get('/grades',async(req,res)=>{
-    try {
-        const grades = await Grade.find({}).populate('yearId')
-
-        if(grades){
-            res.status(200).json(grades)
-        }else{
-            res.status(404).json({error:"No grade"})
-        }
-    } catch (error) {
-        res.status(500).json({error:error.massege})
-    }
-})
 
 router.get('/sections/:gradeId', async (req, res) => {
     const {gradeId} = req.params
@@ -194,24 +166,6 @@ router.get('/sections/:gradeId', async (req, res) => {
     try {
         const sections = await Section.find({ gradeId });
         res.status(200).json(sections);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});
-
-
-// Route to get sections for a specific grade
-router.get('/grades/:gradeId/sections', async (req, res) => {
-    const { gradeId } = req.params;
-
-    try {
-        const sections = await Section.find({ gradeId });
-
-        if (sections.length > 0) {
-            res.status(200).json(sections);
-        } else {
-            res.status(404).json({ error: 'No sections found for this grade.' });
-        }
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
