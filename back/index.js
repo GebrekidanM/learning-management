@@ -7,7 +7,7 @@ const ClassRouter = require('./routes/yearClass')
 const TeacherSectionSubject = require('./routes/medium')
 const TeacherRouter = require('./routes/Teacher')
 const ScoreRoute = require('./routes/ScoreRoute')
-const SubectRoute = require('./routes/Subject')
+const SubjectRoute = require('./routes/Subject')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 

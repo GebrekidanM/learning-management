@@ -8,6 +8,8 @@ import Family from './pages/Family/Family'
 import Teacher from './pages/Teacher/Teacher'
 import Grade from './pages/Grade'
 import StudentEdit from './pages/Student/StudentEdit'
+import Subject from './pages/Subject/Subject'
+
 //icons
 import { MdDashboard,MdFamilyRestroom  } from "react-icons/md";
 import { GrSchedules } from "react-icons/gr";
@@ -23,7 +25,6 @@ import TeacherDetail from './pages/Teacher/TeacherDetail'
 import FamilyDetail from './pages/Family/FamilyDetail'
 import FamilyEdit from './pages/Family/FamilyEdit'
 import CreateSectionSubject from './pages/Grade/CreateSectionSubject'
-import Subject from './pages/Subject'
 import SectionCardDetail from './pages/Grade/SectionCardDetail'
 import MarkList from '../UI/MarkList'
 import LoadingIndicator from '../common/LoadingIndicator'
