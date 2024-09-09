@@ -10,7 +10,7 @@ import GradeDropdown from './ForGrade/GradeDropDown';
 import SectionDropdown from './ForGrade/SectionDropDown';
 import URL from '../../../UI/URL';
 
-function Grade() {
+function Grade({semesterId}) {
     const [grades, setGrades] = useState([]);
     const [gradeError, setGradeError] = useState('');
     const [sections, setSections] = useState([]);
@@ -27,7 +27,7 @@ function Grade() {
     useEffect(() => {
         const fetchGrades = async () => {
             try {
-                const response = await fetch(`${URL()}/class/grades`);
+                const response = await fetch(`${URL()}/class/grades/${semesterId}`);
                 const json = await response.json();
                 if (response.ok) {
                     setGrades(json);

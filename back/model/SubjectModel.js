@@ -4,16 +4,10 @@ const SubjectSchema = new mongoose.Schema({
     name: {
         type: String,
         required: [true, 'Subject name is required'],
-        trim: true, 
-        validate: {
-            validator: function(value) {
-                return value.length === 1;
-            },
-            message: props => `${props.value} must be a single character`
-        }
+        trim: true,
     },
 
-    sectionId: { 
+    sectionId: {
             type: mongoose.Schema.Types.ObjectId, 
             ref: 'Section', 
             required: [true, 'Section ID is required'],
@@ -25,10 +19,10 @@ const SubjectSchema = new mongoose.Schema({
             }
     }
 }, {
-    timestamps: true 
+    timestamps: true
 });
 
-SubjectSchema.index({ sectionId: 1 });
+SubjectSchema.index({ sectionId: 1 , name:1});
 const Subject = mongoose.model('Subject', SubjectSchema);
 
 module.exports = { Subject };

@@ -115,7 +115,7 @@ function Teacher() {
                       <td>{index + 1}</td>
                       <td>{teacher.first} {teacher.middle}</td>
                       <td>{teacher.phoneNo}</td>
-                      <td className={'delete'} onClick={() => handleTeacherCard(teacher._id)}>Delete</td>
+                      <td className={'delete'} onClick={() => handleTeacherCard(teacher._id)}>Fire</td>
                       <td className={'edit'}>
                         <Link to={`/main?type=teacher&action=${teacher._id}`}>Edit</Link>
                       </td>

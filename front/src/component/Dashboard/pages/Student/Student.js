@@ -30,7 +30,7 @@ function generateNewSearchParams(key,value) {
       <div>
         {stuType === 'createStudent' ?
             <GradeSectionSelector semesterId={semesterId}/>
-          : <Grade/>
+          : <Grade semesterId={semesterId}/>
         }
       </div>
     </div>

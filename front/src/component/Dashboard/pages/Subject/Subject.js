@@ -14,11 +14,12 @@ function Subject({ semesterId }) {
   const [error, setError] = useState('');
   const [errorSec, setErrorSec] = useState('');
   const [errorSub, setErrorSub] = useState('');
-  const [loadingSub, setLoadingSub] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingSec, setLoadingSec] = useState(false);
-  const [cardForSubject, setCardForSubject] =useState(false);
-  const [sectionId,setSectionId] = useState({})
+  const [loadingSub, setLoadingSub] = useState(false);
+  const [cardForSubject, setCardForSubject] = useState(false);
+  const [refresh, setRefresh] = useState(false);
+
 
   // Fetch grades based on the semester ID
   useEffect(() => {
@@ -45,11 +46,11 @@ function Subject({ semesterId }) {
     if (semesterId) {
       fetchGrades();
     }
-  }, [semesterId]);
+  }, [semesterId, refresh]);
 
   // Fetch sections based on the selected grade
   useEffect(() => {
-    const fetchSection = async () => {
+    const fetchSections = async () => {
       try {
         setLoadingSec(true);
         setErrorSec('');
@@ -70,13 +71,13 @@ function Subject({ semesterId }) {
     };
 
     if (selectedGrade) {
-      fetchSection();
+      fetchSections();
     }
   }, [selectedGrade]);
 
   // Fetch subjects based on the selected section
   useEffect(() => {
-    const fetchSubject = async () => {
+    const fetchSubjects = async () => {
       try {
         setLoadingSub(true);
         setErrorSub('');
@@ -85,7 +86,7 @@ function Subject({ semesterId }) {
         if (response.ok) {
           setSubjects(json);
         } else {
-          setErrorSub(json.error);
+          setErrorSub(json.error || 'Failed to fetch subjects.');
         }
       } catch (error) {
         setErrorSub(`An error occurred: ${error.message}`);
@@ -95,9 +96,9 @@ function Subject({ semesterId }) {
     };
 
     if (selectedSection) {
-      fetchSubject();
+      fetchSubjects();
     }
-  }, [selectedSection]);
+  }, [selectedSection, refresh]);
 
   const gradeOptions = grades.map((grade) => ({
     label: `Grade ${grade.grade}`,
@@ -109,21 +110,73 @@ function Subject({ semesterId }) {
     value: section.section
   }));
 
-  const handleGrade = (e) => {
+  const handleGradeChange = (e) => {
     const selected = grades.find((grade) => grade.grade === e.value);
     setSelectedGrade(selected);
     setSelectedSection('');
     setSubjects([]);
+    setCardForSubject(false);
   };
 
-  const handleSection = (e) => {
+  const handleSectionChange = (e) => {
     const selected = sections.find((section) => section.section === e.value);
     setSelectedSection(selected);
   };
 
-  const handleSubjectCreating = (sectionId) => {
-    setSectionId(sectionId)
-    setCardForSubject(prev=>!prev)
+  const handleSubjectCreation = () => {
+    setCardForSubject(true);
+  };
+
+  // Handle editing of a subject
+  const handleEditSubject = (subject) => {
+    const newName = prompt('Enter new subject name:', subject.name);
+    if (newName && newName !== subject.name) {
+      updateSubject(subject._id, newName);
+    }
+  };
+
+  // Handle subject update
+  const updateSubject = async (subjectId, newName) => {
+    try {
+      setLoadingSub(true);
+      const response = await fetch(`${URL()}/subject/update/${subjectId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: newName }),
+      });
+      const json = await response.json();
+      if (!response.ok) {
+        setErrorSub(json.error || 'Failed to update subject.');
+      } else {
+        setRefresh(prev => !prev);
+      }
+    } catch (error) {
+      setErrorSub(`An error occurred: ${error.message}`);
+    } finally {
+      setLoadingSub(false);
+    }
+  };
+
+  // Handle deleting of a subject
+  const handleDeleteSubject = async (subjectId) => {
+    if (window.confirm('Are you sure you want to delete this subject?')) {
+      try {
+        setLoadingSub(true);
+        const response = await fetch(`${URL()}/subject/delete/${subjectId}`, {
+          method: 'DELETE',
+        });
+        const json = await response.json();
+        if (!response.ok) {
+          setErrorSub(json.error || 'Failed to delete subject.');
+        } else {
+          setRefresh(prev => !prev);
+        }
+      } catch (error) {
+        setErrorSub(`An error occurred: ${error.message}`);
+      } finally {
+        setLoadingSub(false);
+      }
+    }
   };
 
   if (loading) {
@@ -131,53 +184,77 @@ function Subject({ semesterId }) {
   }
 
   return (
-    <div className={`w-full mt-5 flex flex-column`}>
-      <div className={`w-full mt-5 flex flex-column gap-3`}>
-        <div className="w-6">
-          {error && <ErrorMessage error={error} />}
-          <Dropdown
-            value={selectedGrade?.grade}
-            onChange={handleGrade}
-            options={gradeOptions}
-            optionLabel="label"
-            placeholder="Select grade"
-            className="w-6 bg-white text-cyan-900 border-cyan-900 border-1"
-          />
-        </div>
-        <div className="w-6">
-          {loadingSec && <LoadingIndicator />}
-          {errorSec && <ErrorMessage error={errorSec} />}
-          {selectedGrade && (
-            <Dropdown
-              value={selectedSection?.section}
-              onChange={handleSection}
-              options={sectionOptions}
-              optionLabel="label"
-              placeholder="Select section"
-              className="w-6 bg-white text-cyan-900 border-cyan-900 border-1 text-left"
-            />
-          )}
-          <div className="w-6 flex flex-column gap-3 align-items-start text-center">
-          {selectedSection && subjects.length > 0 && (<>
-              <h3 className="text-center">Subjects in Grade {selectedGrade.grade} {selectedSection.section}</h3>
-              {errorSub && <ErrorMessage error={errorSub} />}
-              {subjects.map((subject) => (
-                <div key={subject._id} className="button w-12 bg-white text-cyan-900 border-cyan-900 border-1">
-                  {subject.name}
-                </div>
-              ))}
-              <div className="button w-12 bg-white text-cyan-900 border-cyan-900 border-1" onClick={()=>handleSubjectCreating(selectedSection._id)}>
-                Add subject
+    <div className="w-full flex gap-3" style={{zIndex:'-10'}}>
+      <div className="w-6 flex flex-column gap-3">
+          <div className='w-3 z-1 flex flex-column gap-3 top-1 pt-4 fixed bg-gray-300'>
+             <div>
+              {error && <ErrorMessage error={error} />}
+              <Dropdown
+                value={selectedGrade?.grade}
+                onChange={handleGradeChange}
+                options={gradeOptions}
+                optionLabel="label"
+                placeholder="Select grade"
+                className="w-10 bg-white text-cyan-900 border-cyan-900 border-1 z-0"
+              />
               </div>
-            </>)}
+              {loadingSec ? (
+                <LoadingIndicator />
+              ) : errorSec ? (
+                <ErrorMessage error={errorSec} />
+              ) : (
+                selectedGrade && (
+                  <Dropdown
+                    value={selectedSection?.section}
+                    onChange={handleSectionChange}
+                    options={sectionOptions}
+                    optionLabel="label"
+                    placeholder="Select section"
+                    className="w-10 bg-white text-cyan-900 border-cyan-900 border-1 text-left z-0"
+                  />
+                )
+              )}
           </div>
-          {loadingSub && <LoadingIndicator/>}
-        </div>
+          <div className="mt-8 w-6 flex flex-column gap-3 align-items-start text-center">
+            {selectedSection && (
+              <>
+                <h3 className="mt-8 text-center">
+                  Subjects in Grade {selectedGrade.grade} {selectedSection.section}
+                </h3>
+                {errorSub && <ErrorMessage error={errorSub} />}
+                {subjects.map((subject) => (
+                  <div key={subject._id} className="deleteAndEdit w-12 bg-white text-cyan-900 border-cyan-900 border-1 my-2 px-2 py-1">
+                    <div>{subject.name}</div>
+                    <div className="flex z-0">
+                      <button
+                        className="p-button p-component p-button-text p-button-plain"
+                        onClick={() => handleEditSubject(subject)}
+                      >
+                        <i className="pi pi-pencil text-cyan-900"></i>
+                      </button>
+                      <button
+                        className="p-button p-component p-button-text p-button-plain"
+                        onClick={() => handleDeleteSubject(subject._id)}
+                      >
+                        <i className="pi pi-trash text-red-500"></i>
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <div
+                  className="button w-12 bg-white text-cyan-900 border-cyan-900 border-1 my-2"
+                  onClick={handleSubjectCreation}
+                >
+                  Add subject
+                </div>
+              </>
+            )}
+          </div>
+          {loadingSub && <LoadingIndicator />}
       </div>
-      <div>
-         {cardForSubject && <CreateSubject sectionId={sectionId}/>}
-      </div>
-      
+      {cardForSubject && selectedSection && (
+        <CreateSubject sectionId={selectedSection._id} setRefresh={setRefresh} setCardForSubject={setCardForSubject} />
+      )}
     </div>
   );
 }

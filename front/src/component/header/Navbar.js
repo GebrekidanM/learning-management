@@ -52,7 +52,7 @@ function Navbar() {
   }
 
   return (
-    <div className={style.navContainer}>
+    <div className={`${style.navContainer}`}>
 
       {/*Nav bar link*/}
       <div className={style.navBox}>
