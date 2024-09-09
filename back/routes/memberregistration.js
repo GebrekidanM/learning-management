@@ -2,7 +2,7 @@ const router = require('express').Router()
 const mongoose = require('mongoose')
 const upload = require('../upload') 
 const {Student, Family} = require('../model/userModel')
-const {Section,Grade, Year} = require('../model/YearModel')
+const {Year} = require('../model/YearModel')
 const {Teacher} = require('../model/Teacher')
 
 //function to change capitalization
@@ -27,8 +27,8 @@ router.post('/student', upload.single('studentPhoto'), async (req, res) => {
         }
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
-            const error = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ error });
+            const ValidationError = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: ValidationError });
         }
         
         res.status(500).json({ error: error.message });
@@ -156,11 +156,11 @@ router.get('/teacher/:teacherId',async(req,res)=>{
     }
 })
 
-
-//get all teachers
-
+// Get all teachers with optional filters and search query
 router.get('/teachers', async (req, res) => {
     try {
+        const { isActive, search } = req.query;
+
         // Get today's date
         const today = new Date();
 
@@ -174,17 +174,68 @@ router.get('/teachers', async (req, res) => {
             return res.status(404).json({ error: "No active year found for today's date." });
         }
 
-        // Filter teachers by the current yearId
-        const teachers = await Teacher.find({ yearId: currentYear._id })
-        if(teachers){
-            // Respond with the filtered list of teachers
-            res.status(200).json(teachers);
-        }else{
-            res.status(404).json({error:error.message})
+        // Build the filter query
+        let filter = { yearId: currentYear._id };
+
+        if (isActive) {
+            filter.isActive = isActive === 'true'; // Convert string to boolean
         }
-        
+
+        // Find teachers with optional search query
+        let teachers = await Teacher.find(filter);
+
+        if (search) {
+            const query = search.toLowerCase();
+            teachers = teachers.filter(teacher => 
+                `${teacher.first} ${teacher.middle}`.toLowerCase().includes(query)
+            );
+        }
+
+        if (teachers.length > 0) {
+            res.status(200).json(teachers);
+        } else {
+            res.status(404).json({ error: 'No teachers found.' });
+        }
     } catch (error) {
-        // Handle any errors
+        if (error instanceof mongoose.Error.ValidationError) {
+            const validationErrors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: validationErrors });
+        }
+        res.status(500).json({ error: error.message });
+    }
+});
+
+//update teacher
+router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'), async (req, res) => {
+    const { teacherId } = req.params;
+    const updates = req.body;
+
+    // Check if the ID is a valid MongoDB ObjectID
+    if (!mongoose.Types.ObjectId.isValid(teacherId)) {
+        return res.status(404).json({ error: 'Invalid ID!' });
+    }
+    if (req.file) {
+        updates.teacherPhoto = req.file.filename; 
+    }
+
+    if(updates?.first){
+        updates.first=capitalizeFirstLetter(updates.first)
+    }
+    if(updates?.middle){
+        updates.middle=capitalizeFirstLetter(updates.middle)
+    }
+    
+    if(updates?.last){
+        updates.last=capitalizeFirstLetter(updates.last)
+    }
+
+    try {
+        const updatedTeacher = await Teacher.findByIdAndUpdate(teacherId, updates, { new: true, runValidators: true });
+        if (!updatedTeacher) {
+            return res.status(404).json({ error: 'Teacher not found!' });
+        }
+        res.status(200).json(updatedTeacher);
+    } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
@@ -328,8 +379,8 @@ router.post('/family', upload.single('familyPhoto'), async(req,res)=>{
         res.status(200).json(family)
     } catch (error) {
         if (error instanceof mongoose.Error.ValidationError) {
-            const error = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ error });
+            const ValidationError = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: ValidationError});
         }
         
         res.status(500).json({ error: error.message });

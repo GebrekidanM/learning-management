@@ -80,3 +80,11 @@ code {
   display: flex;
   justify-content: space-between;
 }
+.subjectAdd{
+  position: sticky;
+  top: 5rem;
+}
+
+.TeacherAddressEdit{
+  align-self: flex-start;
+}

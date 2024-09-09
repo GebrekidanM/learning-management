@@ -88,15 +88,31 @@ function TeacherDetail({teacherId}) {
           {loadingInfo ? <LoadingIndicator/>
           :
           <div className={css.MainBox}>
+            {teacher.isActive ?
+             <>
               <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>
               {errorInfo ? <p className='error'>{errorInfo}</p>
                 :
                   <div className={css.sectionCardContainer}>
                       {sectionInfos && sectionInfos.map(sectionInfo=>(
-                          <SectionCard key={sectionInfo._id} teacherId={teacherId}  sectionInfo={sectionInfo}/>
+                          <SectionCard key={sectionInfo._id} teacherId={teacherId} active={teacher.isActive}   sectionInfo={sectionInfo}/>
                       ))}
                   </div>
               }
+
+            </>:
+            <>
+                {errorInfo ? <p className='error'>{errorInfo}</p>
+                  :
+                    <div className={css.sectionCardContainer}>
+                        {sectionInfos && sectionInfos.map(sectionInfo=>(
+                            <SectionCard key={sectionInfo._id} teacherId={teacherId} active={teacher.isActive} sectionInfo={sectionInfo}/>
+                        ))}
+                    </div>
+                }
+            </>
+            }
+              
           </div>
           }
         </div>     

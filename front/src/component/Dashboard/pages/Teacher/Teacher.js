@@ -1,23 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
+import { Dropdown } from 'primereact/dropdown';
 import style from '../css/pages.module.css';
 import CreateTeacher from './CreateTeacher';
-import Delete from '../Delete/Delete';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
+import FireTeacher from './FireTeacher';
 
 function Teacher() {
   const [yearId, setYearId] = useState('');
   const [yearError, setYearError] = useState('');
-  const [teachers, setTeachers] = useState([]); // Initialize as an array
+  const [teachers, setTeachers] = useState([]);
+  const [filteredTeachers, setFilteredTeachers] = useState([]);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [searchParams] = useSearchParams();
   const teachType = searchParams.get('teachType');
   const [deleteCard, setDeleteCard] = useState(false);
   const [selectedTeacherId, setSelectedTeacherId] = useState('');
-  const [refreshTrigger, setRefreshTrigger] = useState(false); // Add a state for refresh trigger
-  
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [filter, setFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState('');
+
   // Generate new search params for the URL
   function generateNewSearchParams(key, value) {
     const type = new URLSearchParams(searchParams);
@@ -51,6 +55,7 @@ function Teacher() {
       const json = await response.json();
       if (response.ok) {
         setTeachers(json);
+        setFilteredTeachers(json); // Set filtered teachers to the fetched list
       } else {
         setError(json.error);
       }
@@ -69,6 +74,25 @@ function Teacher() {
     fetchTeachers(); // Refetch teachers when the refreshTrigger changes
   }, [refreshTrigger]);
 
+  // Filter teachers based on the selected filter and search query
+  useEffect(() => {
+    let updatedTeachers = teachers;
+
+    if (filter !== 'all') {
+      const isActive = filter === 'unfired';
+      updatedTeachers = updatedTeachers.filter(teacher => teacher.isActive === isActive);
+    }
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      updatedTeachers = updatedTeachers.filter(teacher => 
+        `${teacher.first} ${teacher.middle}`.toLowerCase().includes(query)
+      );
+    }
+
+    setFilteredTeachers(updatedTeachers);
+  }, [filter, searchQuery, teachers]);
+
   const handleTeacherCard = (teacherId) => {
     setSelectedTeacherId(teacherId);
     setDeleteCard(true);
@@ -78,17 +102,36 @@ function Teacher() {
     setDeleteCard(false);
     setRefreshTrigger((prev) => !prev); // Toggle refresh trigger to refetch teachers
   };
-  if(loading){
-    return <LoadingIndicator/>
+
+  const filterOptions = [
+    { label: 'All', value: 'all' },
+    { label: 'Active', value: 'unfired' },
+    { label: 'Fired', value: 'fired' }
+  ];
+
+  if (loading) {
+    return <LoadingIndicator />;
   }
 
   return (
     <div className={style.pageContainer}>
       <div className={style.pagehead}>
         <div className={style.searchContainer}>
-          <input type="text" className={style.searchInput} placeholder="Search..." />
-          <button className={style.searchButton}>Search</button>
+          <input
+            type="text"
+            className={style.searchInput}
+            placeholder="Search by name..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
+        <Dropdown
+          value={filter}
+          options={filterOptions}
+          onChange={(e) => setFilter(e.value)}
+          placeholder="Select Status"
+          className="w-14"
+        />
         <Link to={generateNewSearchParams('teachType', 'createTeacher')} className={style.button}>
           Add new
         </Link>
@@ -97,7 +140,7 @@ function Teacher() {
         {teachType === 'createTeacher' ? (
           <CreateTeacher yearId={yearId} yearError={yearError} />
         ) : (
-          <div>            
+          <div>
             <table>
               <thead>
                 <tr>
@@ -109,13 +152,22 @@ function Teacher() {
               </thead>
               <tbody>
                 {error && <p className='error'>{error}</p>}
-                {teachers.length > 0 &&
-                  teachers.map((teacher, index) => (
+                {filteredTeachers.length > 0 &&
+                  filteredTeachers.map((teacher, index) => (
                     <tr key={teacher._id}>
                       <td>{index + 1}</td>
-                      <td>{teacher.first} {teacher.middle}</td>
+                      <td style={{ color: !teacher.isActive ? 'red' : 'black' }}>
+                        {teacher.first} {teacher.middle}
+                      </td>
                       <td>{teacher.phoneNo}</td>
-                      <td className={'delete'} onClick={() => handleTeacherCard(teacher._id)}>Fire</td>
+                      
+                      {
+                        teacher.isActive 
+                        ? 
+                        <td className='delete' onClick={() => handleTeacherCard(teacher._id)}> Fire</td>
+                        :
+                        <td>Fired</td>
+                      }
                       <td className={'edit'}>
                         <Link to={`/main?type=teacher&action=${teacher._id}`}>Edit</Link>
                       </td>
@@ -129,7 +181,7 @@ function Teacher() {
           </div>
         )}
         {deleteCard && (
-          <Delete
+          <FireTeacher
             onDeleteSuccess={handleDeleteSuccess}
             id={selectedTeacherId}
             first={teachers.find(teacher => teacher._id === selectedTeacherId)?.first}

@@ -2,9 +2,12 @@ import React, { useState } from 'react'
 import style from '../css/pages.module.css'
 import {useNavigate} from 'react-router-dom'
 import URL from '../../../UI/URL'
+import ErrorMessage from '../../../common/ErrorMessage'
 
 function CreateFamily({studentId}) {
     const navigate = useNavigate()
+    const [error,setError] = useState('')
+    const [loading,setLoading] = useState(false)
 
     const [member,setMember] = useState({
         familyFrist:"",
@@ -27,6 +30,8 @@ function CreateFamily({studentId}) {
     const handleFamilyFileChange=(e)=>{
         setFamilyPhoto(e.target.files)
     }
+
+    //creating family
     const handleSubmit = async (e)=>{
         e.preventDefault()
         const data = new FormData()
@@ -38,22 +43,35 @@ function CreateFamily({studentId}) {
         data.set('familyType',member.familyType)
         data.set('studentId',member.studentId)
         data.set('familyPhoto',familyPhoto[0])
-        const response = await fetch(`${URL()}/member/family`, {
-            method: 'POST',
-            body: data,
-        });
-        if(response.ok){
-            navigate(`/main?type=student&studentId=${studentId}`, { replace: true });
+        try {
+            setLoading(true)
+            const response = await fetch(`${URL()}/member/family`, {
+                method: 'POST',
+                body: data,
+            });
+
+            const json = await response.json()
+            if(response.ok){
+                navigate(`/main?type=student&studentId=${studentId}`, { replace: true });
+            }else{
+                setError(json.error)
+            }
+        } catch (error) {
+            setError(error.message)
+        }finally{
+            setLoading(false)
         }
+        
     }
 
   return (
     <div className={style.createBox}>
         <form onSubmit={handleSubmit}>
             <h3>Family Members information</h3>
+            {error && <ErrorMessage error={error}/>}
             <div className={style.familyBox}>
               <div className={style.inLineBox}>
-                  <div className={style.info}>    
+                  <div className={style.info}>
                       <label>First Name:</label>
                           <input
                               type='text'
@@ -98,7 +116,7 @@ function CreateFamily({studentId}) {
                     </div>
                     
                 </div>
-                 <button type="submit"  className={'button'}>Register</button>  
+                 <button type="submit"  className={`button ${loading ? 'cursor-wait':'cursor-pointer'}`}>{loading ? "Registering . . .":'Register'}</button>  
         </form>    
     </div>
   )

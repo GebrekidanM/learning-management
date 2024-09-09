@@ -55,7 +55,7 @@ function CreateSubject({ sectionId, setRefresh, setCardForSubject }) {
         draggable
         pauseOnHover
       />
-      <Card className="w-4 bg-cyan-900 align-self-start mt-6 flex flex-column justify-content-center text-center text-white">
+      <Card className="w-4 bg-cyan-900 align-self-start mt-6 flex flex-column justify-content-center text-center text-white subjectAdd">
         <h2 className='-mt-4'>Add Subjects</h2>
         <form onSubmit={handleSubmit} className=''>
           <div className="flex flex-column gap-3">

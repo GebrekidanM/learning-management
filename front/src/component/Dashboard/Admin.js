@@ -35,6 +35,7 @@ import ReportCard from './pages/ReportCard/ReportCard'
 import CreateSection from './pages/Grade/CreateSection'
 import GradeEdit from './pages/Grade/GradeEdit'
 import ViewSection from './pages/Grade/ViewSection'
+import TeacherEdit from './pages/Teacher/TeacherEdit'
 
 
 function Admin({year,yearId,semesterId}) {
@@ -43,7 +44,7 @@ function Admin({year,yearId,semesterId}) {
   const {loggedUser} = useContext(AuthContext)
  
 
-  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId,gradeViewId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,action,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId,gradeViewId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
@@ -105,7 +106,10 @@ function Admin({year,yearId,semesterId}) {
         return <Family />;
       case 'teacher':
         if (teacherId) {
-          return <TeacherDetail teacherId={teacherId} />;
+          return <TeacherDetail teacherId={teacherId}/>;
+        }
+        if(action){
+          return <TeacherEdit teacherId={action} />
         }
         if(info){
           return <CreateScore teacherId={info} />
@@ -114,7 +118,7 @@ function Admin({year,yearId,semesterId}) {
           return <MarkList subjectId={subjectId} />;
         }
         if(Id){
-          return <CreateSectionSubject teacherId={Id}/>
+          return <CreateSectionSubject semesterId={semesterId} teacherId={Id}/>
         }
         if(idForDetail){
           return <SectionCardDetail idForDetail={idForDetail}/>

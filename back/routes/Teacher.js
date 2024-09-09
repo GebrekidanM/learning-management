@@ -1,5 +1,6 @@
 const router = require('express').Router()
 const {Teacher} = require('../model/Teacher')
+const {TeacherSectionSubject} = require('../model/medium')
 
 
 // it is for leaving teacher

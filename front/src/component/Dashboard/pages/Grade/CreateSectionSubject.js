@@ -7,7 +7,7 @@ import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
 import URL from '../../../UI/URL';
 
-function CreateSectionSubject({ teacherId }) {
+function CreateSectionSubject({ teacherId,semesterId }) {
     const [grades, setGrades] = useState([]);
     const [sections, setSections] = useState([]);
     const [subjects, setSubjects] = useState([]);
@@ -24,7 +24,7 @@ function CreateSectionSubject({ teacherId }) {
         const fetchGrades = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${URL()}/class/grades`);
+                const response = await fetch(`${URL()}/class/grades/${semesterId}`);
                 const json = await response.json();
                 if (response.ok) {
                     setGrades(json);
@@ -38,15 +38,16 @@ function CreateSectionSubject({ teacherId }) {
             }
         };
         fetchGrades();
-    }, []);
+    }, [semesterId]);
 
     //looking for sections by using selectedGrade
     useEffect(() => {
         if (selectedGrade) {
             const fetchSections = async () => {
                 setLoading(true);
+                setError('')
                 try {
-                    const response = await fetch(`${URL()}/class/grades/${selectedGrade._id}/sections`);
+                    const response = await fetch(`${URL()}/class/sections/${selectedGrade._id}`);
                     const data = await response.json();
                     if (response.ok) {
                         setSections(data);
@@ -68,6 +69,7 @@ function CreateSectionSubject({ teacherId }) {
         if (selectedSection) {
             const fetchSubjects = async () => {
                 setLoading(true);
+                setError('')
                 try {
                     const response = await fetch(`${URL()}/class/subjects/${selectedSection._id}`);
                     const data = await response.json();

@@ -39,7 +39,7 @@ function Grade({semesterId}) {
             }
         };
         fetchGrades();
-    }, []);
+    }, [semesterId]);
     
     // Fetch sections for the selected grade
     const fetchSections = async (gradeId) => {
@@ -86,7 +86,7 @@ function Grade({semesterId}) {
         if (activeSectionId) {
             fetchStudents(activeSectionId);
         }
-    }, [refreshTrigger]);
+    }, [refreshTrigger,activeSectionId]);
 
     const handleDeleteCard = (studentId) => {
         setSelectedStudentId(studentId);

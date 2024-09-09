@@ -68,7 +68,8 @@ const StudentSchema = new mongoose.Schema(
     studentPhoto: { 
       type: String, 
       required: true
-    }
+    },
+    isActive:{type:Boolean,required:true,default:true}
   },
   { timestamps: true }
 );
@@ -97,7 +98,7 @@ const FamilySchema = new mongoose.Schema({
       type: String,
       required: [true, 'Family type is required.'],
       trim: true,
-      enum: ['Parent', 'Sibling', 'Spouse', 'Child', 'Other'],
+      enum: ['Mother', 'Father', 'Uncle', 'Aunt','GrandMother','GrandFather' ,'Other'],
       minlength: [2, 'Family type must be at least 2 characters long.'],
       maxlength: [30, 'Family type cannot exceed 30 characters.'],
     },

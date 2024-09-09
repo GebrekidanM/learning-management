@@ -226,27 +226,24 @@ router.delete('/section/delete/:sectionId', async(req,res)=>{
     }
 })
 
-// check is the year exist or not
-
 router.get('/check-academic-year', async (req, res) => {
     try {
-        const yearExists = await Year.exists({});
-        if(yearExists){
-            res.status(200).json(yearExists._id);
-        }else{
+        // Use findOne to get the first document sorted by yearName
+        const year = await Year.findOne({}).sort({ yearName: 1 });
+        
+        // Check if a year document exists
+        if (year) {
+            res.status(200).json(year._id);
+        } else {
             res.status(404).json({ error: 'Not found' });
         }
     } catch (error) {
-        res.status(500).json({ error: "Something is wrong" });
-
+        res.status(500).json({ error: "Something went wrong" });
     }
 });
 
 
-
-
 //get subjects by using sectionId
-
 router.get('/subjects/:sectionId',async(req,res)=>{
     const {sectionId} = req.params
     if (!mongoose.Types.ObjectId.isValid(sectionId)) {
