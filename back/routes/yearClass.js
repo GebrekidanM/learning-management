@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const mongoose = require('mongoose')
 const {Grade,Year,Section,Semester} = require('../model/YearModel');
-const { Subject } = require('../model/SubjectModel');
+const { Subject } = require('../model/Subject.model');
 const {Student} = require('../model/userModel')
 
 //create year and with that year grade

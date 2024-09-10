@@ -1,5 +1,5 @@
 const { default: mongoose } = require('mongoose')
-const { Score } = require('../model/ScoreModel')
+const { Score } = require('../model/Score.model')
 
 const router = require('express').Router()
 

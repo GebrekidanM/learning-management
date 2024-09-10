@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const upload = require('../upload') 
 const {Student, Family} = require('../model/userModel')
 const {Year} = require('../model/YearModel')
-const {Teacher} = require('../model/Teacher')
+const {Teacher} = require('../model/Teacher.model')
 
 //function to change capitalization
 function capitalizeFirstLetter(str) {
