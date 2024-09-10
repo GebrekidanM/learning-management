@@ -127,7 +127,7 @@ function CreateTeacher({yearId,yearError}) {
         data.set('yearId',userData.yearId)
 
         try {
-            const response = await fetch(`${URL()}/member/teacher`, {
+            const response = await fetch(`${URL()}/teacher`, {
                 method: 'POST',
                 body: data,
             });

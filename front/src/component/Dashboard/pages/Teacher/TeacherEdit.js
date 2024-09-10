@@ -34,7 +34,7 @@ function TeacherEdit({ teacherId }) {
         const fetchStudent = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${URL()}/member/teacher/${teacherId}`);
+                const response = await fetch(`${URL()}/teacher/${teacherId}`);
                 const data = await response.json();
                 if (response.ok) {
                     setTeacher({
@@ -106,7 +106,7 @@ function TeacherEdit({ teacherId }) {
         }
 
         try {
-            const response = await fetch(`${URL()}/member/teacher/update/${teacherId}`, {
+            const response = await fetch(`${URL()}/teacher/update/${teacherId}`, {
                 method: 'PATCH',
                 body: formData,
             });

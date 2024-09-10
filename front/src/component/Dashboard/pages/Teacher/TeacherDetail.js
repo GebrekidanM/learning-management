@@ -18,7 +18,7 @@ function TeacherDetail({teacherId}) {
         const fetchTeacher = async()=>{
             setLoading(true)
             try {
-               const response = await fetch(`${URL()}/member/teacher/${teacherId}`)
+               const response = await fetch(`${URL()}/teacher/${teacherId}`)
                const json = await response.json()
                if(response.ok){
                  return setTeacher(json)
@@ -38,7 +38,7 @@ function TeacherDetail({teacherId}) {
         const fetchTeacherSections = async () => {
             setLoadingInfo(true);
             try {
-                const response = await fetch(`${URL()}/medium/teacher/section/${teacherId}`);
+                const response = await fetch(`${URL()}/teacher/section/${teacherId}`);
                 const json = await response.json();
                 if (response.ok) {
                     setSectionInfos(json);

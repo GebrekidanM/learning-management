@@ -51,7 +51,7 @@ function Teacher() {
   const fetchTeachers = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`${URL()}/member/teachers`);
+      const response = await fetch(`${URL()}/teachers`);
       const json = await response.json();
       if (response.ok) {
         setTeachers(json);

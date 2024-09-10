@@ -49,7 +49,7 @@ app.use('/member', MemberRouter)
 app.use('/class',ClassRouter)
 app.use(TeacherSectionSubject)
 app.use(TeacherRouter)
-app.use('/score',ScoreRoute)
+app.use(ScoreRoute)
 app.use(SubjectRoute)
 
 

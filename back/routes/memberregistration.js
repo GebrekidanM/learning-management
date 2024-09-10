@@ -117,93 +117,9 @@ router.get('/students/:sectionId', async (req, res) => {
 
 /**********************************For teacher**************************************/
 
-router.post('/teacher', upload.single('teacherPhoto'), async (req, res) => {
-    const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo} = req.body;
-    const teacherPhoto = req.file.filename 
-    const password= Password(capitalizeFirstLetter(first))
-    try {
-        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
-        if(student){
-            res.status(200).json(student)
-        }else{
-            res.status(400).json({error:"Something is wrong!"})
-        }
-    } catch (error) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            const validationErrors = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ error: validationErrors });
-        }
-        
-        res.status(500).json({ error: error.message });
-    }
-});
 
-//get teacher by id
 
-router.get('/teacher/:teacherId',async(req,res)=>{
-    const {teacherId} = req.params
-    if(!mongoose.Types.ObjectId.isValid(teacherId)){
-        return res.status(404).json({error:"Invalid Id!"})
-    }
-    try {
-        const teacher = await Teacher.findById({_id:teacherId}).populate('yearId')
-        if(!teacher){
-            return res.status(404).json({error:"a Teacher with this id isnot found!"})
-        }
-        res.status(200).json(teacher)
-    } catch (error) {
-        res.status(500).json({error:error.message})
-    }
-})
 
-// Get all teachers with optional filters and search query
-router.get('/teachers', async (req, res) => {
-    try {
-        const { isActive, search } = req.query;
-
-        // Get today's date
-        const today = new Date();
-
-        // Find the current year based on today's date
-        const currentYear = await Year.findOne({
-            startPoint: { $lte: today },
-            endPoint: { $gte: today }
-        });
-
-        if (!currentYear) {
-            return res.status(404).json({ error: "No active year found for today's date." });
-        }
-
-        // Build the filter query
-        let filter = { yearId: currentYear._id };
-
-        if (isActive) {
-            filter.isActive = isActive === 'true'; // Convert string to boolean
-        }
-
-        // Find teachers with optional search query
-        let teachers = await Teacher.find(filter);
-
-        if (search) {
-            const query = search.toLowerCase();
-            teachers = teachers.filter(teacher => 
-                `${teacher.first} ${teacher.middle}`.toLowerCase().includes(query)
-            );
-        }
-
-        if (teachers.length > 0) {
-            res.status(200).json(teachers);
-        } else {
-            res.status(404).json({ error: 'No teachers found.' });
-        }
-    } catch (error) {
-        if (error instanceof mongoose.Error.ValidationError) {
-            const validationErrors = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ error: validationErrors });
-        }
-        res.status(500).json({ error: error.message });
-    }
-});
 
 //update teacher
 router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'), async (req, res) => {
