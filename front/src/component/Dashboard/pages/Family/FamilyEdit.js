@@ -28,7 +28,7 @@ function FamilyEdit({ familyId }) {
     const fetchFamily = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`${URL()}/member/family/only/${id}`);
+        const response = await fetch(`${URL()}/family/only/${id}`);
         const json = await response.json();
         if (response.ok) {
           setFamilyFirst(json[0].familyFirst);

@@ -14,7 +14,7 @@ function FamilyDetail({familyId}) {
         const fetchFamily = async()=>{
             setLoading(true)
             try {
-               const response = await fetch(`${URL()}/member/family/own/${id}`)
+               const response = await fetch(`${URL()}/family/own/${id}`)
                const json = await response.json()
                if(response.ok){
                  return setFamily(json)

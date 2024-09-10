@@ -18,7 +18,7 @@ const Family = () => {
   const fetchFamily = async ()=>{
     try {
       setLoading(true)
-        const response = await fetch(`${URL()}/member/families`)
+        const response = await fetch(`${URL()}/families`)
         const json = await response.json()
         if(response.ok){
           setFamilies(json)

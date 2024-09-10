@@ -19,7 +19,7 @@ function StudentDetail({studentId}) {
         const fetchAstudent = async()=>{
             setLoading(true)
             try {
-               const response = await fetch(`${URL()}/member/student/${studentId}`)
+               const response = await fetch(`${URL()}/student/${studentId}`)
                const json = await response.json()
                if(response.ok){
                   setStudent(json.student)
@@ -40,7 +40,7 @@ function StudentDetail({studentId}) {
       const fetchAfamily = async()=>{
         setFamilyLoading(true)
         try {
-            const response = await fetch(`${URL()}/member/family/${studentId}`)
+            const response = await fetch(`${URL()}/family/${studentId}`)
             const json = await response.json()
 
             if(response.ok){

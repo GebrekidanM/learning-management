@@ -2,12 +2,13 @@ require("dotenv").config()
 const express = require('express')
 const cors = require('cors')
 const UserRouter = require('./routes/user.router')
-const MemberRouter = require('./routes/memberregistration')
 const ClassRouter = require('./routes/yearClass')
 const TeacherSectionSubject = require('./routes/TeacherSectionSubect.router')
 const TeacherRouter = require('./routes/Teacher.router')
 const ScoreRoute = require('./routes/Score.route')
 const SubjectRoute = require('./routes/Subject.router')
+const StudentRouter = require('./routes/Student.router')
+const FamilyRouter = require('./routes/Family.router')
 const mongoose = require('mongoose')
 const cookieParser = require('cookie-parser')
 
@@ -45,12 +46,13 @@ mongoose.connect('mongodb://localhost:27017/tibeb',()=>{
 })
 */
 app.use(UserRouter)
-app.use('/member', MemberRouter)
 app.use('/class',ClassRouter)
 app.use(TeacherSectionSubject)
 app.use(TeacherRouter)
 app.use(ScoreRoute)
 app.use(SubjectRoute)
+app.use(FamilyRouter)
+app.use(StudentRouter)
 
 
 

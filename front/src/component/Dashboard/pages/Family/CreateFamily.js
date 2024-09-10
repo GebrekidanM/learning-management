@@ -45,7 +45,7 @@ function CreateFamily({studentId}) {
         data.set('familyPhoto',familyPhoto[0])
         try {
             setLoading(true)
-            const response = await fetch(`${URL()}/member/family`, {
+            const response = await fetch(`${URL()}/family`, {
                 method: 'POST',
                 body: data,
             });

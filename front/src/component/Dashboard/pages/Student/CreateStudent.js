@@ -103,7 +103,7 @@ function CreateStudent({ sectionId }) {
         data.set('sectionId',userData.sectionId)
 
         try {
-            const response = await fetch(`${URL()}/member/student`, {
+            const response = await fetch(`${URL()}/student`, {
                 method: 'POST',
                 body: data,
             });
