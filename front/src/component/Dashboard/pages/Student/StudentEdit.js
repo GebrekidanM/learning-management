@@ -136,53 +136,24 @@ function StudentEdit({ studentId }) {
                             {showFileInput && <input type='file' accept='image/*' onChange={handleFileChange} />}
                             <span className={style.clickEdit} onClick={handleClick}>{<LiaUserEditSolid />}</span>
                     </span>
-                    <div  className={style.extraInfo}>      
+                    <div  className={`${style.extraInfo} gap-3`}>      
                         <div className={style.name}>
-
                             <label htmlFor='first'>First Name:</label>
-                            <input
-                                type='text'
-                                id='first'
-                                name='first'
-                                value={student.first}
-                                onChange={handleInputChange}
-                                required
-                            />
+                            <input type='text' id='first' name='first' value={student.first} onChange={handleInputChange} required/>
                         </div>
                         <div className={style.name}>
                             <label htmlFor='middle'>Middle Name:</label>
-                            <input
-                                type='text'
-                                id='middle'
-                                name='middle'
-                                value={student.middle}
-                                onChange={handleInputChange}
-                                required
-                            />
+                            <input type='text' id='middle' name='middle' value={student.middle} onChange={handleInputChange} required/>
                         </div>
                         <div className={style.name}>
                             <label htmlFor='last'>Last Name:</label>
-                            <input
-                                type='text'
-                                id='last'
-                                name='last'
-                                value={student.last}
-                                onChange={handleInputChange}
-                                required
-                            />
+                            <input type='text' id='last' name='last' value={student.last} onChange={handleInputChange} required/>
                         </div>
                         <div className={style.name}>
                             <label>Gender:</label>
                             <div className={style.genderOptions}>
                                 <label>
-                                    <input
-                                        type='radio'
-                                        name='gender'
-                                        value='Male'
-                                        checked={student.gender === 'Male'}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
+                                    <input type='radio' name='gender' value='Male' checked={student.gender === 'Male'} onChange={handleInputChange} required/>
                                     Male
                                 </label>
                                 <label>
@@ -213,7 +184,7 @@ function StudentEdit({ studentId }) {
                             {loading ? 'Updating...' : 'Update'}
                         </button>
                     </div>
-                    <div className={style.extraInfo}>
+                    <div className={`${style.extraInfo} gap-3`}>
                         <div className={style.name}>
                             <label htmlFor='region'>Region/State:</label>
                             <input

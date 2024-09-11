@@ -68,7 +68,7 @@ const ReAssignTeacherForSubject = async (req, res) => {
 }*/
 
 //get all assignment of a section
-/*const AllAssignmentOfASection = async (req, res) => {
+const AllAssignmentOfASection = async (req, res) => {
     const { sectionId } = req.params;
 
     try {
@@ -81,7 +81,7 @@ const ReAssignTeacherForSubject = async (req, res) => {
     } catch (error) {
         res.status(400).json({ message: 'Error fetching assignments', error: error.message });
     }
-}*/
+}
 
 const SectionsOfATeacher = async(req,res)=>{
     const {teacherId} = req.params
@@ -245,7 +245,7 @@ module.exports = {
     AssignAteacherForSubject,
     ReAssignTeacherForSubject,
     //AllAssignmentOfTeacher,
-    //AllAssignmentOfASection,
+    AllAssignmentOfASection,
     AssignedSectionAndSubjectForATeacher,
     SectionsOfATeacher,
     UpdateAssignment,

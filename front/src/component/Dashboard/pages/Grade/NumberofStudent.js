@@ -12,7 +12,7 @@ function NumberofStudent() {
     const NubmerOfStudent = async () =>{
       try {
         setLoading(true)
-        const response = await fetch(`${URL()}/member/numberOfStudent`) 
+        const response = await fetch(`${URL()}/numberOfStudent`) 
           const json = await response.json()
           if(response.ok){
             setInfos(json)

@@ -6,7 +6,7 @@ function Delete({ first, middle, role, id, setDeleteCard, onDeleteSuccess }) {
 
     const handleDelete = async () => {
         try {
-            const response = await fetch(`${URL()}/member/delete/${id}`, {
+            const response = await fetch(`${URL()}/family/delete/${id}`, {
                 method: "DELETE"
             });
 

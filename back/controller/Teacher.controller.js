@@ -1,6 +1,7 @@
+const { default: mongoose } = require('mongoose');
 const {Teacher} = require('../model/Teacher.model')
 const {TeacherSectionSubject} = require('../model/TeacherSectionSubject.model')
-
+const {Year} = require('../model/YearModel')
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -110,6 +111,7 @@ const GetAllTeachers = async (req, res) => {
             res.status(404).json({ error: 'No teachers found.' });
         }
     } catch (error) {
+        console.log(error)
         if (error instanceof mongoose.Error.ValidationError) {
             const validationErrors = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({ error: validationErrors });

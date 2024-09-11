@@ -35,7 +35,7 @@ function FamilyDetail({familyId}) {
       {loading && <LoadingIndicator/>}
       {error && <ErrorMessage error={error}/>}
       {family && family.map(family=>(
-        <div key={family._id} className={style.BoxContainer}>
+        <div key={family?._id} className={style.BoxContainer}>
           <div className={style.basicInfo}>
             <img src={`${URL()}/uploads/${family?.familyPhoto}`} alt='hello'/>
             <div className={style.extraInfo}>

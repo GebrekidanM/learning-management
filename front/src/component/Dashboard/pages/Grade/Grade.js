@@ -69,7 +69,7 @@ function Grade({semesterId}) {
         setActiveSectionId(sectionId);
 
         try {
-            const response = await fetch(`${URL()}/member/students/${sectionId}`);
+            const response = await fetch(`${URL()}/students/${sectionId}`);
             const json = await response.json();
             if (response.ok) {
                 setStudents(json);

@@ -1,4 +1,5 @@
 const { GetOneFamily, GetOneFamilyWithStudentInfo, GetFamilyOfStudentByS_id, CreateFamily, AllFamilies, UpdateFamily, DeleteFamily } = require('../controller/Family.controller')
+const upload = require('../upload')
 
 const router = require('express').Router()
 
@@ -17,4 +18,5 @@ router.patch('/family/update/:familyId', upload.single('familyPhoto'),UpdateFami
 //Delete family
 router.delete('/family/delete/:id', DeleteFamily);
 
+module.exports = router
 

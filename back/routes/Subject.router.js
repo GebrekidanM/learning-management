@@ -4,12 +4,12 @@ const router = require('express').Router()
 
 
 // geting subjects in one section
-router.get('subject/subjects/:sectionId', SubjectInOneSection)
+router.get('/subject/subjects/:sectionId', SubjectInOneSection)
 // creating subject
-router.post('/create', CreatingSubject);
+router.post('/subject/create', CreatingSubject);
 //change the name of subject
-router.put('/update/:id', ChangeSubjectName);
+router.put('/subject/update/:id', ChangeSubjectName);
 
-  router.delete('/delete/:id', deleteSubject);
+  router.delete('/subject/delete/:id', deleteSubject);
 
 module.exports = router

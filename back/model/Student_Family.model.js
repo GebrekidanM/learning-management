@@ -117,11 +117,11 @@ const StudentSchema = new mongoose.Schema(
           required: true,
           match: [/.+@.+\..+/, 'Please fill a valid email address'] // Email validation
       },
-      familyPhone: {
-          type: String,
-          required: true,
-          match: [/^\d{10}$/, 'Please enter a valid phone number'] // Basic phone number validation
-      },
+      phoneNo: {
+        type: String,
+        required: true,
+        match: [/^\d{10}$/, 'Please enter a valid phone number'] // Basic phone number validation
+    },
       studentId:{type:mongoose.Schema.Types.ObjectId,ref:"Student",required:true}
   })
   const Family = mongoose.model('Family',FamilySchema)

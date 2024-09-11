@@ -22,12 +22,10 @@ app.use('/uploads', express.static('uploads'));
 const database = async () => {
 
     try {
-        await mongoose.connect(
-            'mongodb+srv://nitsuhkidan:ESirak%4007%2C16@nitsuh.7d4nz.mongodb.net/tibeb?retryWrites=true&w=majority&appName=nitsuh'
-        );
+        await mongoose.connect(process.env.DATABASE_URI);
         console.log('Connected to the database successfully');
         
-        app.listen(4000, () => {
+        app.listen(process.env.PORT, () => {
             console.log('Server is running on port 4000');
         });
     } catch (error) {

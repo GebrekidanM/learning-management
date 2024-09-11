@@ -5,6 +5,7 @@ const { AssignAteacherForSubject,
         SectionsOfATeacher,
         AssignedSectionAndSubjectForATeacher,
         UpdateAssignment,
+        AllAssignmentOfASection,
 
      } = require('../controller/TeacherSectionSubject.controller');
 
@@ -18,15 +19,15 @@ router.post('/teacher/change-assignment',ReAssignTeacherForSubject)
 // Route to get all assignments for a teacher
 /*router.get('/medium/teacher/:teacherId', AllAssignmentOfTeacher);*/
 // Route to get all assignments for a section
-/*router.get('/medium/section/:sectionId', AllAssignmentOfASection);*/
+router.get('/medium/section/:sectionId', AllAssignmentOfASection);
 
 //Route to get only one's teacher section
 router.get('/medium/teacher/section/:teacherId',SectionsOfATeacher)
 
 //get Assign sections and subjects for a teacher by using that id
-router.get('medium/teacher/section/one/:idForDetail', AssignedSectionAndSubjectForATeacher)
+router.get('/medium/teacher/section/one/:idForDetail', AssignedSectionAndSubjectForATeacher)
 // Route to update an assignment
-router.put('medium/update/:id', UpdateAssignment);
+router.put('/medium/update/:id', UpdateAssignment);
 // Route to delete an assignment
 /*router.delete('/medium/delete/:id', DeleteAssignment);*/
 

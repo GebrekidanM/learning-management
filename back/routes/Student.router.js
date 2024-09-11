@@ -6,7 +6,8 @@ const {
      OneSectionStudents,
      UpdateStudent,
      NumberOfStudentForEachGradeAndSection,
-    } = require('../controller/Student_Family.controller');
+    } = require('../controller/Student.controller');
+const upload = require('../upload');
 
 const router = require('express').Router()
 
@@ -24,3 +25,5 @@ router.get('/students/:sectionId', OneSectionStudents);
 router.patch('/student/updat/:studentId', upload.single('studentPhoto'), UpdateStudent);
 //for number of students in each grae and section
 router.get('/numberOfStudent',NumberOfStudentForEachGradeAndSection)
+
+module.exports = router

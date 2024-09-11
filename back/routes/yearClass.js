@@ -2,7 +2,7 @@ const router = require('express').Router()
 const mongoose = require('mongoose')
 const {Grade,Year,Section,Semester} = require('../model/YearModel');
 const { Subject } = require('../model/Subject.model');
-const {Student} = require('../model/userModel')
+const {Student} = require('../model/Student_Family.model')
 
 //create year and with that year grade
 router.post('/create-year', async (req, res) => {
@@ -96,7 +96,7 @@ router.get('/semester/:yearId', async(req,res)=>{
 router.get('/grades/:semesterId',async(req,res)=>{
     try {
         const {semesterId} = req.params
-        const grades = await Grade.find({semesterId})
+        const grades = await Grade.find({semesterId}).sort({grade:1})
 
         if(grades){
             res.status(200).json(grades)
