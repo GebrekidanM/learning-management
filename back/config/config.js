@@ -4,7 +4,7 @@ require('dotenv').config();
 // Defining a schema for our environment variables using Joi
 const envVarSchema = joi
   .object({
-    DB_CONNECTION: joi.string().required().description('Database connection string is required'),
+    DATABASE_URI: joi.string().required().description('Database connection string is required'),
     PORT: joi.number().positive().default(3000).description('Port number for the server'),
     NODE_ENV: joi.string().valid('development', 'production', 'test').default('development').description('Environment'),
   })
@@ -20,6 +20,6 @@ if (error) {
 
 module.exports = {
   port: envVars.PORT,
-  dbConnection: envVars.DB_CONNECTION,
+  dbConnection: envVars.DATABASE_URI,
   nodeEnv: envVars.NODE_ENV,
 };

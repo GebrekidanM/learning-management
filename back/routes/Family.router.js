@@ -1,4 +1,4 @@
-const { GetOneFamily, GetOneFamilyWithStudentInfo, GetFamilyOfStudentByS_id, CreateFamily, AllFamilies, UpdateFamily, DeleteFamily } = require('../controller/Family.controller')
+const { GetOneFamily, GetOneFamilyWithStudentInfo, GetFamilyOfStudentByS_id, CreateFamily, AllFamilies, UpdateFamily } = require('../controller/Family.controller')
 const upload = require('../upload')
 
 const router = require('express').Router()
@@ -15,8 +15,7 @@ router.post('/family', upload.single('familyPhoto'), CreateFamily)
 router.get('/families',AllFamilies)
 //update family
 router.patch('/family/update/:familyId', upload.single('familyPhoto'),UpdateFamily);
-//Delete family
-router.delete('/family/delete/:id', DeleteFamily);
+
 
 module.exports = router
 
