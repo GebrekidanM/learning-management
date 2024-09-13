@@ -7,12 +7,13 @@ const {
      UpdateStudent,
      NumberOfStudentForEachGradeAndSection,
     } = require('../controller/Student.controller');
+const { onlyForAdmin } = require('../middleware/verifyToken');
 const upload = require('../upload');
 
 const router = require('express').Router()
 
 // Route to handle student creation
-router.post('/student', upload.single('studentPhoto'),CreateStudent );
+router.post('/student', upload.single('studentPhoto'),onlyForAdmin,CreateStudent );
 //get one student
 router.get('/student/:id',GetOneStudent)
 //get one student without additional information
@@ -22,7 +23,7 @@ router.get('/',GetAllStudents)
 //get student by sectionId
 router.get('/students/:sectionId', OneSectionStudents);
 //update student information
-router.patch('/student/updat/:studentId', upload.single('studentPhoto'), UpdateStudent);
+router.patch('/student/updat/:studentId', upload.single('studentPhoto'),onlyForAdmin, UpdateStudent);
 //for number of students in each grae and section
 router.get('/numberOfStudent',NumberOfStudentForEachGradeAndSection)
 

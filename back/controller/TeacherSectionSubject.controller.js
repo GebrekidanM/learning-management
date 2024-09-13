@@ -8,6 +8,8 @@ const {Year} = require('../model/YearModel')
 const AssignAteacherForSubject = async (req, res) => {
     const { teacherId, sectionId, subjects } = req.body;
 
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
+
     try {
         // Use findOneAndUpdate to either update the existing document or create a new one if it doesn't exist
         const assignment = await TeacherSectionSubject.findOneAndUpdate(
@@ -24,6 +26,8 @@ const AssignAteacherForSubject = async (req, res) => {
 //Re  ssign a teacher for subjects
 const ReAssignTeacherForSubject = async (req, res) => {
     const { teacherId, newSectionId, newSubjects, yearId } = req.body;
+
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     try {
         // End the teacher's current assignments
@@ -166,6 +170,7 @@ const AssignedSectionAndSubjectForATeacher = async(req,res)=>{
 const UpdateAssignment = async (req, res) => {
     const { id } = req.params;
     const { teacherId, sectionId, subjectId, yearId } = req.body;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     // Check if the assignment ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(id)) {

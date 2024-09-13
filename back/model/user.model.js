@@ -8,7 +8,7 @@ const AdminSchema = new mongoose.Schema ({
         unique:[true,'UserId must be unique, try again']},
     username:{type: String,required:true},
     email:{type:String,required:true,unique:true},
-    role:{type:String,enum:['Editor','Admin'],default:2,required:true},
+    role:{type:String,enum:['Editor','Admin'],default:'Admin',required:true},
     password:{type:String,required:true}
 })
 

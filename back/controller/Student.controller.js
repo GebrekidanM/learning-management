@@ -13,11 +13,12 @@ const CreateStudent = async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId ,yearName} = req.body;
     const studentPhoto = req.file.filename
 
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
+
+
     const role = "Student"
-
     const userId = generateId(yearName,role) 
-
-    console.log(userId)
+    
     const password = Password(capitalizeFirstLetter(first))
     try {
         const student = await Student.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, userId,region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
@@ -113,6 +114,7 @@ const OneSectionStudents = async (req, res) => {
 const UpdateStudent = async (req, res) => {
     const { studentId } = req.params;
     const updates = req.body;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     // Check if the ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(studentId)) {

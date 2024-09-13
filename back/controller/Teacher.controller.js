@@ -13,6 +13,7 @@ function Password(name){
 
 const FiredTeacher = async (req, res) => {
     const { teacherId } = req.body;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     try {
         // Mark the teacher as inactive
@@ -37,6 +38,9 @@ const FiredTeacher = async (req, res) => {
 const CreatingATeacher = async (req, res) => {
     const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo} = req.body;
     const teacherPhoto = req.file.filename 
+   
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
+
     const password= Password(capitalizeFirstLetter(first))
     try {
         const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
@@ -123,6 +127,7 @@ const GetAllTeachers = async (req, res) => {
 const UpdateTeaacher = async (req, res) => {
     const { teacherId } = req.params;
     const updates = req.body;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     // Check if the ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(teacherId)) {

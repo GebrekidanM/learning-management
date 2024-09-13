@@ -25,6 +25,7 @@ const SubjectInOneSection = async(req,res)=>{
 
 const CreatingSubject = async (req, res) => {
     const { sectionId, name } = req.body;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     // Validate the ObjectId
     if (!mongoose.Types.ObjectId.isValid(sectionId)) {
@@ -65,6 +66,7 @@ const CreatingSubject = async (req, res) => {
 const ChangeSubjectName = async (req, res) => {
     const { id } = req.params;
     const { name } = req.body;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     // Validate if the provided ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -92,6 +94,7 @@ const ChangeSubjectName = async (req, res) => {
 
 const deleteSubject = async (req, res) => {
     const { id } = req.params;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     // Validate if the provided ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(id)) {

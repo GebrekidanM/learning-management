@@ -8,6 +8,7 @@ const  generateTokenAndSetCookie = require('../utilities/generateTokenAndSetCook
 const DeleteFamilyAndStudent = async (req, res) => {
     const { id } = req.params;
 
+    if(!req.userId) return res.status(401).json({error:"UnAutherized"});
     // Check if the ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'Invalid ID!' });

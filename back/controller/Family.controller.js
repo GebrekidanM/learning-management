@@ -81,8 +81,11 @@ const GetOneFamily = async(req,res)=>{
 const CreateFamily = async(req,res)=>{
     const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,studentId} = req.body
     const familyPhoto = req.file.filename
-    const password = Password(capitalizeFirstLetter(familyFirst))
+   
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
+    const password = Password(capitalizeFirstLetter(familyFirst))
+    
     try {
         const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),password,familyType,familyEmail,phoneNo:familyPhone,familyPhoto,studentId})
         if(!family){
@@ -125,6 +128,8 @@ const AllFamilies = async(req,res)=>{
 const UpdateFamily =  async (req, res) => {
     const { familyId } = req.params;
     const updates = req.body;
+
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     // Check if the ID is a valid MongoDB ObjectID
     if (!mongoose.Types.ObjectId.isValid(familyId)) {

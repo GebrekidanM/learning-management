@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 
 
 const {port,dbConnection}=require('./config/config')
-const verifyToken = require('./middleware/verifyToken')
+const {verifyToken }= require('./middleware/verifyToken')
 const app = express()
 
 const UserRouter = require('./routes/user.router')

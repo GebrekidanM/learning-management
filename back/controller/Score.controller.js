@@ -1,5 +1,8 @@
 const { default: mongoose } = require("mongoose")
 const { Score } = require("../model/Score.model")
+const { Student } = require("../model/Student_Family.model")
+const { Teacher } = require("../model/Teacher.model")
+const { Subject } = require("../model/Subject.model")
 
 const ScoreOfAStudent = async(req,res)=>{
     const {studentId} = req.params
@@ -117,8 +120,26 @@ const ScoreOfStudentsForASubject = async (req, res) => {
 
 const CreatingScore = async (req, res) => {
     const { studentId, subjectId, teacherId, value, outOf,round, description } = req.body;
+    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
+    if(!req.userId===teacherId) return res.status(400).json({error:"Not the right teacher!"});
 
+
+    if (!mongoose.Types.ObjectId.isValid(studentId)) {
+        return res.status(400).json({ error: "Invalid student ID format" });
+      }
+    
+      if (!mongoose.Types.ObjectId.isValid(subjectId)) {
+        return res.status(400).json({ error: "Invalid subject ID format" });
+      }
+      
     try {
+        
+
+        const student = await Student.findById(studentId)
+        if (!student) return res.status(404).json({ error: "Student not found" });
+        const subject = await Subject.findById(subjectId)
+        if (!subject) return res.status(404).json({ error: "Subject not found" });
+         
             // Create a new score document
             const newScore = await Score.create({
                 studentId,
