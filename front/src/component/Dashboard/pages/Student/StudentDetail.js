@@ -6,6 +6,7 @@ import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
 import URL from '../../../UI/URL';
 
+
 function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
     const [error,setError] = useState('')
@@ -14,6 +15,7 @@ function StudentDetail({studentId}) {
     const [familyError,setFamilyError] = useState('')
     const [family,setFamily] = useState("")
     const navigate = useNavigate()
+
 
     useEffect(()=>{
         const fetchAstudent = async()=>{
@@ -108,7 +110,6 @@ function StudentDetail({studentId}) {
               <FamilyDetailInfo  style={style} student={student} fam={fam}/>
             ))
             :
-
             (<>
               {family.map((fam)=>(
                 <FamilyDetailInfo style={style} student={student} fam={fam}/>

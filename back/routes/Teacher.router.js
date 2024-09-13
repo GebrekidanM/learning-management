@@ -19,6 +19,4 @@ router.get('/teacher/:teacherId',GetOneTeacher)
 router.get('/teachers', GetAllTeachers);
 //update teacher
 router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'),UpdateTeaacher );
-
-
 module.exports = router

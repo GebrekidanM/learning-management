@@ -96,7 +96,7 @@ router.get('/semester/:yearId', async(req,res)=>{
 router.get('/grades/:semesterId',async(req,res)=>{
     try {
         const {semesterId} = req.params
-        const grades = await Grade.find({semesterId}).sort({grade:1})
+        const grades = await Grade.find({semesterId}).sort({grade:1}).populate('yearId',['yearName'])
 
         if(grades){
             res.status(200).json(grades)

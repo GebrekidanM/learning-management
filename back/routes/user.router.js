@@ -1,13 +1,8 @@
-const {createForOneTimeUser,UserLogIn,LoggedUser,UserLogOut} = require('../controller/User.controller')
+const {createForOneTimeUser,forgotPassword} = require('../controller/User.controller')
+const forgotPasswordLimiter = require('../middleware/forgotPasswordLimiter')
 const router = require('express').Router()
 
-//create one new user only for the first time
 router.get('/user/createOne',createForOneTimeUser)
-//for user Login
-router.post('/user/',UserLogIn)
-//getInformation of logged User
-router.get('/user/profile',LoggedUser)
-// for logout
-router.get('/user/logout',UserLogOut)
+router.post('/user/forgot-password', forgotPasswordLimiter, forgotPassword);
 
 module.exports = router

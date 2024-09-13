@@ -1,5 +1,13 @@
 const express = require('express')
 const cors = require('cors')
+const mongoose = require('mongoose')
+const cookieParser = require('cookie-parser')
+
+
+const {port,dbConnection}=require('./config/config')
+const verifyToken = require('./middleware/verifyToken')
+const app = express()
+
 const UserRouter = require('./routes/user.router')
 const ClassRouter = require('./routes/yearClass')
 const TeacherSectionSubject = require('./routes/TeacherSectionSubect.router')
@@ -8,10 +16,8 @@ const ScoreRoute = require('./routes/Score.route')
 const SubjectRoute = require('./routes/Subject.router')
 const StudentRouter = require('./routes/Student.router')
 const FamilyRouter = require('./routes/Family.router')
-const mongoose = require('mongoose')
-const cookieParser = require('cookie-parser')
-const {port,dbConnection}=require('./config/config')
-const app = express()
+const CommonRouter = require('./routes/common.route')
+
 app.use(express.json())
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 app.use(cookieParser())
@@ -42,6 +48,7 @@ mongoose.connect('mongodb://localhost:27017/tibeb',()=>{
     });
 })
 */
+app.all('/main/*',verifyToken)
 app.use(UserRouter)
 app.use('/class',ClassRouter)
 app.use(TeacherSectionSubject)
@@ -50,6 +57,7 @@ app.use(ScoreRoute)
 app.use(SubjectRoute)
 app.use(FamilyRouter)
 app.use(StudentRouter)
+app.use(CommonRouter)
 
 
 

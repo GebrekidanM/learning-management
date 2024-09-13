@@ -84,7 +84,7 @@ const CreateFamily = async(req,res)=>{
     const password = Password(capitalizeFirstLetter(familyFirst))
 
     try {
-        const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),password,familyType,familyEmail,familyPhone,familyPhoto,studentId})
+        const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),password,familyType,familyEmail,phoneNo:familyPhone,familyPhoto,studentId})
         if(!family){
             return res.status(400).json({error:"Something is wrong please try again"})
         }

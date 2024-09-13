@@ -1,14 +1,15 @@
 const {Admin} = require('../model/user.model')
 const bcrypt = require("bcrypt")
-const jwt = require('jsonwebtoken')
-const secretKey= 'Samra@Kidam-07,16{$}{$}'
+const crypto = require('crypto')
+const generateId = require('../utilities/GenerateAdminId')
 
 //to create user at the first time automatically
 const createForOneTimeUser = async (req,res)=>{
     const username = 'user'
     const password = 'User@001'
     const email = 'user@gmail.com'
-    const role = 2
+    const role = 'Admin'
+    const userId = generateId('Admin')
     try {
         const user = await Admin.findOne({})
         // Hash the password
@@ -16,7 +17,7 @@ const createForOneTimeUser = async (req,res)=>{
 
         if(user)return res.status(400).json({error:'There is a user'});
 
-        const newUser = await Admin.create({ username, email, password: hashedPassword ,role});
+        const newUser = await Admin.create({userId, username, email, password: hashedPassword ,role});
         if(newUser){
             res.status(200).json(newUser)
         }else{
@@ -27,59 +28,33 @@ const createForOneTimeUser = async (req,res)=>{
     }   
 }
 
-// for login
-const UserLogIn = async (req,res) => {
-    const {username,password} = req.body
+//to reset password
 
+const forgotPassword = async (req,res) =>{
+    const {email} = req.body;
     try {
-        const getUser = await Admin.findOne({username})
-        if(!getUser) {
-            return res.status(404).json({error:"This user doesnot found"})
+        const user = await Admin.findOne({email})
+
+        if(!user){
+            return res.status(400).json({error:'This user is not exist'})
         }
 
-        if(!bcrypt.compare(password,getUser.password)){
-            return res.status(400).json({error:"incorrect password!"})
-        }
-        // information of the user to transfer it through jwt
-        const user = {
-            username: username,
-            role: getUser.role,
-            email: getUser.email
-        }
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        const resetTokenExpireAt = Date.now() + 1*60*60*1000;
+        
+        user.resetPasswordToken = resetToken;
+        user.resetPasswordExpireAt = resetTokenExpireAt;
 
-        //initiate jwt
-        jwt.sign(user,secretKey,{expiresIn:'3d'},(error,info)=>{
-            if(error){
-                return res.status(400).json({error:"Something is wrong, please try again!"})
+        await user.save();
+
+        await sendPasswordResetEmail(user.email, `http://localhost:3000/reset-password/${resetToken}`)
+        res.status(200).json('Password reset link sent successfully. Please check your email.');
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred while processing your request. Please try again later.' });
+    }
+}
+
+module.exports = {
+                createForOneTimeUser,
+                forgotPassword
             }
-            res.cookie('user',info).json({username})
-        })
-    } catch (error) {
-        res.status(500).json({error:"Something is wrong, please try again!"})
-    }   
-}
-
-//get Information of logged user
-
-const LoggedUser = (req,res)=>{
-    const {user} = req.cookies
-    try {
-        if(user){
-            jwt.verify(user, secretKey, {expiresIn:'3d'}, (error, info) => {
-                if(error) {
-                    return res.status(400).json({error:"Something is wrong, please try again!"})
-                } else {
-                    res.status(200).json(info)
-                }
-            })
-        }        
-    } catch (error) {
-        res.status({error: error.message})
-    }  
-}
-// for logout
-const UserLogOut = (req, res) => {
-    res.cookie("user", "").json("ok")
-}
-
-module.exports = {createForOneTimeUser,UserLogIn,LoggedUser,UserLogOut}

@@ -7,6 +7,7 @@ const envVarSchema = joi
     DATABASE_URI: joi.string().required().description('Database connection string is required'),
     PORT: joi.number().positive().default(3000).description('Port number for the server'),
     NODE_ENV: joi.string().valid('development', 'production', 'test').default('development').description('Environment'),
+    JWT_SECRET: joi.string().required().description('Secret code of jwt is required')
   })
   .unknown(); // Allow other unknown environment variables
 
@@ -22,4 +23,5 @@ module.exports = {
   port: envVars.PORT,
   dbConnection: envVars.DATABASE_URI,
   nodeEnv: envVars.NODE_ENV,
+  JWT_SECRET:envVars.JWT_SECRET
 };

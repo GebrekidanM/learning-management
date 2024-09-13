@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
 import style from '../css/pages.module.css';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import URL from '../../../UI/URL';
 
 function CreateStudent({ sectionId }) {
+    const location = useLocation()
+    const {yearName}=location.state || {}
     const [userData, setUserData] = useState({
-        first: "", middle: "", last: "", gender: "", age: "", region: "", city: "", subCity: "", wereda: "", houseNo: "", sectionId
+        first: "", middle: "", last: "", gender: "", age: "", region: "", city: "", subCity: "", wereda: "", houseNo: "", sectionId,yearName
     });
     const [studentPhoto,setStudentPhoto] = useState(null)
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    
 
     // Handle input change and clear errors
     const handleOnChange = (e) => {
@@ -101,6 +104,7 @@ function CreateStudent({ sectionId }) {
         data.set('houseNo',userData.houseNo)
         data.set('studentPhoto',studentPhoto[0])
         data.set('sectionId',userData.sectionId)
+        data.set('yearName',userData.yearName)
 
         try {
             const response = await fetch(`${URL()}/student`, {

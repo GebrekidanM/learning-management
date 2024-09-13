@@ -12,6 +12,7 @@ import Subject from './pages/Subject/Subject'
 
 //icons
 import { MdDashboard,MdFamilyRestroom  } from "react-icons/md";
+import { SiTestcafe } from "react-icons/si";
 import { GrSchedules } from "react-icons/gr";
 import { SiGoogleclassroom } from "react-icons/si";
 import { PiStudent } from "react-icons/pi";
@@ -43,7 +44,6 @@ function Admin({year,yearId,semesterId}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
  
-
   const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,action,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId,gradeViewId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
@@ -74,7 +74,7 @@ function Admin({year,yearId,semesterId}) {
         if(card){
           return <ReportCard studentId={card}/>
         }
-        if (stuEdit) {
+        if (stuEdit && !loggedUser.role==='Student' && !loggedUser.role==='Family' && !loggedUser.role==='Teacher') {
           return <StudentEdit studentId={stuEdit} />;
         }
         return <Student semesterId={semesterId}/>;
@@ -127,7 +127,9 @@ function Admin({year,yearId,semesterId}) {
           return <ListOfStudents subjectId={addscoreSubjectId}/>
         }
         return <Teacher />;
-      default:
+      case 'score':
+        return;
+        default:
         return <Main  year={year} />;
     }}
 
@@ -144,12 +146,17 @@ function Admin({year,yearId,semesterId}) {
               <div className={style.dashNav}>
                   <div className={style.dashNavBarContainer}>
                     <NavLink to={'?type=home'} className={filterType === 'home' ? 'text-yellow-500 font-bold' : ''}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
-                    <NavLink to={'?type=student' } className={ filterType === 'student' ? 'text-yellow-500 font-bold' : ''}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
-                    <NavLink to={'?type=teacher'} className={filterType === 'teacher' ? 'text-yellow-500 font-bold' : ''}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>
-                    <NavLink to={'?type=parent'} className={filterType === 'parent' ? 'text-yellow-500 font-bold' : ''}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
-                    <NavLink to={'?type=grade'} className={filterType === 'grade' ? 'text-yellow-500 font-bold' : '' }><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
+                    {(loggedUser.role === "Admin" || loggedUser.role === "Editor") &&
+                    <>
+                      <NavLink to={'?type=student' } className={ filterType === 'student' ? 'text-yellow-500 font-bold' : ''}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
+                      <NavLink to={'?type=teacher'} className={filterType === 'teacher' ? 'text-yellow-500 font-bold' : ''}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>
+                      <NavLink to={'?type=parent'} className={filterType === 'parent' ? 'text-yellow-500 font-bold' : ''}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
+                      <NavLink to={'?type=grade'} className={filterType === 'grade' ? 'text-yellow-500 font-bold' : '' }><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
+                      <NavLink to={'?type=subject'} className={filterType === 'subject' ? 'text-yellow-500 font-bold' : ''}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
+                    </>}
+                    <NavLink to={'?type=score'}><span>{<SiTestcafe/>}</span><span>Score</span></NavLink>
                     <NavLink to={'?type=schedule'} className={filterType === 'schedule' ? 'text-yellow-500 font-bold' : ''}><span>{<GrSchedules/>}</span><span>Schedule</span></NavLink>
-                    <NavLink to={'?type=subject'} className={filterType === 'subject' ? 'text-yellow-500 font-bold' : ''}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
+
                   </div>
               </div>
 

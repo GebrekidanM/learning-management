@@ -1,6 +1,12 @@
 const mongoose = require('mongoose')
-
+const bcrypt = require('bcrypt')
 const TeacherSchema = new mongoose.Schema({
+    userId:{
+      type:String,
+      required:[true,'userId is required'],
+      trim:true,minlength:[7, 'Its length must seven'],
+      unique:[true,'UserId must be unique, try again']
+    },
     first: {
         type: String,
         required: [true, 'First name is required.'],
@@ -78,6 +84,7 @@ const TeacherSchema = new mongoose.Schema({
         message: 'Experience must be an integer value.',
         },
     },
+    role:{type:String,enum:['Teacher'],default:'Teacher'},
     password: {
       type: String,
       minlength: [8, 'Password must be at least 8 characters long.'],
@@ -103,6 +110,21 @@ const TeacherSchema = new mongoose.Schema({
     },
     yearId: { type: mongoose.Schema.Types.ObjectId, ref: 'Year', required: true },
     isActive: {type:Boolean, default:true}
+});
+
+// Hash the password before saving
+TeacherSchema.pre('save', async function (next) {
+  if (this.isModified('password')) {
+    try {
+      const salt = await bcrypt.genSalt(10);
+      this.password = await bcrypt.hash(this.password, salt);
+      next();
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    next();
+  }
 });
 
 // Indexes

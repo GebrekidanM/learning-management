@@ -2,25 +2,26 @@ import React, { useContext, useState } from 'react'
 import {Link, Navigate} from 'react-router-dom'
 import style from "../css/login.module.css"
 import { AuthContext } from '../../context/AuthContext'
+import URL from '../UI/URL'
 
 function Login() {
-  const [username,setUsername] = useState('')
+  const [userId,setUserId] = useState(null)
   const [password,setPassword] = useState('')
   const [userError,setUserError] = useState({
-    username:"",
+    userId:"",
     password:"",
   })
   const [serverError,setServerError] = useState('')
   const {setLoggedUser,loggedUser} = useContext(AuthContext)
 
-  const validateUsername = (username) => {
-    if (!username) {
+  const validateUsername = (userId) => {
+    if (!setUserId) {
       return 'Username is required';
     }
-    if (username.length < 3) {
+    if (userId.length < 3) {
       return 'Username must be at least 3 characters long';
     }
-    if (!/^[A-Za-z]+$/.test(username)) {
+    if (!/^[A-Za-z]+$/.test(userId)) {
       return 'Username can only contain alphabets';
     }
     return '';
@@ -38,9 +39,9 @@ const handleSubmit = async(e)=>{
   setServerError('');
   let errors = {};
 
-  const usernameError = validateUsername(username);
+  const usernameError = validateUsername(userId);
     if (usernameError) {
-      errors.username = usernameError;
+      errors.userId = usernameError;
     }
 
     const passwordError = validatePassword(password);
@@ -52,9 +53,9 @@ const handleSubmit = async(e)=>{
 
     if (!errors.username && !errors.password) {
       try {
-        const response = await fetch('http://localhost:4000/user/',{
+        const response = await fetch(`${URL()}/user/`,{
           method:'POST',
-          body:JSON.stringify({username,password}),
+          body:JSON.stringify({userId,password}),
           headers:{'Content-Type':'application/json'},
           credentials: 'include'
         })
@@ -87,7 +88,7 @@ if (loggedUser) {
         <form onSubmit={handleSubmit}>
             <h2>Login to your account</h2>
             {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-            <input type='text' value={username} onChange={e=>setUsername(e.target.value)} placeholder='Username'/>
+            <input type='text' value={userId} onChange={e=>setUserId(e.target.value)} placeholder='UserId/email'/>
             {userError.username && <p style={{ color: 'red' }}>{userError.username}</p>}
             
             <input type='password' value={password} onChange={e=>setPassword(e.target.value)} placeholder='***********'/>

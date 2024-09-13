@@ -1,12 +1,18 @@
 const mongoose =  require("mongoose")
 
 const AdminSchema = new mongoose.Schema ({
-    username:{type: String,required:true,unique:true},
+    userId:{
+        type:String,
+        required:[true,'userId is required'],
+        trim:true,minlength:[7, 'Its length must seven'],
+        unique:[true,'UserId must be unique, try again']},
+    username:{type: String,required:true},
     email:{type:String,required:true,unique:true},
-    role:{type:Number,enum:[1,2],default:2,required:true},//1 for writer 2 director
+    role:{type:String,enum:['Editor','Admin'],default:2,required:true},
     password:{type:String,required:true}
 })
 
+AdminSchema.index({userId:1,email:1})
 const Admin = mongoose.model("User", AdminSchema)
 
 module.exports = {Admin}

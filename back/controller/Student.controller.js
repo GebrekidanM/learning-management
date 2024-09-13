@@ -1,6 +1,6 @@
 const { default: mongoose } = require('mongoose');
 const {Student} = require('../model/Student_Family.model')
-
+const generateId = require('../utilities/GenerateId')
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -10,11 +10,17 @@ function Password(name){
 }
 
 const CreateStudent = async (req, res) => {
-    const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId } = req.body;
+    const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, sectionId ,yearName} = req.body;
     const studentPhoto = req.file.filename
+
+    const role = "Student"
+
+    const userId = generateId(yearName,role) 
+
+    console.log(userId)
     const password = Password(capitalizeFirstLetter(first))
     try {
-        const student = await Student.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
+        const student = await Student.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, userId,region, city, subCity, wereda, houseNo, sectionId,studentPhoto})
         if(student){
             res.status(200).json(student)
         }else{

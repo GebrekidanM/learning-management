@@ -5,7 +5,7 @@ import CreateStudent from '../Student/CreateStudent';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
 
-function GradeSectionSelector({semesterId}) {
+function GradeSectionSelector({ semesterId }) {
     const [grades, setGrades] = useState([]);
     const [selectedGrade, setSelectedGrade] = useState(null);
     const [sections, setSections] = useState([]);
@@ -15,6 +15,7 @@ function GradeSectionSelector({semesterId}) {
     const [searchParams] = useSearchParams();
     const type = searchParams.get('type');
     const sectionId = searchParams.get('sectionId');
+    const [yearName, setYearName] = useState(null);
 
     const navigate = useNavigate();
 
@@ -37,17 +38,21 @@ function GradeSectionSelector({semesterId}) {
     };
 
     useEffect(() => {
-        fetchData(`${URL()}/class/grades/${semesterId}`, setLoadingGrades, setGrades);
+        if (semesterId) {
+            fetchData(`${URL()}/class/grades/${semesterId}`, setLoadingGrades, setGrades);
+        }
     }, [semesterId]);
 
     useEffect(() => {
         if (selectedGrade) {
+            setYearName(selectedGrade?.yearId.yearName);
             fetchData(`${URL()}/class/sections/${selectedGrade._id}`, setLoadingSections, setSections);
         }
     }, [selectedGrade]);
 
-    const handleSectionClick = (sectionId) => {
-        navigate(`/main?type=student&sectionId=${sectionId}`);
+    const handleSectionClick = (sectionId,yearName) => {
+        const year = yearName
+        navigate(`/main?type=student&sectionId=${sectionId}`,{state:{yearName:year}});
     };
 
     return (
@@ -56,14 +61,15 @@ function GradeSectionSelector({semesterId}) {
                 <>
                     <div className={style.gradeSelector}>
                         <h2>Select a Grade</h2>
-                        {error && <p className={'error'}>{error}</p>}
-                        {loadingGrades ? <LoadingIndicator/> : (
+                        {error && <p className='error'>{error}</p>}
+                        {loadingGrades ? <LoadingIndicator /> : (
                             <div className={style.gradeListBox}>
                                 {grades.map(grade => (
                                     <li 
                                         className={`${style.gradeList} bg-white text-cyan-900 border-cyan-900 border-1`} 
                                         key={grade._id} 
-                                        onClick={() => setSelectedGrade(grade)}>
+                                        onClick={() => setSelectedGrade(grade)}
+                                    >
                                         Grade {grade.grade}
                                     </li>
                                 ))}
@@ -75,17 +81,22 @@ function GradeSectionSelector({semesterId}) {
                         <div className={style.gradeSelector} style={{ marginTop: "1rem" }}>
                             <h4>Sections for Grade {selectedGrade.grade}</h4>
                             {loadingSections ? (
-                                <LoadingIndicator/>
+                                <LoadingIndicator />
                             ) : (
                                 <div className={style.gradeListBox}>
-                                    {sections.map(section => (
-                                        <li 
-                                            className={`bg-white text-cyan-900 border-cyan-900 border-1 ${style.gradeList}`} 
-                                            key={section._id}
-                                            onClick={() => handleSectionClick(section._id)}>
-                                            {section.section}
-                                        </li>
-                                    ))}
+                                    {sections.length > 0 ? (
+                                        sections.map(section => (
+                                            <li 
+                                                className={`bg-white text-cyan-900 border-cyan-900 border-1 ${style.gradeList}`} 
+                                                key={section._id}
+                                                onClick={() => handleSectionClick(section._id,yearName)}
+                                            >
+                                                {section.section}
+                                            </li>
+                                        ))
+                                    ) : (
+                                        <p>No sections available.</p>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -93,7 +104,7 @@ function GradeSectionSelector({semesterId}) {
                 </>
             )}
 
-            {type === 'student' && sectionId && (
+            {type === 'student'  && sectionId && (
                 <div>
                     <CreateStudent sectionId={sectionId} />
                 </div>
