@@ -109,6 +109,7 @@ function TeacherEdit({ teacherId }) {
             const response = await fetch(`${URL()}/teacher/update/${teacherId}`, {
                 method: 'PATCH',
                 body: formData,
+                credentials: 'include' 
             });
             const data = await response.json();
             if (response.ok) {

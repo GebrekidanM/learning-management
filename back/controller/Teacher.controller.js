@@ -2,6 +2,8 @@ const { default: mongoose } = require('mongoose');
 const {Teacher} = require('../model/Teacher.model')
 const {TeacherSectionSubject} = require('../model/TeacherSectionSubject.model')
 const {Year} = require('../model/YearModel')
+const generateId = require('../utilities/GenerateId')
+
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
@@ -36,14 +38,19 @@ const FiredTeacher = async (req, res) => {
 }
 
 const CreatingATeacher = async (req, res) => {
-    const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo} = req.body;
+    const {first, middle, last, gender, age, region, city, subCity, wereda, houseNo, yearId,yearName , experience, email, phoneNo} = req.body;
     const teacherPhoto = req.file.filename 
-   
-    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
+
+
+    const { userId } = req;
+
+    if(!userId) {return res.status(401).json({error:"Un Autherized"});}
 
     const password= Password(capitalizeFirstLetter(first))
+    const role = "Teacher"
+    const UserId = generateId(yearName,role)
     try {
-        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
+        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, userId:UserId, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
         if(student){
             res.status(200).json(student)
         }else{

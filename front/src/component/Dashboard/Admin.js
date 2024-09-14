@@ -1,7 +1,8 @@
 import React, { useContext,useEffect,useState} from 'react'
 import style from "../css/Dashbord.module.css"
-import {useSearchParams, NavLink} from 'react-router-dom' 
-import Main from './pages/Main'
+import {useSearchParams} from 'react-router-dom' 
+import Main from './UI/Main'
+import LeftMenu from './UI/LeftMenu'
 import Student from './pages/Student/Student'
 import Schedule from './pages/Schedule'
 import Family from './pages/Family/Family'
@@ -10,14 +11,7 @@ import Grade from './pages/Grade'
 import StudentEdit from './pages/Student/StudentEdit'
 import Subject from './pages/Subject/Subject'
 
-//icons
-import { MdDashboard,MdFamilyRestroom  } from "react-icons/md";
-import { SiTestcafe } from "react-icons/si";
-import { GrSchedules } from "react-icons/gr";
-import { SiGoogleclassroom } from "react-icons/si";
-import { PiStudent } from "react-icons/pi";
-import { GiTeacher } from "react-icons/gi";
-import AdminNav from './pages/AdminNav'
+import AdminNav from './UI/AdminNav'
 import { AuthContext } from '../../context/AuthContext'
 import CreateStudent from './pages/Student/CreateStudent'
 import StudentDetail from './pages/Student/StudentDetail'
@@ -39,7 +33,7 @@ import ViewSection from './pages/Grade/ViewSection'
 import TeacherEdit from './pages/Teacher/TeacherEdit'
 
 
-function Admin({year,yearId,semesterId}) {
+function Admin({year,yearId,semesterId,yearName}) {
   const [searchParams] = useSearchParams()
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
@@ -126,7 +120,7 @@ function Admin({year,yearId,semesterId}) {
         if(addscoreSubjectId){
           return <ListOfStudents subjectId={addscoreSubjectId}/>
         }
-        return <Teacher />;
+        return <Teacher yearName={yearName} yearId={yearId}/>;
       case 'score':
         return;
         default:
@@ -137,28 +131,12 @@ function Admin({year,yearId,semesterId}) {
       return <LoadingIndicator/>
     }
 
-
   return (
        <div className={style.dashContainer}>
           <AdminNav filterType={filterType} username={loggedUser.username} />
           <div className={style.dashBox}>
               {/** dashboard navigation */}
-              <div className={style.dashNav}>
-                  <div className={style.dashNavBarContainer}>
-                    <NavLink to={'?type=home'} className={filterType === 'home' ? 'text-yellow-500 font-bold' : ''}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
-                    {(loggedUser.role === "Admin" || loggedUser.role === "Editor") &&
-                    <>
-                      <NavLink to={'?type=student' } className={ filterType === 'student' ? 'text-yellow-500 font-bold' : ''}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
-                      <NavLink to={'?type=teacher'} className={filterType === 'teacher' ? 'text-yellow-500 font-bold' : ''}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>
-                      <NavLink to={'?type=parent'} className={filterType === 'parent' ? 'text-yellow-500 font-bold' : ''}><span>{<MdFamilyRestroom/>}</span><span>Student's family</span></NavLink>
-                      <NavLink to={'?type=grade'} className={filterType === 'grade' ? 'text-yellow-500 font-bold' : '' }><span>{<SiGoogleclassroom/>}</span><span>Grade</span></NavLink>
-                      <NavLink to={'?type=subject'} className={filterType === 'subject' ? 'text-yellow-500 font-bold' : ''}><span>{<GrSchedules/>}</span><span>Subject</span></NavLink>
-                    </>}
-                    <NavLink to={'?type=score'}><span>{<SiTestcafe/>}</span><span>Score</span></NavLink>
-                    <NavLink to={'?type=schedule'} className={filterType === 'schedule' ? 'text-yellow-500 font-bold' : ''}><span>{<GrSchedules/>}</span><span>Schedule</span></NavLink>
-
-                  </div>
-              </div>
+              <LeftMenu/>
 
               <div className={style.dashDisplay}>
                 {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />

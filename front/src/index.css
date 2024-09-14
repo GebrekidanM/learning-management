@@ -76,6 +76,7 @@ code {
     monospace;
 }
 
+
 .deleteAndEdit{
   display: flex;
   justify-content: space-between;
@@ -87,4 +88,9 @@ code {
 
 .TeacherAddressEdit{
   align-self: flex-start;
+}
+
+/* for leftMenu*/
+.minHeight{
+  min-height: calc(100vh-4rem);
 }

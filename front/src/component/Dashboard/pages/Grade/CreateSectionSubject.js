@@ -121,7 +121,8 @@ function CreateSectionSubject({ teacherId,semesterId }) {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ teacherId, sectionId: selectedSection, subjects: selectedSubjects })
+                body: JSON.stringify({ teacherId, sectionId: selectedSection, subjects: selectedSubjects }),
+                credentials: 'include' 
             });
 
             const data = await response.json();

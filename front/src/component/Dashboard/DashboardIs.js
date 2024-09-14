@@ -10,10 +10,10 @@ function DashboardIs() {
     const [yearExists, setYearExists] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [yearName,setYearName] = useState('')
     const [semester, setSemester] = useState('');
     const location = useLocation();
     const { yearId, semesterId } = location.state || {};
-
     // Effect to check if a year exists or set based on location state
     useEffect(() => {
         const checkYear = async () => {
@@ -23,7 +23,8 @@ function DashboardIs() {
                 const data = await response.json();
                 
                 if (response.ok) {
-                    setYearExists(data); // Assuming data contains an `exists` flag
+                    setYearExists(data.yearId);
+                    setYearName(data.yearName);
                 } else {
                     setError(data.error || 'Failed to fetch academic year data.');
                 }
@@ -86,13 +87,18 @@ function DashboardIs() {
 
     return (
         <div>
-            {yearExists ? (
-                <Admin 
-                    year={handleCreateYear} 
-                    yearId={yearId || yearExists} 
-                    semesterId={semester} 
-                />
-            ) : (
+            {yearExists 
+            ?
+                (
+                    <Admin 
+                        year={handleCreateYear} 
+                        yearId={yearId || yearExists} 
+                        semesterId={semester} 
+                        yearName={yearName}
+                    />
+                ) 
+            :
+            (
                 <CreateYear />
             )}
         </div>

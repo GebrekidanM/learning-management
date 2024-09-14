@@ -8,14 +8,14 @@ const { AssignAteacherForSubject,
         AllAssignmentOfASection,
 
      } = require('../controller/TeacherSectionSubject.controller');
-const { onlyForAdmin } = require('../middleware/verifyToken');
+const { onlyForAdmin, verifyToken } = require('../middleware/verifyToken');
 
 // Route to assign a subject to a teacher for a specific section
-router.post('/medium/assign', onlyForAdmin,AssignAteacherForSubject);
+router.post('/medium/assign', verifyToken,onlyForAdmin,AssignAteacherForSubject);
 /*When a teacher changes their class or subject, we will:
     1. End their current assignment by setting an endDate.
     2. Create a new TeacherSectionSubject record with the new class/subject information.*/
-router.post('/teacher/change-assignment',onlyForAdmin,ReAssignTeacherForSubject)
+router.post('/teacher/change-assignment',verifyToken,onlyForAdmin,ReAssignTeacherForSubject)
 
 // Route to get all assignments for a teacher
 /*router.get('/medium/teacher/:teacherId', AllAssignmentOfTeacher);*/
@@ -28,7 +28,7 @@ router.get('/medium/teacher/section/:teacherId',SectionsOfATeacher)
 //get Assign sections and subjects for a teacher by using that id
 router.get('/medium/teacher/section/one/:idForDetail', AssignedSectionAndSubjectForATeacher)
 // Route to update an assignment
-router.put('/medium/update/:id', onlyForAdmin,UpdateAssignment);
+router.put('/medium/update/:id', verifyToken,onlyForAdmin,UpdateAssignment);
 // Route to delete an assignment
 /*router.delete('/medium/delete/:id', DeleteAssignment);*/
 

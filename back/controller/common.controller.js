@@ -68,7 +68,7 @@ const userLogIn = async (req, res) => {
         };
 
         // Generate JWT and set it as an HTTP-only cookie
-        generateTokenAndSetCookie(res, user._id);
+        generateTokenAndSetCookie(res, user._id,user.role);
 
         // Return user information, avoid returning sensitive information
         res.status(200).json({ username: userPayload.username });

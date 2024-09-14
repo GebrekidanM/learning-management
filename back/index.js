@@ -48,7 +48,6 @@ mongoose.connect('mongodb://localhost:27017/tibeb',()=>{
     });
 })
 */
-app.all('/main/*',verifyToken)
 app.use(UserRouter)
 app.use('/class',ClassRouter)
 app.use(TeacherSectionSubject)

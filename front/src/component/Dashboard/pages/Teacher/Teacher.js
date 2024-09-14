@@ -7,9 +7,7 @@ import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
 import FireTeacher from './FireTeacher';
 
-function Teacher() {
-  const [yearId, setYearId] = useState('');
-  const [yearError, setYearError] = useState('');
+function Teacher({yearName, yearId}) {
   const [teachers, setTeachers] = useState([]);
   const [filteredTeachers, setFilteredTeachers] = useState([]);
   const [error, setError] = useState('');
@@ -29,24 +27,7 @@ function Teacher() {
     return `?${type.toString()}`;
   }
 
-  // Check for the current academic year
-  useEffect(() => {
-    const checkYear = async () => {
-      try {
-        const response = await fetch(`${URL()}/class/check-academic-year`);
-        const json = await response.json();
-        if (response.ok) {
-          setYearId(json);
-        } else {
-          setYearError(json.error);
-        }
-      } catch (error) {
-        setYearError(error.message);
-      }
-    };
-    checkYear();
-  }, []);
-
+  
   // Fetch teachers from the server
   const fetchTeachers = async () => {
     try {
@@ -55,7 +36,7 @@ function Teacher() {
       const json = await response.json();
       if (response.ok) {
         setTeachers(json);
-        setFilteredTeachers(json); // Set filtered teachers to the fetched list
+        setFilteredTeachers(json);
       } else {
         setError(json.error);
       }
@@ -138,7 +119,7 @@ function Teacher() {
       </div>
       <div>
         {teachType === 'createTeacher' ? (
-          <CreateTeacher yearId={yearId} yearError={yearError} />
+          <CreateTeacher yearId={yearId} yearName={yearName} />
         ) : (
           <div>
             <table>

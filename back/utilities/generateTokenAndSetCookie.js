@@ -1,9 +1,9 @@
 const { JWT_SECRET, nodeEnv } = require('../config/config');
 const jwt=  require('jsonwebtoken');
 
-const generateTokenAndSetCookie = (res, userId) => {
+const generateTokenAndSetCookie = (res, userId,role) => {
   try {
-    const token = jwt.sign({ userId }, JWT_SECRET, { expiresIn: '3d' });
+    const token = jwt.sign({ userId,role }, JWT_SECRET, { expiresIn: '3d' });
 
     const isProduction = nodeEnv === 'production';
 

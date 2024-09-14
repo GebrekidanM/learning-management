@@ -10,12 +10,15 @@ import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
+import { AuthProvider } from './context/AuthContext';
  
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BrowserRouter>
-        <PrimeReactProvider>
-            <App />
-        </PrimeReactProvider>
-    </BrowserRouter>
+    <AuthProvider>
+        <BrowserRouter>
+            <PrimeReactProvider>
+                <App />
+            </PrimeReactProvider>
+        </BrowserRouter>
+    </AuthProvider>
 )

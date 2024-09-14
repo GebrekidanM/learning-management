@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import style from '../css/pages.module.css';
 import { useNavigate } from 'react-router-dom';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
 import ErrorMessage from '../../../common/ErrorMessage';
-function CreateTeacher({yearId,yearError}) {
+function CreateTeacher({yearId,yearName}) {
     const [userData, setUserData] = useState({
         first: "",
         middle: "",
@@ -19,7 +19,8 @@ function CreateTeacher({yearId,yearError}) {
         experience:"",
         phoneNo:"",
         email:"",
-        yearId
+        yearId,
+        yearName
     });
     const [teacherPhoto,setTeacherPhoto] = useState(null)
 
@@ -27,6 +28,11 @@ function CreateTeacher({yearId,yearError}) {
     const [errors, setErrors] = useState({});
 
     const navigate = useNavigate();
+
+
+    useEffect(()=>{
+
+    },[yearId])
 
     // Handle input change and clear errors
     const handleOnChange = (e) => {
@@ -125,11 +131,14 @@ function CreateTeacher({yearId,yearError}) {
         data.set('phoneNo',userData.phoneNo)
         data.set('teacherPhoto',teacherPhoto[0])
         data.set('yearId',userData.yearId)
+        data.set('yearName',userData.yearName)
+
 
         try {
             const response = await fetch(`${URL()}/teacher`, {
                 method: 'POST',
                 body: data,
+                credentials: 'include' 
             });
             const json = await response.json();
             if (response.ok) {
@@ -150,7 +159,6 @@ function CreateTeacher({yearId,yearError}) {
 
     return (
         <div className={style.createBox}>
-            {yearError && <p className='error'>{yearError}</p>}
             <form onSubmit={handleSubmit}>
                 <h2>Teacher's information</h2>
                 {errors.form && <ErrorMessage error={errors.form}/>}

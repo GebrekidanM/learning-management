@@ -52,30 +52,6 @@
   width: calc(80% - 2rem);
 }
 
-/*******************Admin Nav***********************/
-.adminNav {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  height: 4rem;
-  width: 100%;
-  background-color: var(--card);
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-}
-
-.username {
-  color: var(--white);
-  text-transform: capitalize;
-}
-
 .buttonSetUp {
   margin-block: 2rem;
 }/*# sourceMappingURL=Dashbord.module.css.map */

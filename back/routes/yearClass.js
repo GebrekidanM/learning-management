@@ -233,7 +233,7 @@ router.get('/check-academic-year', async (req, res) => {
         
         // Check if a year document exists
         if (year) {
-            res.status(200).json(year._id);
+           return res.status(200).json({yearId:year._id,yearName:year.yearName});
         } else {
             res.status(404).json({ error: 'Not found' });
         }
