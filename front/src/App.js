@@ -25,6 +25,7 @@ function App() {
       console.log(error)
     }
   },[loggedUser])
+  
   if(loading){
     return <LoadingIndicator/>
   }

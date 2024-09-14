@@ -39,6 +39,7 @@ function CreateScore({teacherId}) {
                     round,
                     description,
                 }),
+                credentials:'include'
             });
             const json = await response.json()
             if(response.ok){
@@ -58,7 +59,7 @@ function CreateScore({teacherId}) {
     }
     
   return (
-    <Card className='mt-5 w-6 mx-auto bg-cyan-900 text-white flex justify-content-center'>
+    <Card className='mt-5 py-3 w-6 mx-auto bg-cyan-900 text-white flex justify-content-center'>
         <form className='flex flex-column gap-3' onSubmit={handleSubmit}>
               <h3 className='text-center'>Result of student {first} {middle}</h3>
               {error && <ErrorMessage error={error}/>}

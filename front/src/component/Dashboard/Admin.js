@@ -31,6 +31,7 @@ import CreateSection from './pages/Grade/CreateSection'
 import GradeEdit from './pages/Grade/GradeEdit'
 import ViewSection from './pages/Grade/ViewSection'
 import TeacherEdit from './pages/Teacher/TeacherEdit'
+import Class from './ForTeacher/Class'
 
 
 function Admin({year,yearId,semesterId,yearName}) {
@@ -123,6 +124,8 @@ function Admin({year,yearId,semesterId,yearName}) {
         return <Teacher yearName={yearName} yearId={yearId}/>;
       case 'score':
         return;
+      case 'class':
+        return <Class/>; 
         default:
         return <Main  year={year} />;
     }}
@@ -136,7 +139,7 @@ function Admin({year,yearId,semesterId,yearName}) {
           <AdminNav filterType={filterType} username={loggedUser.username} />
           <div className={style.dashBox}>
               {/** dashboard navigation */}
-              <LeftMenu/>
+              <LeftMenu filterType={filterType}/>
 
               <div className={style.dashDisplay}>
                 {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />

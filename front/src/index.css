@@ -1,7 +1,10 @@
-body {
+*{
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+body {
+
   background-color: rgb(226, 226, 226);
   color: var(--text);
   overflow-x: hidden;
@@ -90,7 +93,3 @@ code {
   align-self: flex-start;
 }
 
-/* for leftMenu*/
-.minHeight{
-  min-height: calc(100vh-4rem);
-}

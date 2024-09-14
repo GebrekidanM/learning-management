@@ -88,7 +88,7 @@ if (loggedUser) {
         <form onSubmit={handleSubmit}>
             <h2>Login to your account</h2>
             {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
-            <input type='text' value={userId} onChange={e=>setUserId(e.target.value)} placeholder='UserId/email'/>
+            <input type='text' value={userId || ''} onChange={e=>setUserId(e.target.value)} placeholder='UserId/email'/>
             {userError.username && <p style={{ color: 'red' }}>{userError.username}</p>}
             
             <input type='password' value={password} onChange={e=>setPassword(e.target.value)} placeholder='***********'/>

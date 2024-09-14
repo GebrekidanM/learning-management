@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import style from '../css/detail.module.css'
-import { Link } from 'react-router-dom'
 import SectionCard from '../Grade/SectionCard'
 import css from '../css/SectionCard.module.css'
 import LoadingIndicator from '../../../common/LoadingIndicator'
@@ -87,21 +86,7 @@ function TeacherDetail({teacherId}) {
         <div>
           {loadingInfo ? <LoadingIndicator/>
           :
-          <div className={css.MainBox}>
-            {teacher.isActive ?
-             <>
-              <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>
-              {errorInfo ? <p className='error'>{errorInfo}</p>
-                :
-                  <div className={css.sectionCardContainer}>
-                      {sectionInfos && sectionInfos.map(sectionInfo=>(
-                          <SectionCard key={sectionInfo._id} teacherId={teacherId} active={teacher.isActive}   sectionInfo={sectionInfo}/>
-                      ))}
-                  </div>
-              }
-
-            </>:
-            <>
+          <div className={css.MainBox}>        
                 {errorInfo ? <p className='error'>{errorInfo}</p>
                   :
                     <div className={css.sectionCardContainer}>
@@ -109,10 +94,7 @@ function TeacherDetail({teacherId}) {
                             <SectionCard key={sectionInfo._id} teacherId={teacherId} active={teacher.isActive} sectionInfo={sectionInfo}/>
                         ))}
                     </div>
-                }
-            </>
-            }
-              
+                }                          
           </div>
           }
         </div>     
