@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { InputNumber } from "primereact/inputnumber";
 import { InputText } from "primereact/inputtext";
@@ -6,20 +6,28 @@ import { Card } from 'primereact/card';
 import { Button } from 'primereact/button';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; // Import react-toastify styles
+import 'react-toastify/dist/ReactToastify.css';
 import URL from '../../../UI/URL';
 
-function CreateScore({ teacherId }) {
+function UpdateScore() {
     const [value, setValue] = useState('');
     const [outOf, setOutOf] = useState('');
     const [description, setDescription] = useState('');
-    const [error, setError] = useState('');
     const [round, setRound] = useState('');
+    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
-    const location = useLocation();
-    const { subjectId, studentId, first, middle } = location.state || {};
     
+    const location = useLocation();
     const navigate = useNavigate();
+    const { subjectId, studentId, first, middle, roundPre, scoreValue, examDescription, examOutOf, teacherId } = location.state || {};
+
+    // Pre-fill the form with existing score data
+    useEffect(() => {
+        if (scoreValue) setValue(scoreValue);
+        if (examOutOf) setOutOf(examOutOf);
+        if (examDescription) setDescription(examDescription);
+        if (roundPre) setRound(roundPre);
+    }, [scoreValue, examOutOf, examDescription, roundPre]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -34,8 +42,8 @@ function CreateScore({ teacherId }) {
         setError('');
 
         try {
-            const response = await fetch(`${URL()}/score`, {
-                method: 'POST',
+            const response = await fetch(`${URL()}/score/${subjectId}`, {
+                method: 'PUT', // Use PUT to update the score
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -53,9 +61,9 @@ function CreateScore({ teacherId }) {
 
             const json = await response.json();
             if (response.ok) {
-                toast.success('Score submitted successfully!');
+                toast.success('Score updated successfully!');
                 setTimeout(() => {
-                    navigate(-1);
+                    navigate(-1); // Navigate back after successful update
                 }, 2000); 
             } else {
                 setError(json.error || 'An error occurred.');
@@ -76,8 +84,9 @@ function CreateScore({ teacherId }) {
     return (
         <Card className='mt-5 py-3 w-6 mx-auto bg-cyan-900 text-white flex justify-content-center'>
             <form className='flex flex-column gap-3' onSubmit={handleSubmit}>
-                <h3 className='text-center'>Result of student {first} {middle}</h3>
+                <h3 className='text-center'>Update Result for {first} {middle}</h3>
                 {error && <p className='error'>{error}</p>}
+                
                 <div className='flex flex-column gap-2'>
                     <label htmlFor="score">Score:</label>
                     <InputNumber 
@@ -85,7 +94,7 @@ function CreateScore({ teacherId }) {
                         id="score" 
                         value={value} 
                         onValueChange={(e) => setValue(e.value)} 
-                        required 
+                        required
                         aria-label="Score"
                     />
                 </div>
@@ -118,12 +127,11 @@ function CreateScore({ teacherId }) {
                         aria-label="Round"
                     />
                 </div>
-                <Button label='Submit' className='button' />
+                <Button label='Update' className='button' />
             </form>
-            {/* Add ToastContainer to show toasts */}
             <ToastContainer />
         </Card>
     );
 }
 
-export default CreateScore;
+export default UpdateScore;

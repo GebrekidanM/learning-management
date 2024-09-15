@@ -1,4 +1,4 @@
-const { ScoreOfAStudent, ScoreOfStudentsForASubject, CreatingScore } = require('../controller/Score.controller');
+const { ScoreOfAStudent, ScoreOfStudentsForASubject, CreatingScore, UpdateScore } = require('../controller/Score.controller');
 const { onlyForTeacher, verifyToken } = require('../middleware/verifyToken');
 
 const router = require('express').Router()
@@ -11,4 +11,6 @@ router.get('/score/:subjectId', ScoreOfStudentsForASubject);
 
 //creating score 
 router.post('/score/', verifyToken,onlyForTeacher,CreatingScore);
+//update score 
+router.put('/score/:subjectId',verifyToken,onlyForTeacher,UpdateScore );
 module.exports = router

@@ -5,6 +5,8 @@ import ErrorMessage from '../common/ErrorMessage';
 import { Card } from 'primereact/card';
 import URL from './URL'
 
+import { MdAdd , MdEdit} from "react-icons/md";
+
 function MarkList({ subjectId }) {
     const [markListInfo, setMarkListInfo] = useState([]);
     const [months, setMonths] = useState([]);
@@ -18,6 +20,13 @@ function MarkList({ subjectId }) {
 
     const handleAddScore = (teacherId, studentId, first, middle) => {
         navigate(`/main?type=teacher&info=${teacherId}`, { state: { subjectId, studentId, first, middle } });
+    };
+
+
+    const handleUpdateScore = (teacherId, studentId, first, middle, round, scoreValue, examDescription, examOutOf) => {
+        navigate(`/main?type=teacher&update_score=1`, { 
+            state: { subjectId, studentId, first, middle, round, scoreValue,examDescription,examOutOf,teacherId }
+        });
     };
 
     useEffect(() => {
@@ -63,7 +72,7 @@ function MarkList({ subjectId }) {
         <tr>
             {months.map((month) => (
                 exams
-                    .filter((exam) => exam.month === month) // Filter exams for the current month
+                    .filter((exam) => exam.month === month)
                     .map((exam, index) => (
                         <th  key={`${month}-${exam.description}-${exam.outOf}-${exam.round}-${IndexGenerator()}-${index}`} className='text-xs w-4rem'>
                         {exam.description.slice(0, 3)} ({exam.outOf})<br />
@@ -101,9 +110,12 @@ function MarkList({ subjectId }) {
         }, {});
 
         return Object.values(groupedScores).map((studentData, index) => (
-            <tr key={studentData.student._id} className='cursor-pointer' onClick={() => handleAddScore(studentData.teacher._id, studentData.student._id, studentData.student.first, studentData.student.middle)}>
+            <tr key={studentData.student._id} >
                 <td>{index + 1}</td>
-                <td>{studentData.student.first} {studentData.student.middle}</td>
+                <td>
+                        {studentData.student.first} {studentData.student.middle} 
+                        <span className='button p-2 cursor-pointer' onClick={() => handleAddScore(studentData.teacher._id, studentData.student._id, studentData.student.first, studentData.student.middle)}>{<MdAdd/>}</span>
+                </td>
                 <td>{studentData.student.age}</td>
                 <td>{studentData.student.gender}</td>
                 <td>{studentData.teacher.first} {studentData.teacher.middle}</td>
@@ -111,11 +123,24 @@ function MarkList({ subjectId }) {
                     exams
                         .filter(exam => exam.month === month) // Ensure each exam is aligned with its month
                         .map(exam => (
-                            <td key={`${studentData.student._id}-${exam.description}-${exam.outOf}-${exam.round}-${month}`}>
+                            <td 
+                                key={`${studentData.student._id}-${exam.description}-${exam.outOf}-${exam.round}-${month}`}
+                                className='cursor-pointer w-full flex justify-column-between'>
                                 {studentData.scoresByMonth[month] &&
-                                studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
-                                    ? studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
-                                    : '-'}
+                                    studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
+                                        ? studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
+                                        : '-'
+                                }
+                                <span onClick={() => handleUpdateScore(
+                                    studentData.teacher._id,
+                                    studentData.student._id,
+                                    studentData.student.first,
+                                    studentData.student.middle,
+                                    exam.round,
+                                    studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${month}`],
+                                    exam.description,
+                                    exam.outOf
+                                )} className='button cursor-pointer'><MdEdit/></span>
                             </td>
                         ))
                 ))}
@@ -125,7 +150,7 @@ function MarkList({ subjectId }) {
 
     return loading ? <LoadingIndicator /> : (
         <div>
-            <h3 className='text-center'>Mark List of <span className='text-green-500'>{subjectName} Grade {grade}{section}</span> students</h3>
+            <h3 className='text-center p-3 '>Mark List of <span className='text-green-500'>{subjectName} Grade {grade}{section}</span> students</h3>
             {error ? <ErrorMessage error={error} /> :
             <Card className='w-full overflow-x-auto'>
                 <table className='w-full'>

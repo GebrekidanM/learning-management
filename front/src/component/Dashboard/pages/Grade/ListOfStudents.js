@@ -4,6 +4,7 @@ import { Card } from 'primereact/card';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import ErrorMessage from '../../../common/ErrorMessage';
 import URL from '../../../UI/URL';
+
 function ListOfStudents({ subjectId }) {
     const navigate = useNavigate()
     const [error, setError] = useState('');
@@ -53,7 +54,8 @@ function ListOfStudents({ subjectId }) {
     return (
         <div className="p-4">
             {subjectInfo && (
-                <Card  title={`Mark list of Grade ${subjectInfo.sectionId.gradeId.grade}${subjectInfo.sectionId.section} ${subjectInfo.name}`}>
+                <Card >
+                    <h2 className='p-2' >{`Mark list of Grade ${subjectInfo.sectionId.gradeId.grade}${subjectInfo.sectionId.section} ${subjectInfo.name}`}</h2>
                     <table>
                         <thead>
                             <tr>

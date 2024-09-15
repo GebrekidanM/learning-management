@@ -52,7 +52,9 @@ function SectionCardDetail({idForDetail}) {
     <div className='mt-3 w-full'>
         {sectionInfo && (
             <div className={style.title} >
-                {errorInfo ? <ErrorMessage error={errorInfo}/> : <>
+                {errorInfo ? <ErrorMessage error={errorInfo}/> 
+                : 
+                <>
                     <p>Grade <span className='font-semibold text-cyan-900'>{sectionInfo?.sectionId.gradeId.grade}{sectionInfo.sectionId.section}</span> 
                         <span> Subjects of</span> 
                         <span className='font-semibold text-cyan-900'> {sectionInfo.teacherId.gender === 'Male' ? 'Mr' : 'Mrs'} {sectionInfo.teacherId.first} {sectionInfo.teacherId.middle} {sectionInfo.teacherId.last}</span>

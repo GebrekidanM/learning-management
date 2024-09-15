@@ -110,6 +110,7 @@ function CreateStudent({ sectionId }) {
             const response = await fetch(`${URL()}/student`, {
                 method: 'POST',
                 body: data,
+                credentials:'include'
             });
             const json = await response.json();
             if (response.ok) {

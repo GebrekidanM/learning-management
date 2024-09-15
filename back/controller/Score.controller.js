@@ -169,8 +169,44 @@ const CreatingScore = async (req, res) => {
     }
 }
 
+const UpdateScore = async (req, res) => {
+    const { subjectId } = req.params;
+    const { studentId, teacherId, value, outOf, round, description } = req.body;
+
+    // Basic validation
+    if (!studentId || !teacherId || !value || !outOf || !round || value > outOf) {
+        return res.status(400).json({ error: "Invalid input data" });
+    }
+
+    try {
+        // Find the score to update
+        const score = await Score.findOne({
+            subjectId,
+            studentId,
+            teacherId,
+            round
+        });
+
+        if (!score) {
+            return res.status(404).json({ error: "Score not found" });
+        }
+
+        score.value = value;
+        score.outOf = outOf;
+        score.description = description;
+        score.round=round;
+        await score.save();
+
+        res.status(200).json({ message: "Score updated successfully", score });
+    } catch (error) {
+        console.error("Error updating score:", error);
+        res.status(500).json({ error: "Server error" });
+    }
+}
+
 module.exports = {
     ScoreOfAStudent,
     ScoreOfStudentsForASubject,
-    CreatingScore
+    CreatingScore,
+    UpdateScore
 }

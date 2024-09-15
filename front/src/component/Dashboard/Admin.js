@@ -32,6 +32,7 @@ import GradeEdit from './pages/Grade/GradeEdit'
 import ViewSection from './pages/Grade/ViewSection'
 import TeacherEdit from './pages/Teacher/TeacherEdit'
 import Class from './ForTeacher/Class'
+import UpdateScore from './pages/Score/UpdateScore'
 
 
 function Admin({year,yearId,semesterId,yearName}) {
@@ -39,9 +40,11 @@ function Admin({year,yearId,semesterId,yearName}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
  
-  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,action,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId,gradeViewId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,update_score,action,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId,gradeViewId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
+
+  console.log(update_score)
 
   useEffect(() => {
     try {
@@ -102,6 +105,9 @@ function Admin({year,yearId,semesterId,yearName}) {
       case 'teacher':
         if (teacherId) {
           return <TeacherDetail teacherId={teacherId}/>;
+        }
+        if (update_score) {
+          return <UpdateScore />;
         }
         if(action){
           return <TeacherEdit teacherId={action} />
