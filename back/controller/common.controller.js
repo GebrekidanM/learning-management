@@ -39,7 +39,6 @@ const userLogIn = async (req, res) => {
     const { userId, password} = req.body;
 
     try {
-        // Search for the user in all collections concurrently
         const [admin, teacher, student, family] = await Promise.all([
             Admin.findOne({ userId }),
             Teacher.findOne({ userId }),
@@ -47,38 +46,31 @@ const userLogIn = async (req, res) => {
             Family.findOne({ userId })
         ]);
 
-        // Determine which user was found
         const user = admin || teacher || student || family;
         if (!user) {
             return res.status(404).json({ error: "This user does not exist" });
         }
 
-        // Verify the password
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             return res.status(400).json({ error: "Incorrect password!" });
         }
 
-        // Create a user object for the JWT payload
         const userPayload = {
             username: user.username || user.first || user.familyFirst,
-            role: user.role,  // Ensure role is consistent across collections
+            role: user.role,
             email: user.email,
             id: user._id
         };
 
-        // Generate JWT and set it as an HTTP-only cookie
         generateTokenAndSetCookie(res, user._id,user.role);
 
-        // Return user information, avoid returning sensitive information
         res.status(200).json({ username: userPayload.username });
         
     } catch (error) {
-        console.log(error);
         res.status(500).json({ error: "Something went wrong, please try again!" });
     }
 };
-
 
 const getUserDetails = async (req, res) => {
     try {
@@ -119,6 +111,7 @@ const userLogOut = (req, res) => {
     });
     res.status(200).json({ message: "Successfully logged out" });
 };
+
 
 module.exports = {
     DeleteFamilyAndStudent,

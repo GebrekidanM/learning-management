@@ -14,6 +14,7 @@ function DashboardIs() {
     const [semester, setSemester] = useState('');
     const location = useLocation();
     const { yearId, semesterId } = location.state || {};
+    
     // Effect to check if a year exists or set based on location state
     useEffect(() => {
         const checkYear = async () => {

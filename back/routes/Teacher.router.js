@@ -4,14 +4,14 @@ const {
         CreatingATeacher,
         GetOneTeacher,
         GetAllTeachers,
-        UpdateTeaacher
+        UpdateTeaacher,
+        changePassword
     } = require('../controller/Teacher.controller');
-const { onlyForAdmin, verifyToken } = require('../middleware/verifyToken');
+const { onlyForAdmin, verifyToken, onlyForTeacher } = require('../middleware/verifyToken');
 const upload = require('../upload');
 
-
 // it is for leaving teacher
-router.post('teacher/leave',verifyToken,onlyForAdmin,FiredTeacher );
+router.post('/teacher/leave',verifyToken,onlyForAdmin,FiredTeacher );
 //to create a teacher
 router.post('/teacher', upload.single('teacherPhoto'), verifyToken,onlyForAdmin,CreatingATeacher);
 //get teacher by id
@@ -19,5 +19,6 @@ router.get('/teacher/:teacherId',GetOneTeacher)
 // Get all teachers with optional filters and search query
 router.get('/teachers', GetAllTeachers);
 //update teacher
-    router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'),verifyToken,onlyForAdmin,UpdateTeaacher );
+router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'),verifyToken,onlyForAdmin,UpdateTeaacher );
+router.patch('/teacher/password/:teacherId',verifyToken,onlyForTeacher,changePassword)
 module.exports = router

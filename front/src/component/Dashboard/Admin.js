@@ -44,8 +44,6 @@ function Admin({year,yearId,semesterId,yearName}) {
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
-  console.log(update_score)
-
   useEffect(() => {
     try {
     setLoading(true);

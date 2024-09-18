@@ -113,34 +113,47 @@ function MarkList({ subjectId }) {
             <tr key={studentData.student._id} >
                 <td>{index + 1}</td>
                 <td>
+                    <span className='cursor-pointer w-full flex justify-content-between align-items-center'>
                         {studentData.student.first} {studentData.student.middle} 
-                        <span className='button p-2 cursor-pointer' onClick={() => handleAddScore(studentData.teacher._id, studentData.student._id, studentData.student.first, studentData.student.middle)}>{<MdAdd/>}</span>
+                        <span className='cursor-pointer' 
+                              title='Add new score'
+                              onClick={() => handleAddScore(studentData.teacher._id, studentData.student._id, studentData.student.first, studentData.student.middle)}>
+                              {<MdAdd/>}
+                        </span>
+                    </span>
                 </td>
                 <td>{studentData.student.age}</td>
                 <td>{studentData.student.gender}</td>
                 <td>{studentData.teacher.first} {studentData.teacher.middle}</td>
                 {months.map(month => (
                     exams
-                        .filter(exam => exam.month === month) // Ensure each exam is aligned with its month
+                        .filter(exam => exam.month === month)
                         .map(exam => (
                             <td 
                                 key={`${studentData.student._id}-${exam.description}-${exam.outOf}-${exam.round}-${month}`}
-                                className='cursor-pointer w-full flex justify-column-between'>
-                                {studentData.scoresByMonth[month] &&
-                                    studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
-                                        ? studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
-                                        : '-'
-                                }
-                                <span onClick={() => handleUpdateScore(
-                                    studentData.teacher._id,
-                                    studentData.student._id,
-                                    studentData.student.first,
-                                    studentData.student.middle,
-                                    exam.round,
-                                    studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${month}`],
-                                    exam.description,
-                                    exam.outOf
-                                )} className='button cursor-pointer'><MdEdit/></span>
+                                className='border-1'>
+                                <span className='flex justify-content-between align-items-center'>
+                                    {studentData.scoresByMonth[month] &&
+                                        studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
+                                            ? studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${exam.month}`]
+                                            : '-'
+                                    }
+                                    <span 
+                                        title='Edit this value'
+                                        onClick={() => handleUpdateScore(
+                                            studentData.teacher._id,
+                                            studentData.student._id,
+                                            studentData.student.first,
+                                            studentData.student.middle,
+                                            exam.round,
+                                            studentData.scoresByMonth[month][`${exam.description}-${exam.outOf}-${exam.round}-${month}`],
+                                            exam.description,
+                                            exam.outOf)} 
+                                        className='cursor-pointer p-2 mr-0'>
+                                        <MdEdit/>
+                                    </span>
+                                </span>
+                                
                             </td>
                         ))
                 ))}

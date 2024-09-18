@@ -63,12 +63,14 @@ a{
   font-weight: bold;
   color: green;
   cursor: pointer;
+  
 }
 
 .OutLine{
   outline: none;
   border:  1px solid rgb(11, 63, 63);
   border-radius: 0.3rem;
+  
 }
 .Card_Setting{
   background-color: var(--card);
@@ -93,3 +95,12 @@ code {
   align-self: flex-start;
 }
 
+/* For Internet Explorer and Edge */
+input[type="password"]::-ms-reveal {
+  display: none;
+}
+
+/* For Chrome, Safari, Opera (Webkit-based browsers) */
+input[type="password"]::-webkit-password-eye {
+  display: none;
+}

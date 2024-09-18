@@ -4,6 +4,8 @@ import SectionCard from '../Grade/SectionCard'
 import css from '../css/SectionCard.module.css'
 import LoadingIndicator from '../../../common/LoadingIndicator'
 import URL from '../../../UI/URL'
+import { Link } from 'react-router-dom'
+import ErrorMessage from '../../../common/ErrorMessage'
 
 function TeacherDetail({teacherId}) {
   const [sectionInfos,setSectionInfos] = useState([])
@@ -58,6 +60,7 @@ function TeacherDetail({teacherId}) {
     if(loading){
       return <LoadingIndicator/>
     }
+
   return (
     <div>
       
@@ -86,8 +89,9 @@ function TeacherDetail({teacherId}) {
         <div>
           {loadingInfo ? <LoadingIndicator/>
           :
-          <div className={css.MainBox}>        
-                {errorInfo ? <p className='error'>{errorInfo}</p>
+          <div className={css.MainBox}>  
+          <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>      
+                {errorInfo ? <ErrorMessage error={error} style={{marginTop:"3rem"}}/>
                   :
                     <div className={css.sectionCardContainer}>
                         {sectionInfos && sectionInfos.map(sectionInfo=>(

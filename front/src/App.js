@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Navbar from "./component/pages/Navbar";
 import Login from "./component/pages/login";
 import Signup from "./component/pages/signup";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import { AuthContext } from "./context/AuthContext";
 import DashboardIs from "./component/Dashboard/DashboardIs";
 import CreateSemester from "./component/Dashboard/CreateSemester";
@@ -10,21 +10,16 @@ import Home from "./component/pages/Home";
 import LoadingIndicator from "./component/common/LoadingIndicator";
 
 function App() {
-  const [loading,setLoading] = useState(false)
+  const [loading,setLoading] = useState(true)
   const {loggedUser} =useContext(AuthContext)
 
-  useEffect(()=>{
+  useEffect(() => {
     try {
-      setLoading(true)
-      if(loggedUser){
-        setLoading(false)
-      }else{
-        setLoading(false)
-      }
-    } catch(error){
-      console.log(error)
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
     }
-  },[loggedUser])
+  }, [loggedUser]);
   
   if(loading){
     return <LoadingIndicator/>
@@ -38,8 +33,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
        {/**protected routes */}
-        <Route path="/create-semester" element={loggedUser ?<CreateSemester/>:<Login/>} />
-        <Route path="/main" element={loggedUser ?<DashboardIs/>:<Login/>}/>
+        <Route path="/create-semester" element={loggedUser ?<CreateSemester/>:<Navigate to="/login" />} />
+        <Route path="/main" element={loggedUser ?<DashboardIs/>:<Navigate to="/login" />}/>
       </Routes>
     </>
   );

@@ -3,6 +3,7 @@ const {Teacher} = require('../model/Teacher.model')
 const {TeacherSectionSubject} = require('../model/TeacherSectionSubject.model')
 const {Year} = require('../model/YearModel')
 const generateId = require('../utilities/GenerateId')
+const bcrypt = require('bcrypt');
 
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
@@ -61,7 +62,6 @@ const CreatingATeacher = async (req, res) => {
             const validationErrors = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({ error: validationErrors });
         }
-        
         res.status(500).json({ error: error.message });
     }
 }
@@ -122,7 +122,6 @@ const GetAllTeachers = async (req, res) => {
             res.status(404).json({ error: 'No teachers found.' });
         }
     } catch (error) {
-        console.log(error)
         if (error instanceof mongoose.Error.ValidationError) {
             const validationErrors = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({ error: validationErrors });
@@ -162,11 +161,45 @@ const UpdateTeaacher = async (req, res) => {
         }
         res.status(200).json(updatedTeacher);
     } catch (error) {
+        if (error instanceof mongoose.Error.ValidationError) {
+            const validationErrors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: validationErrors });
+        }
         res.status(500).json({ error: error.message });
     }
 }
 
-module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher}
+const changePassword = async(req,res)=>{
+    const {teacherId} = req.params
+    const {currentPassword,newPassword} = req.body
+    console.log("te",teacherId)
+    if(!mongoose.Types.ObjectId.isValid(teacherId)) return res.status(400).json({error:"Invalid Id!"});
+
+    try {
+        const teacher = await Teacher.findById(teacherId).select('password');
+
+        const passwordMatch = await bcrypt.compare(currentPassword, teacher.password);
+        
+        if (!passwordMatch) {
+            return res.status(400).json({ error: "Incorrect password!" });
+        }
+        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+        teacher.password = hashedNewPassword;
+        await teacher.save();
+
+        res.status(200).json('Password updated successfully');
+
+    } catch (error) {
+        console.log(error)
+        if (error instanceof mongoose.Error.ValidationError) {
+            const validationErrors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: validationErrors });
+        }
+        res.status(500).json({ error: error.message });
+    }
+}
+
+module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher,changePassword}
 
 
 
