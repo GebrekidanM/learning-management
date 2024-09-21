@@ -95,7 +95,7 @@ function PasswordChange({ handle, setHandle }) {
           </span>
         </div>
 
-        <button className='p-2 bg-blue-500 text-white border-round'>Submit</button>
+        <button className='button'>Submit</button>
       </form>
     </>
   );

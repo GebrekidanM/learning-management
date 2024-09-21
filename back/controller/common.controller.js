@@ -50,22 +50,15 @@ const userLogIn = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: "This user does not exist" });
         }
-
+     
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             return res.status(400).json({ error: "Incorrect password!" });
         }
 
-        const userPayload = {
-            username: user.username || user.first || user.familyFirst,
-            role: user.role,
-            email: user.email,
-            id: user._id
-        };
-
         generateTokenAndSetCookie(res, user._id,user.role);
 
-        res.status(200).json({ username: userPayload.username });
+        res.status(200).json(user);
         
     } catch (error) {
         res.status(500).json({ error: "Something went wrong, please try again!" });

@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext } from 'react'
 import { NavLink } from 'react-router-dom'
-import { AuthContext } from '../../../context/AuthContext'
 import { MdDashboard,MdFamilyRestroom  } from "react-icons/md";
 import { SiTestcafe } from "react-icons/si";
 import { GrSchedules } from "react-icons/gr";
@@ -8,29 +7,12 @@ import { SiGoogleclassroom } from "react-icons/si";
 import { PiStudent } from "react-icons/pi";
 import { GiTeacher } from "react-icons/gi";
 import URL from '../../UI/URL';
-import LoadingIndicator from '../../common/LoadingIndicator';
+import { AuthContext } from '../../../context/AuthContext';
 
 function LeftMenu({filterType}) {
     const {loggedUser} = useContext(AuthContext)
-    const [loading,setLoading] = useState(false)
 
-    useEffect(() => {
-      try {
-      setLoading(true);
-        if (loggedUser) {
-          setLoading(false)
-          }
-      } finally{
-        setLoading(false);
-      }
-      
-    }, [loggedUser]);
-  
-    if(loading){
-      return <LoadingIndicator/>
-    }
-    
-  return (
+  return loggedUser && (
     <div className='w-10rem flex justify-content-center sticky top-4rem' style={{backgroundColor:"var(--card)", minHeight: "calc(100vh - 4rem)"}}>
         <div className='flex flex-column gap-3'>
           <div className='w-5rem'>
@@ -39,7 +21,7 @@ function LeftMenu({filterType}) {
           <NavLink to={'?type=home'} className={`${filterType === 'home'   ? 'text-yellow-500 font-bold' : 'text-white'}  flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500 `}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
           <NavLink to={'?type=class'} className={`${filterType === 'class'   ? 'text-yellow-500 font-bold' : 'text-white'}  flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}><span>{<SiGoogleclassroom/>}</span><span>Class</span></NavLink>
           {
-            (loggedUser.role === "Admin" || loggedUser.role === "Editor") &&
+            (loggedUser?.role === "Admin" || loggedUser?.role === "Editor") &&
             <>
                 <NavLink to={'?type=student' } className={`${filterType === 'student'   ? 'text-yellow-500 font-bold' : 'text-white'}  flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}><span>{<PiStudent/>}</span><span>Student</span></NavLink>
                 <NavLink to={'?type=teacher'} className={`${filterType === 'teacher'   ? 'text-yellow-500 font-bold' : 'text-white'}  flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}><span>{<GiTeacher/> }</span><span>Teacher</span></NavLink>

@@ -4,6 +4,7 @@ const {TeacherSectionSubject} = require('../model/TeacherSectionSubject.model')
 const {Year} = require('../model/YearModel')
 const generateId = require('../utilities/GenerateId')
 const bcrypt = require('bcrypt');
+const generateTokenAndSetCookie = require('../utilities/generateTokenAndSetCookie')
 
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
@@ -50,8 +51,11 @@ const CreatingATeacher = async (req, res) => {
     const password= Password(capitalizeFirstLetter(first))
     const role = "Teacher"
     const UserId = generateId(yearName,role)
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     try {
-        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password,gender, age, region, city, subCity, userId:UserId, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
+        const student = await Teacher.create({first:capitalizeFirstLetter(first), middle:capitalizeFirstLetter(middle), last:capitalizeFirstLetter(last), password:hashedPassword,gender, age, region, city, subCity, userId:UserId, wereda, houseNo, yearId , experience, email, phoneNo,teacherPhoto})
         if(student){
             res.status(200).json(student)
         }else{
@@ -169,25 +173,31 @@ const UpdateTeaacher = async (req, res) => {
     }
 }
 
-const changePassword = async(req,res)=>{
-    const {teacherId} = req.params
-    const {currentPassword,newPassword} = req.body
-    console.log("te",teacherId)
-    if(!mongoose.Types.ObjectId.isValid(teacherId)) return res.status(400).json({error:"Invalid Id!"});
+const changePassword = async (req, res) => {
+    const { teacherId } = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(teacherId)) {
+        return res.status(400).json({ error: "Invalid ID!" });
+    }
 
     try {
-        const teacher = await Teacher.findById(teacherId).select('password');
+        const teacher = await Teacher.findById(teacherId);
+        if (!teacher) {
+            return res.status(404).json({ error: "Teacher not found!" });
+        }
 
         const passwordMatch = await bcrypt.compare(currentPassword, teacher.password);
-        
-        if (!passwordMatch) {
-            return res.status(400).json({ error: "Incorrect password!" });
+        if(!passwordMatch){
+            return res.status(400).json({error:"Incorrect password!"})
         }
-        const hashedNewPassword = await bcrypt.hash(newPassword, 10);
-        teacher.password = hashedNewPassword;
-        await teacher.save();
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const newTeacher = await Teacher.findByIdAndUpdate(teacherId, { password: hashedPassword }, { new: true });
 
-        res.status(200).json('Password updated successfully');
+        // After updating, re-issue a new JWT token or invalidate the old one
+        generateTokenAndSetCookie(res, teacherId, newTeacher.role); 
+
+        res.status(200).json("changed");
 
     } catch (error) {
         console.log(error)
@@ -195,9 +205,11 @@ const changePassword = async(req,res)=>{
             const validationErrors = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({ error: validationErrors });
         }
-        res.status(500).json({ error: error.message });
+        
+        res.status(500).json({ error: "Internal server error" });
     }
-}
+};
+
 
 module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher,changePassword}
 

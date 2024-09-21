@@ -10,31 +10,32 @@ import Home from "./component/pages/Home";
 import LoadingIndicator from "./component/common/LoadingIndicator";
 
 function App() {
-  const [loading,setLoading] = useState(true)
-  const {loggedUser} =useContext(AuthContext)
+  const [loading, setLoading] = useState(true);
+  const { loggedUser, checkAuth } = useContext(AuthContext); // Assume `checkAuth` checks cookies for logged in status
 
   useEffect(() => {
-    try {
+    const verifyUser = async () => {
+      await checkAuth();
       setLoading(false);
-    } catch (error) {
-      setLoading(false);
-    }
-  }, [loggedUser]);
-  
-  if(loading){
-    return <LoadingIndicator/>
+    };
+    
+    verifyUser();
+  }, []);
+
+  if (loading) {
+    return <LoadingIndicator />;
   }
 
-  return  (
+  return (
     <>
       <ConditionalNavbar />
       <Routes>
-        <Route path="/" element={<Home/>}/>
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-       {/**protected routes */}
-        <Route path="/create-semester" element={loggedUser ?<CreateSemester/>:<Navigate to="/login" />} />
-        <Route path="/main" element={loggedUser ?<DashboardIs/>:<Navigate to="/login" />}/>
+        {/* Protected Routes */}
+        <Route path="/create-semester" element={loggedUser ? <CreateSemester /> : <Navigate to="/login" />} />
+        <Route path="/main" element={loggedUser ? <DashboardIs /> : <Navigate to="/login" />} />
       </Routes>
     </>
   );
@@ -42,7 +43,7 @@ function App() {
 
 const ConditionalNavbar = () => {
   const location = useLocation();
-  const hideNavbarRoutes = ['/main'];
+  const hideNavbarRoutes = ["/main"]; // You can hide Navbar on more routes if needed
   return !hideNavbarRoutes.includes(location.pathname) && <Navbar />;
 };
 

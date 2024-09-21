@@ -43,7 +43,7 @@ const AdminSchema = new mongoose.Schema ({
         message: 'Password must contain at least one uppercase letter and one number.',
         },
     },
-    adminPhoto:{type:String,required:[true,'Photo of Admin is required']},
+    adminPhoto:{type:String},
     gender:{type:String,enum:['Male','Female'],required:[true,'Gender field is required']},
     age:{type:Number,required:[true,'Age is required!']},
     region:{type:String,required:[true,"Region is required"]},

@@ -5,27 +5,32 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [loggedUser, setLoggedUser] = useState(null);
-  const [loading,setLoading] = useState(false)
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-      setLoading(true)
-        const response = await fetch(`${URL()}/user/profile`, { credentials: "include" });
-        if (response.ok) {
-          const json = await response.json();
-          setLoggedUser(json);
-        } else {
-          setLoggedUser(null);
-        }
-      }finally{
-        setLoading(false)
+ 
+  const checkAuth = async () => {
+    try {
+      const response = await fetch(`${URL()}/user/profile`, {
+        method: 'GET',
+        credentials: 'include', 
+      });
+
+      if (response.ok) {
+        const userData = await response.json();
+        setLoggedUser(userData);
+      } else {
+        setLoggedUser(null);
       }
+    } catch (error) {
+      console.log("Authentication check failed", error);
+      setLoggedUser(null); 
     }
-    fetchUser();
+  };
+
+  useEffect(() => {
+    checkAuth()
   }, []);
 
-  return !loading && (
-    <AuthContext.Provider value={{ loggedUser, setLoggedUser }}>
+  return (
+    <AuthContext.Provider value={{ loggedUser, setLoggedUser,checkAuth }}>
       {children}
     </AuthContext.Provider>
   );

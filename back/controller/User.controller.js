@@ -3,7 +3,7 @@ const bcrypt = require("bcrypt")
 const crypto = require('crypto')
 const generateId = require('../utilities/GenerateAdminId')
 const { default: mongoose } = require('mongoose')
-const photo = '../utilities/admin.jpg'
+
 //to create user at the first time automatically
 const createForOneTimeUser = async (req,res)=>{
     const username = 'user'
@@ -14,7 +14,6 @@ const createForOneTimeUser = async (req,res)=>{
     const email = 'user@gmail.com'
     const role = 'Admin'
     const userId = generateId('Admin')
-    const adminPhoto = photo;
     const gender='Male';
     const age = 35;
     const region="Addis Ababa"
@@ -29,7 +28,7 @@ const createForOneTimeUser = async (req,res)=>{
 
         if(user)return res.status(400).json({error:'There is a user'});
 
-        const newUser = await Admin.create({userId, gender,age,region,city,subCity,wereda,houseNo,username, email, password: hashedPassword ,role,middle,last,phoneNo,adminPhoto});
+        const newUser = await Admin.create({userId, gender,age,region,city,subCity,wereda,houseNo,username, email, password: hashedPassword ,role,middle,last,phoneNo});
         if(newUser){
             res.status(200).json(newUser)
         }else{

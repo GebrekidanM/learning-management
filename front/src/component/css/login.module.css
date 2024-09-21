@@ -29,6 +29,7 @@
           flex-direction: column;
   padding: 1rem;
   margin-inline: auto;
+  gap: 1rem;
 }
 
 .logBox form p {
@@ -36,12 +37,32 @@
 }
 
 .logBox form input {
-  margin-block: 0.5rem;
   border: none;
   padding: 1rem;
-  background-color: rgb(226, 226, 226);
+  padding-right: 2.5rem; /* Leave space for the eye icon */
   border-radius: 0.2rem;
   outline: none;
+  width: 100%;
+  position: relative; /* If needed */
+}
+
+span.w-full {
+  position: relative; /* Ensures absolute positioning of child elements works */
+}
+
+span.w-full .absolute {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+  font-size: 1.25rem;
+}
+
+span.w-full .absolute:hover {
+  color: #333; /* Change color on hover */
 }
 
 .logBox form input::-webkit-input-placeholder {

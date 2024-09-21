@@ -59,7 +59,7 @@ function Admin({year,yearId,semesterId,yearName}) {
   const renderPages = (filterType) => {
     switch (filterType) {
       case 'home':
-        return <Main />;
+        return <Main loggedUser={loggedUser} year={year}/>;
       case 'student':
         if (studentId) {
           return <StudentDetail studentId={studentId} />;
@@ -131,7 +131,7 @@ function Admin({year,yearId,semesterId,yearName}) {
       case 'class':
         return <Class/>; 
         default:
-        return <Main  year={year} />;
+        return <Main  year={year} loggedUser={loggedUser}/>;
     }}
 
     if(loading){
@@ -143,7 +143,7 @@ function Admin({year,yearId,semesterId,yearName}) {
           <AdminNav filterType={filterType} username={loggedUser.username} />
           <div className={style.dashBox}>
               {/** dashboard navigation */}
-              <LeftMenu filterType={filterType}/>
+              <LeftMenu filterType={filterType} loggedUser={loggedUser}/>
 
               <div className={style.dashDisplay}>
                 {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />

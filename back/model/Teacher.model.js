@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+
 const TeacherSchema = new mongoose.Schema({
     userId:{
       type:String,
@@ -112,24 +112,11 @@ const TeacherSchema = new mongoose.Schema({
     isActive: {type:Boolean, default:true}
 });
 
-// Hash the password before saving
-TeacherSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(this.password, salt);
-      next();
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    next();
-  }
-});
-
 // Indexes
 TeacherSchema.index({ email: 1 });
 TeacherSchema.index({ phoneNo: 1 });
 
 const Teacher = mongoose.model('Teacher', TeacherSchema);
 module.exports = {Teacher}
+
+
