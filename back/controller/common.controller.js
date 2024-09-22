@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-
+const mongoose = require('mongoose')
 const {Family, Student} = require('../model/Student_Family.model')
 const {Admin} = require('../model/user.model');
 const {Teacher} = require('../model/Teacher.model');
@@ -105,10 +105,56 @@ const userLogOut = (req, res) => {
     res.status(200).json({ message: "Successfully logged out" });
 };
 
+const changePassword = async(req, res) => {
+    const { id } = req.params;
+    const { currentPassword, newPassword } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(400).json({ error: "Invalid ID!" });
+    }
+
+    try {
+        const [admin, teacher, student, family] = await Promise.all([
+            Admin.findById(id),
+            Teacher.findById(id),
+            Student.findById(id),
+            Family.findById(id)
+        ]);
+
+        const user = admin || teacher || student || family;
+
+        if (!user) {
+            return res.status(404).json({ error: "This user does not exist" });
+        }
+
+        const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+        if (!passwordMatch) {
+            return res.status(400).json({ error: "Incorrect password!" });
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        const model = admin ? Admin : teacher ? Teacher : student ? Student : Family;
+        await model.findByIdAndUpdate(id, { password: hashedPassword }, { new: true });
+
+        generateTokenAndSetCookie(res, user._id, user.role); 
+
+        res.status(200).json("Password changed successfully");
+    } catch (error) {
+        console.error(error);
+        if (error instanceof mongoose.Error.ValidationError) {
+            const validationErrors = Object.values(error.errors).map(err => err.message);
+            return res.status(400).json({ error: validationErrors });
+        }
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 
 module.exports = {
     DeleteFamilyAndStudent,
     getUserDetails,
     userLogOut,
-    userLogIn
+    userLogIn,
+    changePassword
 }

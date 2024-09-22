@@ -69,7 +69,7 @@ function TeacherDetail({teacherId}) {
       <div className={style.BoxContainer}>
         <div className={style.basicInfo}>
           <img src={`${URL()}/uploads/${teacher.teacherPhoto}`} alt='hello'/>
-          <div className={style.extraInfo}>
+          <div className={`text-left flex flex-column gap-3 ml-3 mt-3`}>
             <h5>{teacher.first} {teacher.middle} {teacher.last}</h5>
             <p>Gendar: {teacher.gender}</p>
             <p>Age: {teacher.age}</p>
@@ -78,7 +78,7 @@ function TeacherDetail({teacherId}) {
         </div>
         <div className={style.adressInfo}>
           <h3>Detail Adress</h3>
-          <div className={style.extraInfo}>
+          <div className={`text-left flex flex-column gap-3`}>
               <p><i><b>Region:</b></i> {teacher.region}</p>
               <p><i><b>City:</b></i> {teacher.city}</p>
               <p><i><b>Subcity:</b></i> {teacher.subCity}</p>
@@ -91,17 +91,20 @@ function TeacherDetail({teacherId}) {
           :
           <div className={css.MainBox}>  
           <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>      
-                {errorInfo ? <ErrorMessage error={error} style={{marginTop:"3rem"}}/>
+                {errorInfo ? <ErrorMessage error={error}/>
                   :
                     <div className={css.sectionCardContainer}>
                         {sectionInfos && sectionInfos.map(sectionInfo=>(
-                            <SectionCard key={sectionInfo._id} teacherId={teacherId} active={teacher.isActive} sectionInfo={sectionInfo}/>
+                            <SectionCard key={sectionInfo._id} teacherId={teacherId} role="" sectionInfo={sectionInfo}/>
                         ))}
                     </div>
-                }                          
+                }            
           </div>
           }
-        </div>     
+        </div> 
+        <div>
+          
+        </div>    
       </div>
       }
     </div>

@@ -187,6 +187,7 @@ function Subject({ semesterId }) {
     <div className="w-full flex gap-3" style={{zIndex:'-10'}}>
       <div className="w-6 flex flex-column gap-3">
           <div className='w-3 z-1 flex flex-column gap-3 top-1 pt-4 fixed bg-gray-300'>
+             <h3>The area to create subject</h3>
              <div>
               {error && <ErrorMessage error={error} />}
               <Dropdown
@@ -195,7 +196,7 @@ function Subject({ semesterId }) {
                 options={gradeOptions}
                 optionLabel="label"
                 placeholder="Select grade"
-                className="w-10 bg-white text-cyan-900 border-cyan-900 border-1 z-0"
+                className="w-10 bg-white text-cyan-900 border-cyan-900 border-1 z-0 p-2"
               />
               </div>
               {loadingSec ? (

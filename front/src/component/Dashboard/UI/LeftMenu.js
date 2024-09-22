@@ -13,13 +13,13 @@ function LeftMenu({filterType}) {
     const {loggedUser} = useContext(AuthContext)
 
   return loggedUser && (
-    <div className='w-10rem flex justify-content-center sticky top-4rem' style={{backgroundColor:"var(--card)", minHeight: "calc(100vh - 4rem)"}}>
+    <div className='w-10rem flex justify-content-center' style={{backgroundColor:"var(--card)", minHeight: "calc(100vh - 4rem)",maxHeight: "calc(100vh - 4rem)",position:"sticky",top:"4rem"}}>
         <div className='flex flex-column gap-3'>
           <div className='w-5rem'>
-             <img className='w-5rem h-5rem border-circle mt-4' style={{objectFit:'cover'}} src={`${URL()}/uploads/${loggedUser.teacherPhoto}`} alt={"teacher profile"}/>
+             <img className='w-5rem h-5rem border-circle mt-4' style={{objectFit:'cover'}} src={`${URL()}/uploads/${loggedUser.teacherPhoto||loggedUser.familyPhoto||loggedUser.studentPhoto}`} alt={loggedUser.role + "profile"}/>
           </div>
           <NavLink to={'?type=home'} className={`${filterType === 'home'   ? 'text-yellow-500 font-bold' : 'text-white'}  flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500 `}><span>{<MdDashboard/>}</span><span>Dashboard</span></NavLink>
-          <NavLink to={'?type=class'} className={`${filterType === 'class'   ? 'text-yellow-500 font-bold' : 'text-white'}  flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}><span>{<SiGoogleclassroom/>}</span><span>Class</span></NavLink>
+          {loggedUser.role === "Teacher" && <NavLink to={'?type=class'} className={`${filterType === 'class'   ? 'text-yellow-500 font-bold' : 'text-white'}  flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}><span>{<SiGoogleclassroom/>}</span><span>Class</span></NavLink>}
           {
             (loggedUser?.role === "Admin" || loggedUser?.role === "Editor") &&
             <>

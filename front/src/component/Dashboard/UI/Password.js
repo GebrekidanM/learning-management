@@ -15,7 +15,7 @@ function PasswordChange({ handle, setHandle }) {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${URL()}/teacher/password/${loggedUser._id}`, {
+      const response = await fetch(`${URL()}/user/password/${loggedUser._id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

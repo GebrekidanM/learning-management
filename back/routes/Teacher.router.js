@@ -5,7 +5,6 @@ const {
         GetOneTeacher,
         GetAllTeachers,
         UpdateTeaacher,
-        changePassword
     } = require('../controller/Teacher.controller');
 const { onlyForAdmin, verifyToken, onlyForTeacher } = require('../middleware/verifyToken');
 const upload = require('../upload');
@@ -20,5 +19,4 @@ router.get('/teacher/:teacherId',GetOneTeacher)
 router.get('/teachers', GetAllTeachers);
 //update teacher
 router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'),verifyToken,onlyForAdmin,UpdateTeaacher );
-router.patch('/teacher/password/:teacherId',verifyToken,onlyForTeacher,changePassword)
 module.exports = router

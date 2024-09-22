@@ -173,45 +173,7 @@ const UpdateTeaacher = async (req, res) => {
     }
 }
 
-const changePassword = async (req, res) => {
-    const { teacherId } = req.params;
-    const { currentPassword, newPassword } = req.body;
-
-    if (!mongoose.Types.ObjectId.isValid(teacherId)) {
-        return res.status(400).json({ error: "Invalid ID!" });
-    }
-
-    try {
-        const teacher = await Teacher.findById(teacherId);
-        if (!teacher) {
-            return res.status(404).json({ error: "Teacher not found!" });
-        }
-
-        const passwordMatch = await bcrypt.compare(currentPassword, teacher.password);
-        if(!passwordMatch){
-            return res.status(400).json({error:"Incorrect password!"})
-        }
-        const hashedPassword = await bcrypt.hash(newPassword, 10);
-        const newTeacher = await Teacher.findByIdAndUpdate(teacherId, { password: hashedPassword }, { new: true });
-
-        // After updating, re-issue a new JWT token or invalidate the old one
-        generateTokenAndSetCookie(res, teacherId, newTeacher.role); 
-
-        res.status(200).json("changed");
-
-    } catch (error) {
-        console.log(error)
-        if (error instanceof mongoose.Error.ValidationError) {
-            const validationErrors = Object.values(error.errors).map(err => err.message);
-            return res.status(400).json({ error: validationErrors });
-        }
-        
-        res.status(500).json({ error: "Internal server error" });
-    }
-};
-
-
-module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher,changePassword}
+module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher}
 
 
 

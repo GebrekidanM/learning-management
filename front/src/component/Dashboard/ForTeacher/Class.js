@@ -41,7 +41,7 @@ function Class() {
     <div className={'w-20rem mt-3'}>
         {error ? <ErrorMessage error={error}/>:
             sectionInfos && sectionInfos.map(sectionInfo=>(
-            <SectionCard key={sectionInfo._id} teacherId={loggedUser._id} active={loggedUser.isActive}   sectionInfo={sectionInfo}/>
+            <SectionCard key={sectionInfo._id} teacherId={loggedUser._id} role={loggedUser.role} active={loggedUser.isActive}   sectionInfo={sectionInfo}/>
         ))}
     </div>
   )

@@ -109,7 +109,7 @@ function Grade({semesterId,yearId}) {
             options={gradeOptions} 
             optionLabel={"label"} 
             placeholder="Select A grade"
-            className="mt-3 bg-white text-cyan-900 w-3 border-cyan-900 border-1"/>
+            className="mt-3 bg-white text-cyan-900 w-3 border-cyan-900 border-1 p-2"/>
           {selectedGrade &&
             <div 
                 onClick={handleSectionCreating}

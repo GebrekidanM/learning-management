@@ -211,6 +211,23 @@ router.get('/sections', async(req,res)=>{
     }
 })
 
+router.get('/section/:sectionId',async (req,res)=>{
+    const {sectionId} = req.params
+    if(!mongoose.Types.ObjectId.isValid(sectionId)){
+        return res.status(400).json({error:"Invalid id"})
+    }
+
+    try {
+        const section = await Section.findOne({_id:sectionId}).populate('gradeId')
+        if(!section){
+            res.status(400).json({error: "No Section"})
+        }
+        res.status(202).json(section)
+    } catch (error) {
+        res.status(500).json({error:error.message})
+    }
+})
+
 //Delete section
 
 router.delete('/section/delete/:sectionId', async(req,res)=>{

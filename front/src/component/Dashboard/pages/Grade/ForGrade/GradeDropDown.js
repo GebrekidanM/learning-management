@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dropdown } from 'primereact/dropdown';
 
-function GradeDropdown({ grades, activeGradeId, fetchSections }) {
+function GradeDropdown({ grades, fetchSections }) {
     const [selectedGrade, setSelectedGrade] = useState(null);
 
     // Transform the grades array into a format that the Dropdown component expects
@@ -23,7 +23,7 @@ function GradeDropdown({ grades, activeGradeId, fetchSections }) {
             options={gradeOptions} 
             onChange={handleChange}
             placeholder="Select a Grade"
-            className="w-full md:w-14rem"
+            className="w-full md:w-14rem text-center p-2"
             optionLabel="label"
         />
     );

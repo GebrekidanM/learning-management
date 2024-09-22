@@ -18,11 +18,11 @@ const TeacherSectionSubjectSchema = new mongoose.Schema({
     }],
     startDate: {
         type: Date,
-        default: Date.now, // Automatically set to the current date
+        default: Date.now,
         required: true
     },
     endDate: {
-        type: Date // Will be set when the teacher stops teaching this class/subject
+        type: Date 
     },
     yearId: { type: mongoose.Schema.Types.ObjectId, ref: 'Year', required: true }
 });

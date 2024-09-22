@@ -22,7 +22,7 @@ function SectionDropdown({ sections, fetchStudents }) {
                 onChange={handleSectionChange} 
                 optionLabel="label" 
                 placeholder="Select a Section"  
-                className="w-full md:w-14rem"
+                className="w-full md:w-14rem p-2 text-center"
             />
         </div>
     );
