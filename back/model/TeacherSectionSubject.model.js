@@ -23,8 +23,7 @@ const TeacherSectionSubjectSchema = new mongoose.Schema({
     },
     endDate: {
         type: Date 
-    },
-    yearId: { type: mongoose.Schema.Types.ObjectId, ref: 'Year', required: true }
+    }
 });
 
 TeacherSectionSubjectSchema.index({ teacherId: 1, sectionId: 1, subjects: 1, yearId: 1 }, { unique: true });
@@ -32,3 +31,6 @@ TeacherSectionSubjectSchema.index({ teacherId: 1, sectionId: 1, subjects: 1, yea
 const TeacherSectionSubject = mongoose.model('TeacherSectionSubject', TeacherSectionSubjectSchema);
 
 module.exports = {TeacherSectionSubject}
+
+
+

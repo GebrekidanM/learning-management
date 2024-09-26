@@ -102,7 +102,9 @@ function Grade({semesterId,yearId}) {
 
       {!showCreateGrade && (
         grades &&
+        <>
         <div className="w-10 mx-auto mt-3">
+        <h3>Create Section</h3>
          <Dropdown 
             value={selectedGrade?.grade} 
             onChange={handleGrade} 
@@ -116,6 +118,7 @@ function Grade({semesterId,yearId}) {
                 className='button mt-3 bg-white text-cyan-900 w-3 border-cyan-900 border-1'>Create section</div>
           }
         </div>
+        </>
       )}
       {showCreateGrade && <CreateGrade yearId={yearId} setShowCreateGrade={setShowCreateGrade} semesterId={semesterId}/>}
       

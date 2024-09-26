@@ -23,6 +23,7 @@ function CreateSubject({ sectionId, setRefresh, setCardForSubject }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ sectionId, name: subjectArray }),
+        credentials:"include"
       });
       const json = await response.json();
       if (!response.ok) {

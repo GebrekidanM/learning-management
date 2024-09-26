@@ -7,6 +7,7 @@ function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 }
 
+
 const SubjectInOneSection = async(req,res)=>{
     const {sectionId} = req.params
     if(!mongoose.Types.ObjectId.isValid(sectionId)) return res.status(400).json({error:`${sectionId} is not valid Id!`});
@@ -25,43 +26,42 @@ const SubjectInOneSection = async(req,res)=>{
 
 const CreatingSubject = async (req, res) => {
     const { sectionId, name } = req.body;
-    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
-    // Validate the ObjectId
     if (!mongoose.Types.ObjectId.isValid(sectionId)) {
-        return res.status(400).json({ error: "Invalid Id!" });
+        return res.status(400).json({ error: "Invalid section ID!" });
     }
 
-    const capitalizedNames = name.map(capitalizeFirstLetter);
+    const capitalizedNames = name.map(sub => capitalizeFirstLetter(sub));
 
     try {
-        // Check if the section exists
-        const findSection = await Section.findOne({ _id: sectionId });
+        const findSection = await Section.findById(sectionId);
         if (!findSection) {
-            return res.status(404).json({ error: "No section with this Id!" });
+            return res.status(404).json({ error: "No section with this ID!" });
         }
 
-        // Check for existing subjects
-        for (const sub of capitalizedNames) {
-            const findSubject = await Subject.findOne({ name: sub, sectionId });
-            if (findSubject) {
-                return res.status(400).json({ error: `The subject "${sub}" already exists.` });
-            }
-        }
-
-        // Insert new subjects with capitalized names
-        const newSubjects = capitalizedNames.map(subjectName => ({
-            name: subjectName,
-            sectionId
+        const operations = capitalizedNames.map(subjectName => ({
+            updateOne: {
+                filter: { name: subjectName, sectionId },
+                update: { $setOnInsert: { name: subjectName, sectionId } },
+                upsert: true, // Insert if it doesn't exist
+            },
         }));
 
-        await Subject.insertMany(newSubjects);
-        res.status(201).json('Subjects created successfully!');
+        const result = await Subject.bulkWrite(operations);
+
+        const insertedCount = result.upsertedCount;
+        if (insertedCount === 0) {
+            return res.status(400).json({ error: "All subjects already exist." });
+        }
+
+        res.status(201).json(`Successfully created ${insertedCount} subjects.`);
 
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-}
+};
+
+
 //change subject
 const ChangeSubjectName = async (req, res) => {
     const { id } = req.params;

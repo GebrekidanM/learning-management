@@ -3,7 +3,6 @@ const { JWT_SECRET } = require('../config/config');
 
 const verifyToken = (req, res, next) => {
     const token = req.cookies.user || req.headers.authorization?.split(' ')[1];
-
     if (!token) {
         return res.status(401).json({ error: "Unauthorized! No token provided." });
     }

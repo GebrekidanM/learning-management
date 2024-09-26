@@ -1,4 +1,4 @@
-const { default: mongoose } = require('mongoose');
+const mongoose = require('mongoose');
 const {TeacherSectionSubject} = require('../model/TeacherSectionSubject.model')
 const {Teacher} = require('../model/Teacher.model')
 const {Section} = require('../model/YearModel')
@@ -53,7 +53,7 @@ const ReAssignTeacherForSubject = async (req, res) => {
     }
 }
 
-/*const AllAssignmentOfTeacher = async (req, res) => {
+const AllAssignmentOfTeacher = async (req, res) => {
     const { teacherId } = req.params;
 
     if(!mongoose.Types.ObjectId.isValid(teacherId)){
@@ -62,14 +62,88 @@ const ReAssignTeacherForSubject = async (req, res) => {
     try {
         const assignments = await TeacherSectionSubject.find({ teacherId })
             .populate('teacherId')
-            .populate('sectionId')
+            .populate({
+                path:'sectionId',
+                populate:{
+                    path:'gradeId',
+                    select:'grade'
+                }
+            })
             .populate('subjects')
 
         res.status(200).json(assignments);
     } catch (error) {
-        res.status(400).json({ message: 'Error fetching assignments', error: error.message });
+        res.status(400).json({error: error.message });
     }
-}*/
+}
+
+const GroupedByGrade = async (req, res) => {
+    const { teacherId } = req.params;
+
+    // Validate the teacher ID
+    if (!mongoose.Types.ObjectId.isValid(teacherId)) {
+        return res.status(400).json({ error: "Invalid teacher ID!" });
+    }
+
+    try {
+        // Fetch assignments for the specified teacher
+        const assignments = await TeacherSectionSubject.find({ teacherId })
+            .populate('teacherId')
+            .populate({
+                path: 'sectionId',
+                populate: {
+                    path: 'gradeId',
+                    select: 'grade'
+                }
+            })
+            .populate('subjects');
+
+        // Check if assignments exist
+        if (!assignments.length) {
+            return res.status(404).json({ error: "No assignments found for this teacher." });
+        }
+
+        // Group assignments by grade
+        const groupedByGrade = assignments.reduce((acc, assignment) => {
+            const grade = assignment.sectionId.gradeId.grade; // Extract the grade
+
+            // Initialize group by grade if not present
+            if (!acc[grade]) {
+                acc[grade] = {
+                    grade: grade,
+                    sections: []
+                };
+            }
+
+            // Find the section in the current grade group
+            const sectionIndex = acc[grade].sections.findIndex(
+                sec => sec.section._id === assignment.sectionId._id
+            );
+
+            // If section is not found, add it with an empty subjects array
+            if (sectionIndex === -1) {
+                acc[grade].sections.push({
+                    section: assignment.sectionId,
+                    subjects: [...assignment.subjects] // Start with the first subject
+                });
+            } else {
+                // If the section already exists, add the subjects
+                acc[grade].sections[sectionIndex].subjects.push(...assignment.subjects);
+            }
+
+            return acc;
+        }, {});
+
+        // Convert grouped object into an array for response
+        const structuredData = Object.values(groupedByGrade);
+        
+        // Send the structured data as a response
+        res.status(200).json(structuredData);
+    } catch (error) {
+        // Handle any errors and return a 500 status code with the error message
+        res.status(500).json({ error: error.message });
+    }
+};
 
 //get all assignment of a section
 const AllAssignmentOfASection = async (req, res) => {
@@ -168,60 +242,42 @@ const AssignedSectionAndSubjectForATeacher = async(req,res)=>{
 }
 //update assignment
 const UpdateAssignment = async (req, res) => {
-    const { id } = req.params;
-    const { teacherId, sectionId, subjectId, yearId } = req.body;
-    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
-
-    // Check if the assignment ID is a valid MongoDB ObjectID
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ message: 'Invalid assignment ID!' });
-    }
-
-    // Define an object with required IDs for validation
-    const requiredIds = { teacherId, sectionId, subjectId, yearId };
-
-    // Check each ID is valid MongoDB ObjectID
-    for (const [key, value] of Object.entries(requiredIds)) {
-        if (value && !mongoose.Types.ObjectId.isValid(value)) {
-            return res.status(400).json({ message: `Invalid ID format for ${key}` });
-        }
-    }
+    const { teacherId, sectionId, oldSubjectId, newSubjectId, yearId } = req.body;
 
     try {
-        // Validate if the provided IDs exist in their respective collections
-        const validateExistence = async (model, id, modelName) => {
-            if (id) {
-                const exists = await model.findById(id);
-                if (!exists) {
-                    throw new Error(`${modelName} with ID ${id} not found`);
-                }
+        // Validate ObjectIds
+        const ids = [teacherId, sectionId, oldSubjectId, newSubjectId, yearId];
+        ids.forEach(id => {
+            if (!mongoose.Types.ObjectId.isValid(id)) {
+                return res.status(400).json({ error: `Invalid ID: ${id}` });
             }
-        };
+        });
 
-        // Validate each ID
-        await Promise.all([
-            validateExistence(Teacher, teacherId, 'Teacher'),
-            validateExistence(Section, sectionId, 'Section'),
-            validateExistence(Subject, subjectId, 'Subject'),
-            validateExistence(Year, yearId, 'Year'),
-        ]);
+        // Find the assignment by teacherId, sectionId, and yearId
+        const assigned = await TeacherSectionSubject.findOne({ teacherId, sectionId });
+        if (!assigned) return res.status(404).json({ error: 'Assignment not found.' });
 
-        // Update the assignment with validated IDs
-        const updatedAssignment = await TeacherSectionSubject.findByIdAndUpdate(
-            id,
-            { teacherId, sectionId, subjectId, yearId },
-            { new: true, runValidators: true } // Return the updated document and run validations
-        );
-
-        if (!updatedAssignment) {
-            return res.status(404).json({ message: 'Assignment not found!' });
+        // Check if old subject exists in the subjects array
+        const subjectIndex = assigned.subjects.findIndex(sub => sub.toString() === oldSubjectId);
+        if (subjectIndex === -1) {
+            return res.status(404).json({ error: 'Old subject not found in assignment.' });
         }
 
-        res.status(200).json({ message: 'Assignment updated successfully', updatedAssignment });
+        // Replace old subject with the new subject
+        assigned.subjects[subjectIndex] = newSubjectId;
+
+        // Save the updated assignment
+        await assigned.save();
+
+        res.json({ message: 'Subject assignment updated successfully.' });
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        console.error(error);
+        res.status(500).json({ error: error.message });
     }
 };
+
+module.exports = { UpdateAssignment };
+
 //delete an assignment
 
 /*const DeleteAssignment = async (req, res) => {
@@ -249,10 +305,11 @@ const UpdateAssignment = async (req, res) => {
 module.exports = {
     AssignAteacherForSubject,
     ReAssignTeacherForSubject,
-    //AllAssignmentOfTeacher,
+    AllAssignmentOfTeacher,
     AllAssignmentOfASection,
     AssignedSectionAndSubjectForATeacher,
     SectionsOfATeacher,
     UpdateAssignment,
+    GroupedByGrade
     //DeleteAssignment
 }

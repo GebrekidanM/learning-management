@@ -1,14 +1,19 @@
 .BoxContainer {
   margin-top: 2.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 100%;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .basicInfo {
-  grid-row-start: 1;
-  grid-row-end: 3;
+  width: 15rem;
   padding-bottom: 1rem;
   text-align: center;
   border-radius: 0.3rem;
@@ -26,8 +31,7 @@
 }
 
 .adressInfo {
-  grid-row-start: 1;
-  grid-row-end: 2;
+  width: 12rem;
   text-align: center;
   border-radius: 0.3rem;
   background-color: rgb(212, 212, 212);
@@ -42,8 +46,6 @@
 
 .addFamily {
   margin-top: 2rem;
-  grid-row-start: 2;
-  grid-row-end: 3;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

@@ -1,11 +1,12 @@
 const router = require('express').Router();
-const { Score } = require('../model/Score.model');
 const { AssignAteacherForSubject,
         ReAssignTeacherForSubject, 
         SectionsOfATeacher,
         AssignedSectionAndSubjectForATeacher,
         UpdateAssignment,
         AllAssignmentOfASection,
+        AllAssignmentOfTeacher,
+        GroupedByGrade
 
      } = require('../controller/TeacherSectionSubject.controller');
 const { onlyForAdmin, verifyToken } = require('../middleware/verifyToken');
@@ -18,7 +19,7 @@ router.post('/medium/assign', verifyToken,onlyForAdmin,AssignAteacherForSubject)
 router.post('/teacher/change-assignment',verifyToken,onlyForAdmin,ReAssignTeacherForSubject)
 
 // Route to get all assignments for a teacher
-/*router.get('/medium/teacher/:teacherId', AllAssignmentOfTeacher);*/
+router.get('/medium/teacher/:teacherId', AllAssignmentOfTeacher);
 // Route to get all assignments for a section
 router.get('/medium/section/:sectionId', AllAssignmentOfASection);
 
@@ -31,5 +32,6 @@ router.get('/medium/teacher/section/one/:idForDetail', AssignedSectionAndSubject
 router.put('/medium/update/:id', verifyToken,onlyForAdmin,UpdateAssignment);
 // Route to delete an assignment
 /*router.delete('/medium/delete/:id', DeleteAssignment);*/
+router.get('/medium/teacher/sections/:teacherId',GroupedByGrade)
 
 module.exports = router;

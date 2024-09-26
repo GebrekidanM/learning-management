@@ -102,7 +102,7 @@ function Admin({year,yearId,semesterId,yearName}) {
         return <Family />;
       case 'teacher':
         if (teacherId) {
-          return <TeacherDetail teacherId={teacherId}/>;
+          return <TeacherDetail yearId={yearId} teacherId={teacherId}/>;
         }
         if (update_score) {
           return <UpdateScore />;

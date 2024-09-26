@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import style from '../css/detail.module.css'
 import SectionCard from '../Grade/SectionCard'
 import css from '../css/SectionCard.module.css'
@@ -6,14 +6,18 @@ import LoadingIndicator from '../../../common/LoadingIndicator'
 import URL from '../../../UI/URL'
 import { Link } from 'react-router-dom'
 import ErrorMessage from '../../../common/ErrorMessage'
+import { AuthContext } from '../../../../context/AuthContext'
+import UpdateTeacherSubject from './UpdateTeacherSubject'
 
-function TeacherDetail({teacherId}) {
+function TeacherDetail({teacherId,yearId}) {
   const [sectionInfos,setSectionInfos] = useState([])
   const [errorInfo,setErrorInfo] = useState('')
     const [loadingInfo,setLoadingInfo] = useState(false)
     const [error,setError] = useState('')
     const [loading,setLoading] = useState(false)
     const [teacher,setTeacher] = useState("")
+    const {loggedUser} = useContext(AuthContext)
+    const [toggle,setToggle] = useState(false)
 
     useEffect(()=>{
         const fetchTeacher = async()=>{
@@ -53,15 +57,15 @@ function TeacherDetail({teacherId}) {
             }
         };
 
-        if (teacherId) {
+        if (loggedUser?.role === "Admin" || loggedUser?.role === "Editor") {
             fetchTeacherSections();
         }
-    }, [teacherId]);
+    }, [teacherId,loggedUser,toggle]);
     if(loading){
       return <LoadingIndicator/>
     }
 
-  return (
+  return (loggedUser?.role === "Admin" || loggedUser?.role === "Editor") &&(
     <div>
       
       {error && <p className='error'>{error}</p>}
@@ -69,11 +73,11 @@ function TeacherDetail({teacherId}) {
       <div className={style.BoxContainer}>
         <div className={style.basicInfo}>
           <img src={`${URL()}/uploads/${teacher.teacherPhoto}`} alt='hello'/>
-          <div className={`text-left flex flex-column gap-3 ml-3 mt-3`}>
-            <h5>{teacher.first} {teacher.middle} {teacher.last}</h5>
-            <p>Gendar: {teacher.gender}</p>
-            <p>Age: {teacher.age}</p>
-            <p>Acadamic year: {teacher.yearId.yearName}</p>
+          <div className={` flex flex-column gap-3 ml-3 mt-3w-full`}>
+            <h5 className='text-align'>{teacher.first} {teacher.middle} {teacher.last}</h5>
+            <p className='text-left'>Gendar: {teacher.gender}</p>
+            <p className='text-left'>Age: {teacher.age}</p>
+            <p className='text-left'>Acadamic year: {teacher.yearId.yearName}</p>
           </div>
         </div>
         <div className={style.adressInfo}>
@@ -86,25 +90,33 @@ function TeacherDetail({teacherId}) {
               <p><i><b>House No:</b></i> {teacher.houseNo}</p>
           </div>
         </div>   
-        <div>
+        <div >
           {loadingInfo ? <LoadingIndicator/>
           :
-          <div className={css.MainBox}>  
+          <>  
           <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>      
                 {errorInfo ? <ErrorMessage error={error}/>
                   :
-                    <div className={css.sectionCardContainer}>
+                    <div className={`${css.sectionCardContaine} flex flex-column gap-3 mt-4 w-15rem`}>
                         {sectionInfos && sectionInfos.map(sectionInfo=>(
                             <SectionCard key={sectionInfo._id} teacherId={teacherId} role="" sectionInfo={sectionInfo}/>
                         ))}
                     </div>
                 }            
-          </div>
+          </>
           }
         </div> 
         <div>
-          
-        </div>    
+          {loadingInfo ? <LoadingIndicator/>
+          :
+          <div className={css.MainBox}>  
+                {errorInfo ? <ErrorMessage error={error}/>
+                  :
+                <UpdateTeacherSubject yearId={yearId} teacherId={teacherId} setToggle={setToggle}/>
+                }            
+          </div>
+          }
+        </div>     
       </div>
       }
     </div>
