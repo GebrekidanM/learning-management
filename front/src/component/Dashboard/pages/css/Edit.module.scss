@@ -1,0 +1,68 @@
+.container {
+    margin-top: 2rem;
+    width: 100;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .basicInfo {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  
+  .basicInfo img {
+    width: 10rem;
+    height: 13rem;
+    object-fit: contain;
+  }
+  
+  .extraInfo {
+    display: flex;
+    align-self: flex-start;
+    flex-direction: column;
+  }
+  
+  .imageHolder {
+    position: relative;
+    display: flex;
+    align-self: flex-start;
+    gap: 0.5rem;
+    flex-direction: column;
+    width: 15rem;
+  }
+  
+  .imageHolder input {
+    border: 1px solid var(--card);
+    width: 12rem;
+  }
+  
+  .clickEdit {
+    background-color: rgba(226, 226, 226, 0.747);
+    left: 0;
+    position: absolute;
+    font-size: 2rem;
+    color: var(--button);
+    cursor: pointer;
+  }
+  
+  .name {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  
+  .name input {
+    background-color: rgb(226, 226, 226);
+    border-bottom: 1.5px solid rgb(226, 226, 226);
+    transition: 0.5s;
+  }
+  
+  .name input:focus {
+    border-color: var(--button);
+  }
+  
+  .button {
+    max-width: 8rem;
+    margin-inline: auto;
+  }

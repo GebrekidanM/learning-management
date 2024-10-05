@@ -1,6 +1,5 @@
 import React from 'react'
 import {Link, useSearchParams} from 'react-router-dom'
-import style from "../css/pages.module.css"
 import GradeSectionSelector from '../Grade/GradeSectionSelector'
 import Grade from '../Grade/Grade'
 
@@ -17,16 +16,10 @@ function generateNewSearchParams(key,value) {
 }
 
   return (
-    <div className={style.pageContainer}>
-      <div className={style.pagehead}>
-        <div className={style.searchCcontainer}>
-            <input type="text" className={style.searchInput} placeholder="Search..."/>
-            <button className={style.searchButton}> Search </button>
-        </div>
+    <div className={'mt-6'}>
         <Link 
             to={generateNewSearchParams('stuType','createStudent')}  
-            className={'button bg-white text-cyan-900 w-3 border-cyan-900 border-1'}>Add new student</Link>
-      </div>
+            className={'button float-right bg-white text-cyan-900 w-3 border-cyan-900 border-1 hover:bg-cyan-900 hover:text-white'}>Add new student</Link>
       <div>
         {stuType === 'createStudent' ?
             <GradeSectionSelector semesterId={semesterId}/>

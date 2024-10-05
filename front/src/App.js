@@ -11,7 +11,7 @@ import LoadingIndicator from "./component/common/LoadingIndicator";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const { loggedUser, checkAuth } = useContext(AuthContext); // Assume `checkAuth` checks cookies for logged in status
+  const { loggedUser, checkAuth } = useContext(AuthContext);
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -21,7 +21,7 @@ function App() {
     
     verifyUser();
   }, []);
-
+  
   if (loading) {
     return <LoadingIndicator />;
   }

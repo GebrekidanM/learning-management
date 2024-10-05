@@ -211,7 +211,7 @@ function Subject({ semesterId }) {
                     options={sectionOptions}
                     optionLabel="label"
                     placeholder="Select section"
-                    className="w-10 bg-white text-cyan-900 border-cyan-900 border-1 text-left z-0"
+                    className="w-10 bg-white text-cyan-900 border-cyan-900 border-1 text-left z-0 p-2"
                   />
                 )
               )}
@@ -224,9 +224,9 @@ function Subject({ semesterId }) {
                 </h3>
                 {errorSub && <ErrorMessage error={errorSub} />}
                 {subjects.map((subject) => (
-                  <div key={subject._id} className="deleteAndEdit w-12 bg-white text-cyan-900 border-cyan-900 border-1 my-2 px-2 py-1">
+                  <div key={subject._id} className="deleteAndEdit w-12 bg-white text-cyan-900 border-cyan-900 border-1 my-2 p-2">
                     <div>{subject.name}</div>
-                    <div className="flex z-0">
+                    <div className="flex z-0 gap-3">
                       <button
                         className="p-button p-component p-button-text p-button-plain"
                         onClick={() => handleEditSubject(subject)}

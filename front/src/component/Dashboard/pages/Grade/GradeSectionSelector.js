@@ -60,7 +60,7 @@ function GradeSectionSelector({ semesterId }) {
             {!sectionId && (
                 <>
                     <div className={style.gradeSelector}>
-                        <h2>Select a Grade</h2>
+                        <h2 className='font-bold mb-2'>Select a Grade</h2>
                         {error && <p className='error'>{error}</p>}
                         {loadingGrades ? <LoadingIndicator /> : (
                             <div className={style.gradeListBox}>
@@ -79,7 +79,7 @@ function GradeSectionSelector({ semesterId }) {
 
                     {selectedGrade && !loadingGrades && (
                         <div className={style.gradeSelector} style={{ marginTop: "1rem" }}>
-                            <h4>Sections for Grade {selectedGrade.grade}</h4>
+                            <h4 className='font-bold mb-2'>Sections for Grade {selectedGrade.grade}</h4>
                             {loadingSections ? (
                                 <LoadingIndicator />
                             ) : (

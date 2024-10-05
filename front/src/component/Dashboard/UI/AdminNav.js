@@ -28,16 +28,16 @@ function AdminNav({ filterType }) {
   };
 
   return (
-    <div className='sticky top-0 z-3 h-4rem w-full flex justify-content-between align-items-center' style={{ backgroundColor: "var(--card)" }}>
+    <div className='sticky top-0 z-3 h-4rem w-full flex justify-evenly items-center' style={{ backgroundColor: "var(--card)" }}>
       <ToastContainer/>
-      <div className='flex gap-8 flex-1 ml-3 align-items-center'>
+      <div className='flex gap-8 flex-1 ml-3 items-center'>
         <Link to={'/'} className='text-2xl medium text-white'>{<FaHome />}</Link>
         <div className='text-2xl medium text-white cursor-pointer'>{<IoMenu />}</div>
       </div>
-      <div className={'flex-auto text-white capitalize align-items-start text-center'}>
+      <div className={'flex-auto text-white capitalize items-start text-center'}>
         {filterType ? <h1>{filterType}</h1> : <h1>Welcome {loggedUser.username || loggedUser.first || loggedUser.familyFirst}</h1>}
       </div>
-      <div className='flex-1 text-2xl medium text-white cursor-pointer mr-3 text-right' onClick={logout}>{<CiLogout />}</div>
+      <div className='flex-1 text-2xl medium text-white cursor-pointer flex justify-end mr-3' onClick={logout}>{<CiLogout />}</div>
     </div>
   );
 }

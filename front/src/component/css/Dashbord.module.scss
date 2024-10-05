@@ -1,0 +1,46 @@
+.dashBox{
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    display: flex;
+    gap: 2rem;
+}
+
+/**************For vertical nav part of admin panel****************/
+.dashNav{
+    height: calc(100vh - 4rem);
+    background-color: var(--card);
+    width: 15%;
+    position: sticky;
+    top:4rem;
+
+}
+.dashNavBarContainer{
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1rem;
+    gap: 1rem;
+}
+.dashNavBarContainer a{
+    color: var(--white);
+    text-decoration: none;
+    display: flex;
+    gap: 0.5rem;
+    transition: 0.5s;
+}
+.dashNavBarContainer a:hover{
+    color: var(--button);
+}
+
+//**************Here is about display part of dashboard*********************/
+.dashDisplay{
+    width: calc(80% - 2rem);
+}
+
+//for main
+
+.buttonSetUp{
+    margin-block: 2rem;
+}

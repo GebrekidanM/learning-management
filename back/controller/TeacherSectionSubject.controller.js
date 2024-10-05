@@ -1,14 +1,8 @@
 const mongoose = require('mongoose');
 const {TeacherSectionSubject} = require('../model/TeacherSectionSubject.model')
-const {Teacher} = require('../model/Teacher.model')
-const {Section} = require('../model/YearModel')
-const {Subject} = require('../model/Subject.model')
-const {Year} = require('../model/YearModel')
 
 const AssignAteacherForSubject = async (req, res) => {
     const { teacherId, sectionId, subjects } = req.body;
-
-    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 
     try {
         // Use findOneAndUpdate to either update the existing document or create a new one if it doesn't exist
@@ -25,7 +19,7 @@ const AssignAteacherForSubject = async (req, res) => {
 }
 //Re  ssign a teacher for subjects
 const ReAssignTeacherForSubject = async (req, res) => {
-    const { teacherId, newSectionId, newSubjects, yearId } = req.body;
+    const { teacherId,newSectionId, newSubjects, yearId } = req.body;
 
     if(!req.userId) return res.status(401).json({error:"Un Autherized"});
 

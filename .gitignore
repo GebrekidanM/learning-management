@@ -1,0 +1,6 @@
+designGide/
+node_modules/
+uploads/
+build/
+database/
+.env

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import style from '../css/pages.module.css'
 import {useNavigate} from 'react-router-dom'
 import URL from '../../../UI/URL'
 import ErrorMessage from '../../../common/ErrorMessage'
@@ -65,58 +64,57 @@ function CreateFamily({studentId}) {
     }
 
   return (
-    <div className={style.createBox}>
-        <form onSubmit={handleSubmit}>
-            <h3>Family Members information</h3>
+    <div className={'mt-3'}>
+        <form onSubmit={handleSubmit} className='grid grid-cols-2 grid-auto-row gap-4'>
+            <h3 className='font-bold text-center col-span-2'>Family Members information</h3>
             {error && <ErrorMessage error={error}/>}
-            <div className={style.familyBox}>
-              <div className={style.inLineBox}>
-                  <div className={style.info}>
-                      <label>First Name:</label>
+                    <div className='flex flex-col gap-4 '>
+                      <div className='flex flex-col gap-2'>
+                        <label>First Name:</label>
                           <input
                               type='text'
+                              className='max-w-96'
                               name="familyFrist"
                               value={member.familyFrist}
                               onChange={handleFamilyChange}
                               required
                           />
                       </div>
-                      <div className={style.info}>
-                            <label>Middle Name:</label>
+                      <div className='flex flex-col gap-2'>
+                          <label>Middle Name:</label>
                           <input
                               type='text'
+                              className='max-w-96'
                               name="familyMiddle"
                               value={member.familyMiddle}
                               onChange={handleFamilyChange}
                               required
                           />
-                        </div>
-                      <div className={style.info}>
+                      </div>
+                      <div className='flex flex-col gap-2'>
                           <label>Last Name:</label>
-                          <input type='text' name="familyLast" value={member.familyLast} onChange={handleFamilyChange} required/>
+                          <input type='text' className='max-w-96' name="familyLast" value={member.familyLast} onChange={handleFamilyChange} required/>
                       </div>
                     </div>
-                  <div className={style.inLineBox}>                  
-                        <div className={style.info}>
+                    <div className='flex flex-col gap-4'>                  
+                      <div className='flex flex-col gap-2'>
                           <label>Family Type:</label>
-                          <input type='text' name="familyType" value={member.familyType} onChange={handleFamilyChange} required/>
+                          <input type='text' className='max-w-96' name="familyType" value={member.familyType} onChange={handleFamilyChange} required/>
                       </div>
-                      <div className={style.info}>
+                      <div className='flex flex-col gap-2'>
                           <label>Family Phone Number:</label>
-                          <input type='number' name="familyPhone" value={member.familyPhone} onChange={handleFamilyChange} min="1" required/>
+                          <input type='number' className='max-w-96' name="familyPhone" value={member.familyPhone} onChange={handleFamilyChange} min="1" required/>
                       </div>
-                      <div className={style.info}>
+                      <div className='flex flex-col gap-2'>
                         <label>Email:</label>
-                        <input type='email' name='familyEmail' value={member.familyEmail} onChange={handleFamilyChange}/>
+                        <input type='email' className='max-w-96' name='familyEmail' value={member.familyEmail} onChange={handleFamilyChange}/>
                       </div>
-                      <div className={style.info}>
+                      <div className='flex flex-col gap-2'>
                         <label>Family Photo:</label>
-                        <input type='file' name="familyPhoto" onChange={handleFamilyFileChange} required/>
+                        <input type='file' className='max-w-96' name="familyPhoto" onChange={handleFamilyFileChange} required/>
                        </div>
                     </div>
-                    
-                </div>
-                 <button type="submit"  className={`button ${loading ? 'cursor-wait':'cursor-pointer'}`}>{loading ? "Registering . . .":'Register'}</button>  
+                 <button type="submit"  className={`col-start-1 col-end-3 mx-auto w-60 border-2 border-cyan-900 bg-white hover:bg-cyan-900 hover:text-white button max-w-96 ${loading ? 'cursor-wait':'cursor-pointer'}`}>{loading ? "Registering . . .":'Register'}</button>  
         </form>    
     </div>
   )

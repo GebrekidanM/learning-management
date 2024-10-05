@@ -1,0 +1,26 @@
+  .sectionCard {
+    border: 1px solid var(--card);
+    border-radius: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-inline: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .sectionCard h1 {
+    color: var(--card);
+  }
+  
+  .subNumber {
+    padding: 0.5rem;
+    color: var(--card);
+    font-weight: bold;
+  }
+  
+  .delete {
+    color: red;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }/*# sourceMappingURL=SectionCard.module.css.map */

@@ -29,8 +29,8 @@ function Delete({ first, middle, role, id, setDeleteCard, onDeleteSuccess }) {
             <div className={style.deleteCard}>
                 <p>Are you sure you want to delete <b>{role} {first} {middle}</b>?</p>
                 <div className={style.buttonBox}>
-                    <button className='button' onClick={handleDelete}>Yes, Delete</button>
-                    <button className='button' onClick={handleGoBack}>No, Go Back</button>
+                    <button className='button border border-cyan-950 text-yellow-700 bg-white hover:bg-cyan-900' onClick={handleDelete}>Yes, Delete</button>
+                    <button className='button border border-cyan-950 text-yellow-700 bg-white hover:bg-cyan-900' onClick={handleGoBack}>No, Go Back</button>
                 </div>
             </div>
         </div>

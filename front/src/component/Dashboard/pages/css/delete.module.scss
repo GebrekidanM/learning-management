@@ -1,0 +1,29 @@
+.deleteContainer {
+    background-color: rgba(0, 0, 0, 0.6);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .deleteCard {
+    width: 40vw;
+    height: 20vh;
+    background-color: rgb(197, 196, 196);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 0.3rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  
+  .buttonBox {
+    display: flex;
+    gap: 1rem;
+  }/*# sourceMappingURL=delete.module.css.map */

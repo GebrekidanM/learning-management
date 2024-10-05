@@ -99,13 +99,13 @@ function Grade({semesterId}) {
     };
 
     return (
-        <div className={style.grade}>
+        <div>
             {gradeError && <Message severity="error" text={gradeError} />}
             
             {grades.length > 0 && (
                 <div className='mb-3'>
-                    <div className={style.gradeBox}>
-                        <GradeDropdown grades={grades} activeGradeId={activeGradeId}   fetchSections={fetchSections}/>
+                    <div className={'flex justify-evenly'}>
+                        <GradeDropdown grades={grades} activeGradeId={activeGradeId} className="border-2 border-cyan-900"    fetchSections={fetchSections}/>
                         {activeGradeId && <SectionDropdown sections={sections}  fetchStudents={fetchStudents}/>}
                     </div>
                 </div>                
@@ -117,21 +117,21 @@ function Grade({semesterId}) {
 
             {students.length > 0 && (
                 <div className={style.studentContainer}>
-                    <DataTable value={students} paginator rows={5} className="p-datatable-gridlines">
-                        <Column style={{width:'2rem'}} field="index" header="No" body={(data, { rowIndex }) => rowIndex + 1} />
+                    <DataTable value={students} paginator rows={5} className="p-datatable-gridlines p-2">
+                        <Column className='w-2rem' field="index" header="No" body={(data, { rowIndex }) => rowIndex + 1} />
                         <Column field="name" header="Name" body={(data) => `${data.first} ${data.middle} ${data.last}`} />
-                        <Column className='flex gap-3' header="Action" body={(data) => (
+                        <Column className='flex gap-3 border-0' header="Action" body={(data) => (
                             <>
                                 <Button 
-                                    className="p-button p-button-danger p-mr-2"
+                                    className="delete"
                                     icon="pi pi-trash" 
                                     onClick={() => handleDeleteCard(data._id)}
                                 />
                                 <Link to={`/main?type=student&action=${data._id}`}>
-                                    <Button className="p-button p-button-secondary p-mr-2">Edit</Button>
+                                    <Button className="edit">Edit</Button>
                                 </Link>
                                 <Link to={`/main?type=student&studentId=${data._id}`}>
-                                    <Button className="p-button p-button-info">View</Button>
+                                    <Button className="view">View</Button>
                                 </Link>
                             </>
                         )} />

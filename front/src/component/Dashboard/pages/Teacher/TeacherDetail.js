@@ -93,7 +93,7 @@ function TeacherDetail({teacherId,yearId}) {
         <div >
           {loadingInfo ? <LoadingIndicator/>
           :
-          <>  
+          <>
           <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>      
                 {errorInfo ? <ErrorMessage error={error}/>
                   :

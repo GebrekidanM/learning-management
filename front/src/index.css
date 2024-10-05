@@ -2,7 +2,19 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth
 }
+@import 'primeicons/primeicons.css';
+@import 'primeflex/primeflex.css';  
+@import 'primereact/resources/primereact.css';
+@import 'primereact/resources/themes/lara-light-indigo/theme.css';
+@import 'primereact/resources/themes/saga-blue/theme.css';
+@import 'primereact/resources/primereact.min.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
 
   background-color: rgb(226, 226, 226);
@@ -31,35 +43,35 @@ a{
 }
 
 .button{
-  border: none;
   text-align: center;
   text-decoration: none;
   border-radius: 0.3rem;
   padding: 0.7rem;
-  background-color: var(--card);
-  color:var(--white);
   min-width: 5rem;
   font-weight:bold ;
   transition: 0.5s;
+  border: 2px solid var(--card);
+  background-color: white; 
+  color: var(--card);
 }
 .button:hover{
-  cursor: pointer;
-  background-color: var(--button);
-
+  background-color: var(--card);
+  color: var(--white);
 }
+
 .delete{
   font-weight: bold;
   color: red;
   cursor: pointer;
 }
 
-.edit a{
+.edit{
   font-weight: bold;
   color: var(--button);
   cursor: pointer;
 }
 
-.view a{
+.view{
   font-weight: bold;
   color: green;
   cursor: pointer;
@@ -94,6 +106,10 @@ code {
 .TeacherAddressEdit{
   align-self: flex-start;
 }
+input{
+  padding: 0.5rem;
+  outline: none;
+}
 
 /* For Internet Explorer and Edge */
 input[type="password"]::-ms-reveal {
@@ -103,4 +119,14 @@ input[type="password"]::-ms-reveal {
 /* For Chrome, Safari, Opera (Webkit-based browsers) */
 input[type="password"]::-webkit-password-eye {
   display: none;
+}
+
+table,td,tr,th{
+  border: 1px solid rgb(226, 226, 226);
+  border-collapse: collapse;
+  padding: 0.3rem;
+}
+th{
+  background-color:var(--card) ;
+  color: white;
 }

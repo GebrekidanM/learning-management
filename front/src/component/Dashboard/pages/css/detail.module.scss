@@ -1,0 +1,43 @@
+.BoxContainer {
+    margin-top: 2.5rem;
+    display: flex;
+    width:100%;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  
+  .basicInfo {
+    width: 15rem;
+    padding-bottom:1rem ;
+    text-align: center;
+    border-radius: 0.3rem;
+    background-color: rgb(212, 212, 212);
+    box-shadow: 3px 4px 3px rgba(0, 0, 0, 0.432);
+  }
+  
+  .basicInfo img {
+    width: 100%;
+    height: 15rem;
+    border-radius: 0.3rem 0.3rem 0 0;
+    object-fit: cover;
+  }
+  
+  .adressInfo {
+    width:12rem;
+    text-align: center;
+    border-radius: 0.3rem;
+    background-color: rgb(212, 212, 212);
+    padding: 1rem;
+    box-shadow: 3px 4px 3px rgba(0, 0, 0, 0.432);
+  }
+  
+  .extraInfo {
+    text-align: left;
+  }
+  
+  .addFamily {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+  }
