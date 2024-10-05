@@ -96,24 +96,22 @@ function Teacher({yearName, yearId}) {
 
   return (
     <div className={style.pageContainer}>
-      <div className={style.pagehead}>
-        <div className={style.searchContainer}>
+      <div className='flex justify-between my-2'>
           <input
             type="text"
-            className={style.searchInput}
+            className='w-96 rounded-sm'
             placeholder="Search by name..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-        </div>
         <Dropdown
           value={filter}
           options={filterOptions}
           onChange={(e) => setFilter(e.value)}
           placeholder="Select Status"
-          className="w-14"
+          className="min-w-32 text-center flex items-center"
         />
-        <Link to={generateNewSearchParams('teachType', 'createTeacher')} className={style.button}>
+        <Link to={generateNewSearchParams('teachType', 'createTeacher')} className={'button p-2'}>
           Add new
         </Link>
       </div>
@@ -122,7 +120,7 @@ function Teacher({yearName, yearId}) {
           <CreateTeacher yearId={yearId} yearName={yearName} />
         ) : (
           <div>
-            <table>
+            <table className='w-full'>
               <thead>
                 <tr>
                   <th>No</th>

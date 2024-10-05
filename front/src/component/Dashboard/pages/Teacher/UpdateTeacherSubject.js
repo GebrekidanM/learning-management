@@ -124,7 +124,7 @@ function UpdateTeacherSubject({ teacherId, yearId, setToggle }) {
     return (
         <div className="p-3 w-15rem">
             <ToastContainer />
-            <h3 className="mb-3">Update Assignment</h3>
+            <h3 className="mb-3 font-bold text-lg">Update Assignment</h3>
             <form onSubmit={handleSubmit}>
                 {groupedAssignments && groupedAssignments.map((gradeGroup) => (
                     <div key={gradeGroup.grade}>

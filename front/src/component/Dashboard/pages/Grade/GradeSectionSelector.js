@@ -76,7 +76,6 @@ function GradeSectionSelector({ semesterId }) {
                             </div>
                         )}
                     </div>
-
                     {selectedGrade && !loadingGrades && (
                         <div className={style.gradeSelector} style={{ marginTop: "1rem" }}>
                             <h4 className='font-bold mb-2'>Sections for Grade {selectedGrade.grade}</h4>

@@ -66,11 +66,11 @@ function TeacherDetail({teacherId,yearId}) {
     }
 
   return (loggedUser?.role === "Admin" || loggedUser?.role === "Editor") &&(
-    <div>
+    <>
       
       {error && <p className='error'>{error}</p>}
       {teacher && 
-      <div className={style.BoxContainer}>
+      <div className={'flex justify-between mt-4 items-start'}>
         <div className={style.basicInfo}>
           <img src={`${URL()}/uploads/${teacher.teacherPhoto}`} alt='hello'/>
           <div className={` flex flex-column gap-3 ml-3 mt-3w-full`}>
@@ -90,7 +90,7 @@ function TeacherDetail({teacherId,yearId}) {
               <p><i><b>House No:</b></i> {teacher.houseNo}</p>
           </div>
         </div>   
-        <div >
+        <div className='mt-3'>
           {loadingInfo ? <LoadingIndicator/>
           :
           <>
@@ -109,17 +109,14 @@ function TeacherDetail({teacherId,yearId}) {
         <div>
           {loadingInfo ? <LoadingIndicator/>
           :
-          <div className={css.MainBox}>  
-                {errorInfo ? <ErrorMessage error={error}/>
-                  :
-                <UpdateTeacherSubject yearId={yearId} teacherId={teacherId} setToggle={setToggle}/>
-                }            
-          </div>
+            errorInfo ? <ErrorMessage error={error}/>
+              :
+            <UpdateTeacherSubject yearId={yearId} teacherId={teacherId} setToggle={setToggle}/>
           }
         </div>     
       </div>
       }
-    </div>
+    </>
   )
 }
 
