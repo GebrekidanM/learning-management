@@ -22,10 +22,9 @@ app.use(express.json())
 app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
-app.use('/static', express.static('public'));  // serve static files
+app.use('/static', express.static('public'));
 
 const database = async () => {
-
     try {
         await mongoose.connect(dbConnection);
         console.log('Connected to the database successfully');
@@ -35,19 +34,12 @@ const database = async () => {
         });
     } catch (error) {
         console.error('Failed to connect to the database:', error);
-        process.exit(1); // Exits the process with failure
+        process.exit(1);
     }
 }
 
 database();
 
-/*
-mongoose.connect('mongodb://localhost:27017/tibeb',()=>{
-    app.listen(4000, () => {
-        console.log('Server is running on port 4000');
-    });
-})
-*/
 app.use(UserRouter)
 app.use('/class',ClassRouter)
 app.use(TeacherSectionSubject)

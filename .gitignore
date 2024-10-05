@@ -3,4 +3,7 @@ node_modules/
 uploads/
 build/
 database/
-.env
+static/
+back/.env
+
+.gitignore
