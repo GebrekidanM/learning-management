@@ -1,6 +1,5 @@
 import React,{useState,useEffect} from 'react'
 import {Link} from 'react-router-dom'
-import style from "../css/pages.module.css"
 import Delete from '../Delete/Delete'
 import LoadingIndicator from '../../../common/LoadingIndicator'
 import ErrorMessage from '../../../common/ErrorMessage'
@@ -55,9 +54,8 @@ const handleDeleteSuccess = () => {
 
 
   return (
-    <div className={style.pageContainer}>
-
-              <table style={{marginTop:"2rem"}}>
+    <div className={'mt-4'}>
+              <table className='w-full'>
               <thead>
                 <tr>
                   <th> No </th>

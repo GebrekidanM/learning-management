@@ -13,15 +13,17 @@ function LeftMenu({ filterType }) {
     const { loggedUser } = useContext(AuthContext);
     
     // Fixed the construction of adminPhoto with template literals
-    console.log(loggedUser.adminPhoto||avatar)
+    console.log(avatar)
+    const adminPhoto = URL() + `/uploads/${loggedUser?.teacherPhoto || loggedUser?.familyPhoto || loggedUser?.studentPhoto}`;
     return loggedUser && (
         <div className='w-10rem flex justify-content-center' style={{ backgroundColor: "var(--card)", minHeight: "calc(100vh - 4rem)", maxHeight: "calc(100vh - 4rem)", position: "sticky", top: "4rem" }}>
             <div className='flex flex-column gap-3'>
                 <div className='w-5rem'>
-                    <img className='w-5rem h-5rem border-circle mt-4' 
+                    <img className='w-5rem h-5rem border-circle mt-4'
                          style={{ objectFit: 'cover' }} 
-                         src={`${URL()}/uploads/${loggedUser?.teacherPhoto || loggedUser?.familyPhoto || loggedUser?.studentPhoto}` || `${URL()}${loggedUser?.adminPhoto || loggedUser?.familyPhoto || loggedUser?.studentPhoto}` || avatar} 
+                         src={adminPhoto ? adminPhoto : avatar} 
                          alt={`${loggedUser.role} profile`} 
+                         onError={(e) => e.target.src = avatar}
                     />
                 </div>
                 <NavLink to={'?type=home'} className={`${filterType === 'home' ? 'text-yellow-500 font-bold' : 'text-white'} flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}>
@@ -43,7 +45,7 @@ function LeftMenu({ filterType }) {
                             <span>{<GiTeacher />}</span><span>Teacher</span>
                         </NavLink>
                         <NavLink to={'?type=parent'} className={`${filterType === 'parent' ? 'text-yellow-500 font-bold' : 'text-white'} flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}>
-                            <span>{<MdFamilyRestroom />}</span><span>Student's Family</span>
+                            <span>{<MdFamilyRestroom />}</span><span>Family</span>
                         </NavLink>
                         <NavLink to={'?type=grade'} className={`${filterType === 'grade' ? 'text-yellow-500 font-bold' : 'text-white'} flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}>
                             <span>{<SiGoogleclassroom />}</span><span>Grade</span>

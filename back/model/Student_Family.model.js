@@ -67,23 +67,18 @@ const StudentSchema = new mongoose.Schema({
     type: String, 
     required: true
   },
+  families:[{
+    family:{type: mongoose.Schema.Types.ObjectId,ref:"Family"},
+    type:{
+      type: String,
+      trim: true,
+      enum: ['Mother', 'Father', 'Uncle', 'Aunt', 'GrandMother', 'GrandFather', 'Other'],
+      minlength: [2, 'Family type must be at least 2 characters long.'],
+      maxlength: [30, 'Family type cannot exceed 30 characters.']
+    }
+  }],
   isActive: { type: Boolean, required: true, default: true }
 }, { timestamps: true });
-
-// Hash the password before saving
-StudentSchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(this.password, salt);
-      next();
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    next();
-  }
-});
 
 
 const Student = mongoose.model('Student', StudentSchema);
@@ -110,14 +105,7 @@ const FamilySchema = new mongoose.Schema({
     minlength: [2, 'Family middle name must be at least 2 characters long.'],
     maxlength: [50, 'Family middle name cannot exceed 50 characters.'],
   },
-  familyType: {
-    type: String,
-    required: [true, 'Family type is required.'],
-    trim: true,
-    enum: ['Mother', 'Father', 'Uncle', 'Aunt', 'GrandMother', 'GrandFather', 'Other'],
-    minlength: [2, 'Family type must be at least 2 characters long.'],
-    maxlength: [30, 'Family type cannot exceed 30 characters.'],
-  },
+ 
   familyLast: {
     type: String,
     required: [true, 'Family last name is required.'],
@@ -149,21 +137,6 @@ const FamilySchema = new mongoose.Schema({
     match: [/^\d{10}$/, 'Please enter a valid phone number'] // Basic phone number validation
   },
   studentId: { type: mongoose.Schema.Types.ObjectId, ref: "Student", required: true }
-});
-
-// Hash the password before saving
-FamilySchema.pre('save', async function (next) {
-  if (this.isModified('password')) {
-    try {
-      const salt = await bcrypt.genSalt(10);
-      this.password = await bcrypt.hash(this.password, salt);
-      next();
-    } catch (error) {
-      next(error);
-    }
-  } else {
-    next();
-  }
 });
 
 FamilySchema.index({ userId: 1 });

@@ -68,9 +68,9 @@ function TeacherDetail({teacherId,yearId}) {
   return (loggedUser?.role === "Admin" || loggedUser?.role === "Editor") &&(
     <>
       
-      {error && <p className='error'>{error}</p>}
+      {error && <ErrorMessage error={error}/>}
       {teacher && 
-      <div className={'flex justify-between mt-4 items-start'}>
+      <div className={'flex  justify-between mt-4 items-start'}>
         <div className={style.basicInfo}>
           <img src={`${URL()}/uploads/${teacher.teacherPhoto}`} alt='hello'/>
           <div className={` flex flex-column gap-3 ml-3 mt-3w-full`}>
@@ -89,7 +89,7 @@ function TeacherDetail({teacherId,yearId}) {
               <p><i><b>Wereda:</b></i> {teacher.wereda}</p>
               <p><i><b>House No:</b></i> {teacher.houseNo}</p>
           </div>
-        </div>   
+        </div>
         <div className='mt-3'>
           {loadingInfo ? <LoadingIndicator/>
           :

@@ -40,7 +40,13 @@ function Main({year}) {
       {loggedUser.role === 'Admin' && <button className={`button ${style.buttonSetUp}`} onClick={year} >Create New Acadamic Year</button>}
       <div className='mt-3 h-16rem flex align-items-center'>
         <div className='w-16rem h-16rem bg-white z-2 flex flex-column gap-3 align-items-center border-round-sm shadow-3'>
-            <img className='w-10rem h-10rem border-circle mt-2' style={{objectFit:'cover'}} src={`${URL()}/uploads/${loggedUser.teacherPhoto||loggedUser.familyPhoto||loggedUser.studentPhoto}` || adminPhoto} alt={"teacher profile"}/>
+            <img 
+                className='w-10rem h-10rem border-circle mt-2' 
+                style={{objectFit:'cover'}} 
+                src={`${URL()}/uploads/${loggedUser.teacherPhoto||loggedUser.familyPhoto||loggedUser.studentPhoto}` || adminPhoto} 
+                alt={"teacher profile"}
+                onError={(e) => e.target.src = adminPhoto}
+                />
             <h4 className='px-2'>{loggedUser.role} {loggedUser.first || loggedUser.familyFirst || loggedUser.username} {loggedUser.middle||loggedUser.familyMiddle}</h4>
             {loggedUser.role !== "Student" &&<small>{loggedUser.email} | {loggedUser.phoneNo}</small>}
             {loggedUser.role === "Student" &&<small>Grade {section?.gradeId?.grade}{section?.section} student</small>}

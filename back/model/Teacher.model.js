@@ -1,3 +1,4 @@
+const { string } = require('joi');
 const mongoose = require('mongoose')
 
 const TeacherSchema = new mongoose.Schema({
@@ -109,7 +110,8 @@ const TeacherSchema = new mongoose.Schema({
         match: [/^\d{10}$/, 'Please enter a valid phone number'] // Basic phone number validation
     },
     yearId: { type: mongoose.Schema.Types.ObjectId, ref: 'Year', required: true },
-    isActive: {type:Boolean, default:true}
+    isActive: {type:Boolean, default:true},
+    homeTeacher:{type:mongoose.Schema.Types.ObjectId, ref:'Section'}
 });
 
 // Indexes
