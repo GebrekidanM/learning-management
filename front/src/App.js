@@ -8,10 +8,30 @@ import DashboardIs from "./component/Dashboard/DashboardIs";
 import CreateSemester from "./component/Dashboard/CreateSemester";
 import Home from "./component/pages/Home";
 import LoadingIndicator from "./component/common/LoadingIndicator";
+import ErrorInternet from "./component/common/ErrorInternet";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const { loggedUser, checkAuth } = useContext(AuthContext);
+  const [error,setError] = useState('')
+
+  useEffect(() => {
+    const checkDatabaseStatus = async () => {
+      try {
+        const response = await fetch('http://localhost:4000/db-status');
+        const data = await response.json();
+        
+        if (!response.ok) {
+            setError(data.error);
+        }
+      } catch (error) {
+        setError('No internet. please connect to internet.', error);
+      }
+    };
+  
+    checkDatabaseStatus();
+  }, []);
+  
 
   useEffect(() => {
     const verifyUser = async () => {
@@ -24,6 +44,10 @@ function App() {
   
   if (loading) {
     return <LoadingIndicator />;
+  }
+
+  if(error){
+    return <ErrorInternet error={error}/>
   }
 
   return (

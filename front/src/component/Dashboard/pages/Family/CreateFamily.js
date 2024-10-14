@@ -3,7 +3,7 @@ import {useNavigate} from 'react-router-dom'
 import URL from '../../../UI/URL'
 import ErrorMessage from '../../../common/ErrorMessage'
 
-function CreateFamily({studentId}) {
+function CreateFamily({yearName}) {
     const navigate = useNavigate()
     const [error,setError] = useState('')
     const [loading,setLoading] = useState(false)
@@ -12,11 +12,10 @@ function CreateFamily({studentId}) {
         familyFrist:"",
         familyMiddle:"",
         familyLast:"",
-        familyType:"",
         familyTel:"",
         familyEmail:"",
         familyPhone:"",
-        studentId
+        yearName
     })
     const [familyPhoto,setFamilyPhoto] = useState('')
 
@@ -39,19 +38,19 @@ function CreateFamily({studentId}) {
         data.set('familyMiddle',member.familyMiddle)
         data.set('familyEmail',member.familyEmail)
         data.set('familyPhone',member.familyPhone)
-        data.set('familyType',member.familyType)
-        data.set('studentId',member.studentId)
         data.set('familyPhoto',familyPhoto[0])
+        data.set('yearName',member.yearName)
         try {
             setLoading(true)
             const response = await fetch(`${URL()}/family`, {
                 method: 'POST',
                 body: data,
+                credentials:'include'
             });
 
             const json = await response.json()
             if(response.ok){
-                navigate(`/main?type=student&studentId=${studentId}`, { replace: true });
+                navigate(`/main?type=student`, { replace: true });
             }else{
                 setError(json.error)
             }
@@ -67,7 +66,6 @@ function CreateFamily({studentId}) {
     <div className={'mt-3'}>
         <form onSubmit={handleSubmit} className='grid grid-cols-2 grid-auto-row gap-4'>
             <h3 className='font-bold text-center col-span-2'>Family Members information</h3>
-            {error && <ErrorMessage error={error}/>}
                     <div className='flex flex-col gap-4 '>
                       <div className='flex flex-col gap-2'>
                         <label>First Name:</label>
@@ -98,10 +96,6 @@ function CreateFamily({studentId}) {
                     </div>
                     <div className='flex flex-col gap-4'>                  
                       <div className='flex flex-col gap-2'>
-                          <label>Family Type:</label>
-                          <input type='text' className='max-w-96' name="familyType" value={member.familyType} onChange={handleFamilyChange} required/>
-                      </div>
-                      <div className='flex flex-col gap-2'>
                           <label>Family Phone Number:</label>
                           <input type='number' className='max-w-96' name="familyPhone" value={member.familyPhone} onChange={handleFamilyChange} min="1" required/>
                       </div>
@@ -114,6 +108,7 @@ function CreateFamily({studentId}) {
                         <input type='file' className='max-w-96' name="familyPhoto" onChange={handleFamilyFileChange} required/>
                        </div>
                     </div>
+                    {error && <ErrorMessage error={error}/>}
                  <button type="submit"  className={`col-start-1 col-end-3 mx-auto w-60 border-2 border-cyan-900 bg-white hover:bg-cyan-900 hover:text-white button max-w-96 ${loading ? 'cursor-wait':'cursor-pointer'}`}>{loading ? "Registering . . .":'Register'}</button>  
         </form>    
     </div>

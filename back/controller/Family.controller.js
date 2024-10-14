@@ -1,6 +1,8 @@
 const { default: mongoose } = require('mongoose');
-const {Family} = require('../model/Student_Family.model')
-
+const {Family} = require('../model/Student_Family.model');
+const {Student} = require('../model/Student_Family.model');
+const generateId = require('../utilities/GenerateId');
+const bcrypt = require('bcrypt')
 //function to change capitalization
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
@@ -11,88 +13,45 @@ function Password(name){
 }
 
 
-
-const GetFamilyOfStudentByS_id = async (req, res) => {
-    const { id } = req.params;
-
-    // Validate if the provided ID is a valid MongoDB ObjectID
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: "Invalid student ID format!" });
-    }
-
+//the correct one
+const GetFamilies = async (req, res) => {
     try {
         // Find families associated with the student ID
-        const family = await Family.find({ studentId: id });
+        const family = await Family.find().sort({createdAt:1});
 
         // Check if any families were found
         if (family.length === 0) {
-            return res.status(404).json({ error: "Family not found for this student!" });
+            return res.status(404).json({ error: "Family not found!" });
         }
 
         // Return the found families
-        res.status(200).json({ family });
+        res.status(200).json(family);
     } catch (error) {
         // Provide more details about the server error
         res.status(500).json({ error: "Server error", details: error.message });
     }
 };
 
-const GetOneFamilyWithStudentInfo = async(req,res)=>{
-    const {id} = req.params
-
-     // Validate if the provided ID is a valid MongoDB ObjectID
-     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: "Invalid student ID format!" });
-    }
-
-    try {
-        const family = await Family.find({_id:id}).populate({
-            path:'studentId',
-            select:'-studentPhoto -createdAt -updatedAt -gender -age -_id -last'
-        })
-        if(!family){
-            return res.status(404).json({error:"Not found!"})
-        }
-        res.status(200).json(family)
-    } catch (error) {
-        res.status(500).json({error:"Server error"})
-    }
-}
-
-const GetOneFamily = async(req,res)=>{
-    const {id} = req.params
-
-     // Validate if the provided ID is a valid MongoDB ObjectID
-     if (!mongoose.Types.ObjectId.isValid(id)) {
-        return res.status(400).json({ error: "Invalid student ID format!" });
-    }
-
-    try {
-        const family = await Family.find({_id:id})
-        if(!family){
-            return res.status(404).json({error:"Not found!"})
-        }
-        res.status(200).json(family)
-    } catch (error) {
-        res.status(500).json({error:"Server error"})
-    }
-}
-
 const CreateFamily = async(req,res)=>{
-    const {familyFirst,familyLast,familyMiddle,familyType,familyEmail,familyPhone,studentId} = req.body
+    const {familyFirst,familyLast,familyMiddle,familyEmail,familyPhone,yearName} = req.body
     const familyPhoto = req.file.filename
    
     if(!req.userId) return res.status(401).json({error:"Un Autherized"});
+    const role = 'Family'
+    const userId = generateId(yearName,role) 
 
     const password = Password(capitalizeFirstLetter(familyFirst))
     
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
     try {
-        const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),password,familyType,familyEmail,phoneNo:familyPhone,familyPhoto,studentId})
+        const family = await Family.create({familyFirst:capitalizeFirstLetter(familyFirst),familyLast:capitalizeFirstLetter(familyLast),familyMiddle:capitalizeFirstLetter(familyMiddle),userId,password:hashedPassword,familyEmail,phoneNo:familyPhone,familyPhoto})
         if(!family){
             return res.status(400).json({error:"Something is wrong please try again"})
         }
         res.status(200).json(family)
     } catch (error) {
+        console.log(error)
         if (error instanceof mongoose.Error.ValidationError) {
             const ValidationError = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({ error: ValidationError});
@@ -102,28 +61,67 @@ const CreateFamily = async(req,res)=>{
     }
 }
 
-const AllFamilies = async(req,res)=>{
-
-    try {
-        const family = await Family.find({}).populate({
-            path: 'studentId',
-            select: 'first middle sectionId',
-            populate:({
-                path:'sectionId',
-                populate:({
-                    path:'gradeId',
-                    select:'grade'
-                })
-            })
-        });
-        if(!family){
-            return res.status(404).json({error:"Not found!"})
-        }
-        res.status(200).json(family)
-    } catch (error) {
-        res.status(500).json({error:"Server error"})
-    }
+const getOneFamilyById = async(req,res)=>{
+  const {id} = req.params
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ error: 'Invalid ID!' });
 }
+  try {
+        const family = await Family.findOne({_id:id})
+        // Check if any families were found
+        if (!family) {
+            return res.status(404).json({ error: "Family not found!" });
+        }
+        // Return the found families
+        res.status(200).json(family);
+  } catch (error) {
+    res.status(500).json({ error: "Server error", details: error.message });
+  }
+}
+
+
+const AllFamilies = async (req,res) => {
+  try {
+    const studentsWithFamilies = await Student.find()
+      .populate({
+        path: 'families.family',
+        select: 'familyFirst familyMiddle familyLast familyEmail phoneNo'
+      })
+      .select('first middle last families')
+      .exec();
+
+    const groupedByFamily = {};
+
+    studentsWithFamilies.forEach(student => {
+      student.families.forEach(familyEntry => {
+        const family = familyEntry.family;
+        const familyType= familyEntry.type;
+        if (family) {
+          const familyId = family._id.toString();
+
+          if (!groupedByFamily[familyId]) {
+            groupedByFamily[familyId] = {
+              familyDetails: family,
+              students: [],
+              familyType
+            };
+          }
+
+          groupedByFamily[familyId].students.push({
+            studentId: student._id,
+            first: student.first,
+            middle: student.middle,
+            last: student.last
+          });
+        }
+      });
+    });
+
+    res.status(200).json(groupedByFamily);
+  } catch (error) {
+    res.status(500).json({error:'Error grouping students by family.'});
+  }
+};
 
 const UpdateFamily =  async (req, res) => {
     const { familyId } = req.params;
@@ -152,10 +150,9 @@ const UpdateFamily =  async (req, res) => {
 
 
 module.exports = {
-                GetFamilyOfStudentByS_id,
-                GetOneFamily,
-                GetOneFamilyWithStudentInfo,
+                GetFamilies,
                 CreateFamily,
                 AllFamilies,
                 UpdateFamily,
+                getOneFamilyById
             }

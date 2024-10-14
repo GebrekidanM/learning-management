@@ -1,5 +1,5 @@
 const { default: mongoose } = require('mongoose');
-const {Student} = require('../model/Student_Family.model')
+const {Student,Family} = require('../model/Student_Family.model')
 const generateId = require('../utilities/GenerateId')
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
@@ -36,6 +36,39 @@ const CreateStudent = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
+//add family
+
+const addFamilyToStudent = async (req,res) => {
+    const {familyId,familyType} = req.body
+    const {studentId} = req.params
+    
+    if(!mongoose.Types.ObjectId.isValid(studentId)){
+        return res.status(400).json({error:"Not valid id!"})
+    }
+    if(!mongoose.Types.ObjectId.isValid(familyId)){
+        return res.status(400).json({error:"Not valid id!"})
+    }
+  try {
+    const student = await Student.findById(studentId);
+    if (!student) {
+      res.status(404).json({error:'Student not found'});
+    }
+    
+    const family = await Family.findById(familyId);
+    if (!family) {
+      res.status(404).json({error:'Student not found'});
+    }
+
+    student.families.push({ family: familyId, type: familyType });
+    await student.save();
+
+    return res.status(202).json(student);
+  } catch (error) {
+    console.error('Error adding family:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
 
 const GetOneStudent = async(req,res)=>{
     const {id} = req.params
@@ -52,7 +85,7 @@ const GetOneStudent = async(req,res)=>{
                     path: 'yearId'
                 }
             }
-        });
+        }).populate({path:'families.family'});
         if(Student){
             res.status(200).json({student})
         }else{
@@ -187,9 +220,12 @@ const NumberOfStudentForEachGradeAndSection = async(req,res)=>{
         res.status(500).json({error:error.message})
     }
 }
+// student with his family
+const studentFamily = 
 
 module.exports = {
                     CreateStudent,
+                    addFamilyToStudent,
                     GetOneStudent, 
                     GetOneStudentWithExtraInfo, 
                     GetAllStudents, 

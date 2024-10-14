@@ -136,7 +136,6 @@ const FamilySchema = new mongoose.Schema({
     required: true,
     match: [/^\d{10}$/, 'Please enter a valid phone number'] // Basic phone number validation
   },
-  studentId: { type: mongoose.Schema.Types.ObjectId, ref: "Student", required: true }
 });
 
 FamilySchema.index({ userId: 1 });

@@ -6,6 +6,7 @@ const {
      OneSectionStudents,
      UpdateStudent,
      NumberOfStudentForEachGradeAndSection,
+     addFamilyToStudent,
     } = require('../controller/Student.controller');
 const { onlyForAdmin, verifyToken } = require('../middleware/verifyToken');
 const upload = require('../upload');
@@ -15,6 +16,7 @@ const router = require('express').Router()
 // Route to handle student creation
 router.post('/student', upload.single('studentPhoto'),verifyToken,onlyForAdmin,CreateStudent );
 //get one student
+router.post('/student/addfamily/:studentId',addFamilyToStudent)
 router.get('/student/:id',GetOneStudent)
 //get one student without additional information
 router.get('/student/only/:id',GetOneStudentWithExtraInfo)

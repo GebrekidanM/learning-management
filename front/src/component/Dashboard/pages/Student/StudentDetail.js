@@ -11,9 +11,7 @@ function StudentDetail({studentId}) {
     const [student,setStudent] = useState('')
     const [error,setError] = useState('')
     const [loading,setLoading] = useState(false)
-    const [familyLoading,setFamilyLoading] = useState(false)
-    const [familyError,setFamilyError] = useState('')
-    const [family,setFamily] = useState("")
+    const [family,setFamily] = useState(null)
     const navigate = useNavigate()
 
 
@@ -25,6 +23,7 @@ function StudentDetail({studentId}) {
                const json = await response.json()
                if(response.ok){
                   setStudent(json.student)
+                  setFamily(json.student.families)
                }else{
                 setError(json.error)
                }
@@ -36,33 +35,9 @@ function StudentDetail({studentId}) {
         }
         fetchAstudent() 
     },[studentId])
-
-    //fetch family information
-    useEffect(()=>{
-      const fetchAfamily = async()=>{
-        setFamilyLoading(true)
-        try {
-            const response = await fetch(`${URL()}/family/${studentId}`)
-            const json = await response.json()
-
-            if(response.ok){
-              setFamily(json.family)
-            }else{
-              setFamilyError(json.error)
-            }
-        } catch (error) {
-          setFamilyError(error)
-        }finally{
-          setFamilyLoading(false)
-        }
-        
-      }
-      fetchAfamily()
-    },[studentId])
-
     //family one
     const handleFamily = ()=>{
-         navigate(`/main?type=student&family=${studentId}`)
+      navigate(`/main?type=student&family=${studentId}`, { state: { name: `${student.first} ${student.last}`} });
     }
     if(loading){
       return <LoadingIndicator/>
@@ -98,8 +73,6 @@ function StudentDetail({studentId}) {
           </div>
         </div>
         <div className='flex flex-col justify-center gap-4'>
-          {familyLoading && <LoadingIndicator/>}
-
           {family.length > 0 
           ? 
             family.length > 1 ?
@@ -124,7 +97,6 @@ function StudentDetail({studentId}) {
               <div className={style.addFamily}>
                 <div className={style.familyCreateBox}>
                     <div className={'button cursor-pointer bg-white border-2 border-cyan-900 hover:bg-cyan-900 hover:text-white'} onClick={handleFamily}>Add Family 1</div>
-                    {familyError && <ErrorMessage error={familyError}/>}
                 </div>
               </div>
           }

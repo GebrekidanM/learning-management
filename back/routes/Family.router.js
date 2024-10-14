@@ -1,19 +1,16 @@
-const { GetOneFamily, GetOneFamilyWithStudentInfo, GetFamilyOfStudentByS_id, CreateFamily, AllFamilies, UpdateFamily } = require('../controller/Family.controller')
+const {CreateFamily, AllFamilies, UpdateFamily, GetFamilies ,getOneFamilyById} = require('../controller/Family.controller')
 const { onlyForAdmin, verifyToken } = require('../middleware/verifyToken')
 const upload = require('../upload')
 
 const router = require('express').Router()
-
-//get family with student id
-router.get('/family/:id',GetFamilyOfStudentByS_id)
-/// get family with family id
-router.get('/family/own/:id',GetOneFamilyWithStudentInfo)
-/// get family with family id
-router.get('/family/only/:id',GetOneFamily)
+//get all family list
+router.get('/onlyfamilies',GetFamilies)
 //register family
 router.post('/family', upload.single('familyPhoto'),verifyToken,onlyForAdmin, CreateFamily)
-//get all families
+//get all families with their child
 router.get('/families',AllFamilies)
+//get one family by Id
+router.get('/family/:id',getOneFamilyById)
 //update family
 router.patch('/family/update/:familyId', upload.single('familyPhoto'),verifyToken,onlyForAdmin,UpdateFamily);
 

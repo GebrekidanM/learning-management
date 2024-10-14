@@ -33,6 +33,7 @@ import ViewSection from './pages/Grade/ViewSection'
 import TeacherEdit from './pages/Teacher/TeacherEdit'
 import Class from './ForTeacher/Class'
 import UpdateScore from './pages/Score/UpdateScore'
+import AddFamily from './pages/Family/AddFamily'
 
 
 function Admin({year,yearId,semesterId,yearName}) {
@@ -40,10 +41,12 @@ function Admin({year,yearId,semesterId,yearName}) {
   const [loading,setLoading] = useState(false)
   const {loggedUser} = useContext(AuthContext)
  
-  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,update_score,action,addscoreSubjectId, idForDetail, familyId, Id,family,gradeId,gradeViewId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
+  const { type: filterType, sectionId, studentId, card,result,info,subjectId,teacherId,update_score,action,addscoreSubjectId, idForDetail, family,familyId, Id,addfamily,gradeId,gradeViewId ,gradeEdit,semesterEdit} = Object.fromEntries([...searchParams]);
   const edit = searchParams.get('action')
   const stuEdit = searchParams.get('action')
 
+
+  console.log(addfamily)
   useEffect(() => {
     try {
     setLoading(true);
@@ -99,7 +102,10 @@ function Admin({year,yearId,semesterId,yearName}) {
         if (edit) {
           return <FamilyEdit familyId={edit} />;
         }
-        return <Family />;
+        if(addfamily){
+          return <CreateFamily yearName={addfamily}/>;
+        }
+        return <Family yearName={yearName} />;
       case 'teacher':
         if (teacherId) {
           return <TeacherDetail yearId={yearId} teacherId={teacherId}/>;
@@ -148,7 +154,7 @@ function Admin({year,yearId,semesterId,yearName}) {
               <div className={style.dashDisplay}>
                 {filterType === 'student' && sectionId ? <CreateStudent sectionId={sectionId} />
                 
-                : filterType === 'student' && family?<CreateFamily studentId={family}/>
+                : filterType === 'student' && family?<AddFamily studentId={family}/>
                 
                 : renderPages(filterType)
                 }

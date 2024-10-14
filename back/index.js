@@ -22,22 +22,32 @@ app.use(cors({ credentials: true, origin: "http://localhost:3000" }))
 app.use(cookieParser())
 app.use('/uploads', express.static('uploads'));
 
+let dbConnectionError = null;  // To store any DB connection error
+
 const database = async () => {
-    try {
-        await mongoose.connect(dbConnection);
-        console.log('Connected to the database successfully');
-        
-        app.listen(port, () => {
-            console.log('Server is running on port 4000');
-        });
-    } catch (error) {
-        console.error('Failed to connect to the database:', error);
-        process.exit(1);
-    }
-}
+  try {
+    await mongoose.connect(dbConnection);
+    console.log('Connected to the database successfully');
+    
+    app.listen(port, () => {
+      console.log('Server is running on port 4000');
+    });
+  } catch (error) {
+    dbConnectionError = error;  // Store the error
+    console.error('Failed to connect to the database:', error.message || error.code);
+  }
+};
 
 database();
 
+app.get('/db-status', (req, res) => {
+    if (dbConnectionError) {
+      res.status(500).json({ error: dbConnectionError.message || 'Unknown database connection error' });
+    } else {
+      res.json({ message: 'Database is connected' });
+    }
+  });
+  
 app.use(UserRouter)
 app.use('/class',ClassRouter)
 app.use(TeacherSectionSubject)
