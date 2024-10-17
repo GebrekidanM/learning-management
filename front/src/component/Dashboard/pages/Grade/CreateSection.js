@@ -69,8 +69,8 @@ function CreateSection({gradeId}) {
 
 
     return (
-      <Card className="w-4 mt-7 mx-auto bg-cyan-900 flex flex-column justify-content-center">
-        <h2 className='text-white -mt-3'>Select Section</h2>
+      <Card className="w-4 mt-7 p-2 mx-auto bg-cyan-900 flex flex-column justify-content-center">
+        <h2 className='text-white text-center font-bold'>Select Section</h2>
         <form onSubmit={handleSubmit} className=''>
             {error && <ErrorMessage error={error}/>}
              <MultiSelect
@@ -79,7 +79,7 @@ function CreateSection({gradeId}) {
                 onChange={handleSelectChange}
                 placeholder="Select letters"
                 display="chip" // Displays selected items as chips
-                className="p-inputtext p-component w-full mt-2"
+                className="p-inputtext p-component w-full mt-2 p-2"
             />
             <button className={`button hover:bg-cyan-900 ${loading ? 'bg-cyan-900 cursor-wait' : 'bg-yellow-700'} mt-3 w-full`} type='submit'>
                 {`${loading ? 'Creating' : 'Create' }`}

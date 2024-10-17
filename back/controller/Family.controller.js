@@ -148,11 +148,24 @@ const UpdateFamily =  async (req, res) => {
     }
 }
 
+const getTotalFamilies = async (req, res) => {
+  try {
+    const totalFamilies = await Family.countDocuments();
+    if (totalFamilies === 0) {
+      return res.status(404).json({ error: "No families found" });
+    }
+    return res.status(200).json(totalFamilies);
+  } catch (error) {
+    return res.status(500).json({ error: 'Error retrieving total number of families' });
+  }
+};
+
 
 module.exports = {
                 GetFamilies,
                 CreateFamily,
                 AllFamilies,
                 UpdateFamily,
-                getOneFamilyById
+                getOneFamilyById,
+                getTotalFamilies
             }

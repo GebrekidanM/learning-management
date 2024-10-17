@@ -7,6 +7,8 @@ const {
      UpdateStudent,
      NumberOfStudentForEachGradeAndSection,
      addFamilyToStudent,
+     getTotalStudents,
+     getSexStudents,
     } = require('../controller/Student.controller');
 const { onlyForAdmin, verifyToken } = require('../middleware/verifyToken');
 const upload = require('../upload');
@@ -28,5 +30,5 @@ router.get('/students/:sectionId', OneSectionStudents);
 router.patch('/student/updat/:studentId', upload.single('studentPhoto'),verifyToken,onlyForAdmin, UpdateStudent);
 //for number of students in each grae and section
 router.get('/numberOfStudent',NumberOfStudentForEachGradeAndSection)
-
+router.get('/students/amountStu/number',getSexStudents)
 module.exports = router

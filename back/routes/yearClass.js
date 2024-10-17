@@ -304,5 +304,16 @@ router.get('/subject/:subjectId',async(req,res)=>{
     }
 })
 
+router.get('/sections/number/all', async (req, res) => {
+    try {
+      const totalSections = await Section.countDocuments();
+      if (totalSections === 0) {
+        return res.status(404).json({ error: "No sections found" });
+      }
+      return res.status(200).json(totalSections);
+    } catch (error) {
+      return res.status(500).json({ error: 'Error retrieving total number of sections' });
+    }
+});
 
 module.exports = router

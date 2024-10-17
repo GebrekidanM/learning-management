@@ -34,6 +34,7 @@ import TeacherEdit from './pages/Teacher/TeacherEdit'
 import Class from './ForTeacher/Class'
 import UpdateScore from './pages/Score/UpdateScore'
 import AddFamily from './pages/Family/AddFamily'
+import Profile from './UI/Profile'
 
 
 function Admin({year,yearId,semesterId,yearName}) {
@@ -61,6 +62,8 @@ function Admin({year,yearId,semesterId,yearName}) {
 
   const renderPages = (filterType) => {
     switch (filterType) {
+      case 'profile':
+        return <Profile/>;
       case 'home':
         return <Main loggedUser={loggedUser} year={year}/>;
       case 'student':

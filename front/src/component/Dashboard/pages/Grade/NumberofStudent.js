@@ -30,12 +30,12 @@ function NumberofStudent() {
   },[])
   
   return (
-    <div>
+    <div className='w-full'>
       {
         loading ? <LoadingIndicator/>
         :
         
-          <div>
+          <div className='w-full'>
               <table style={{marginTop:"2rem"}}>
                   <thead>
                     <tr>

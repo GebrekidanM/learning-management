@@ -1,74 +1,110 @@
-import React, { useContext, useEffect, useState } from 'react'
-import style from '../../css/Dashbord.module.css'
-import URL from '../../UI/URL'
-import { IoSettingsSharp } from "react-icons/io5";
-import PasswordChange from './Password';
-import { ToastContainer } from 'react-toastify';
+import React, { useContext, useEffect, useState} from 'react'
 import 'react-toastify/dist/ReactToastify.css';
-import adminPhoto from '../../../asset/admin.jpg'
 import { AuthContext } from '../../../context/AuthContext';
-
+import URL from '../../UI/URL';
+import NumberCircle from '../../common/NumberCircle';
+import NumberOfStudent from '../pages/Grade/NumberofStudent'
 function Main({year}) {
-  const [handle,setHandle] = useState(false)
-
   const {loggedUser} = useContext(AuthContext)
-  const [section,setSection] = useState('')
+  const [numberOfStudent,setNumberOfStudent] = useState(null)
+  const [numberOfSection,setNumberOfSection] = useState(null)
+  const [numberOfTeacher,setNumberOfTeacher] = useState(null)
+  const [numberOfParent,setNumberOfParent] = useState(null)
 
-  const fetchSection = async ()=>{
-    const response = await fetch(`${URL()}/class/section/${loggedUser.sectionId}`)
-    const json = await response.json()
-    if(response.ok){
-        setSection(json)
-    }
-  }
+  const [error,setError] = useState('')
 
   useEffect(()=>{
-    if(loggedUser.role === 'Student'){
-      fetchSection()
+    const fetchStudentNumber = async()=>{
+      try {
+        const response = await fetch(`${URL()}/students/amountStu/number`)
+        const json = await response.json()
+        if(response.ok){
+          setNumberOfStudent(json)
+        }else{
+          setError(json.error)
+        }
+      } catch (error) {
+        setError(error.message)
+      }
     }
-  },[loggedUser])
+    fetchStudentNumber()
+  },[])
 
-  const handlePassword = ()=>{
-    setHandle(prev=>!prev)
+  useEffect(()=>{
+    const fetchSectionNumber = async()=>{
+      try {
+        const response = await fetch(`${URL()}/class/sections/number/all`)
+        const json = await response.json()
+        if(response.ok){
+          setNumberOfSection(json)
+        }else{
+          setError(json.error)
+        }
+      } catch (error) {
+        setError(error.message)
+      }
+    }
+    fetchSectionNumber()
+  },[])
+
+  useEffect(()=>{
+    const fetchTeacherNumber = async()=>{
+      try {
+        const response = await fetch(`${URL()}/teacher/number/all`)
+        const json = await response.json()
+        if(response.ok){
+          setNumberOfTeacher(json)
+        }else{
+          setError(json.error)
+        }
+      } catch (error) {
+        setError(error.message)
+      }
+    }
+    fetchTeacherNumber()
+  },[])
+
+  useEffect(()=>{
+    const fetchParentNumber = async()=>{
+      try {
+        const response = await fetch(`${URL()}/parent/number/all`)
+        const json = await response.json()
+        if(response.ok){
+          setNumberOfParent(json)
+        }else{
+          setError(json.error)
+        }
+      } catch (error) {
+        setError(error.message)
+      }
+    }
+    fetchParentNumber()
+  },[])
+
+  const heightOfBar = (number)=>{
+    const height = (number*100)/numberOfStudent?.totalStudents
+    return height;
   }
 
-  
-
   return loggedUser && (
-    <div>
-    <ToastContainer/>
-      {loggedUser.role === 'Admin' && <button className={`button ${style.buttonSetUp}`} onClick={year} >Create New Acadamic Year</button>}
-      <div className='mt-3 h-16rem flex align-items-center'>
-        <div className='w-16rem h-16rem bg-white z-2 flex flex-column gap-3 align-items-center border-round-sm shadow-3'>
-            <img 
-                className='w-10rem h-10rem border-circle mt-2' 
-                style={{objectFit:'cover'}} 
-                src={`${URL()}/uploads/${loggedUser.teacherPhoto||loggedUser.familyPhoto||loggedUser.studentPhoto}` || adminPhoto} 
-                alt={"teacher profile"}
-                onError={(e) => e.target.src = adminPhoto}
-                />
-            <h4 className='px-2'>{loggedUser.role} {loggedUser.first || loggedUser.familyFirst || loggedUser.username} {loggedUser.middle||loggedUser.familyMiddle}</h4>
-            {loggedUser.role !== "Student" &&<small>{loggedUser.email} | {loggedUser.phoneNo}</small>}
-            {loggedUser.role === "Student" &&<small>Grade {section?.gradeId?.grade}{section?.section} student</small>}
+    <div className='w-full mt-4'>
+      <div className='w-full flex justify-between items-center'>
+        <NumberCircle number={numberOfParent} name={'Parents'}/>
+        <NumberCircle number={numberOfStudent?.totalStudents} name={'Students'}/>
+        <NumberCircle number={numberOfTeacher} name={'Teachers'}/>
+        <NumberCircle number={numberOfSection} name={'Sections'}/>
+      </div>
+      <NumberOfStudent/>
+      <div className='flex gap-4 items-end'>
+        <div className='border-2 bg-yellow-700' style={{width:'16px',height:`${heightOfBar(numberOfStudent?.totalStudents)}px`}}>
+            <div className='bg-yellow-700' style={{width:'100%',height:`${heightOfBar(numberOfStudent?.male)}px`}}></div>
         </div>
-        <div className='h-15rem w-26rem bg-white z-1 -ml-2 flex flex-column gap-3 justify-content-center border-round-sm'>
-          <h4 className='ml-3'>physical Address</h4>
-          <div className='flex flex-column w-10 mx-auto gap-3'>
-              <p><b>User Id:</b> {loggedUser.userId}</p>
-              <p><b>Sex:</b> {loggedUser.gender}</p> 
-              <p><b>Age:</b> {loggedUser.age}</p>
-              <p><b>Address:</b> {loggedUser.region}-{loggedUser.city}-{loggedUser.subCity}-{loggedUser.wereda}</p>
-          </div>
+        <div className='border-2 bg-yellow-700' style={{width:'16px',height:`${heightOfBar(numberOfStudent?.totalStudents)}px`}}>
+            <div className='bg-yellow-700' style={{width:'100%',height:`${heightOfBar(numberOfStudent?.female)}px`}}></div>
         </div>
       </div>
-      <div className='p-2 bg-white mt-3 w-16rem border-round-sm shadow-3'>
-        <h4 className='flex gap-1 align-items-center w-6rem'>{<IoSettingsSharp/>} Setting </h4>
-        <div className='w-10 mx-auto flex flex-column gap-2 mt-3'>
-          <p onClick={handlePassword} className='p-2 text-cyan-900 border-round-xs hover:bg-white font-semibold cursor-pointer  transition-duration-500' style={{backgroundColor:"#010e134d"}}>Change password</p>
-        </div>
-      </div>
-      {handle && <PasswordChange handle={handle} setHandle={setHandle}/>}
     </div>
+    
   )
 }
 

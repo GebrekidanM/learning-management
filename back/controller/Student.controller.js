@@ -98,7 +98,6 @@ const GetOneStudent = async(req,res)=>{
 
 const GetOneStudentWithExtraInfo = async(req,res)=>{
     const {id} = req.params
-
     if(!mongoose.Types.ObjectId.isValid(id)){
         return res.status(400).json({error:"Not valid id!"})
     }
@@ -129,10 +128,10 @@ const GetAllStudents = async(req,res)=>{
 
 const OneSectionStudents = async (req, res) => {
     const { sectionId } = req.params;
-    if(!mongoose.Types.ObjectId.isValid(sectionId)){
-        res.status(400).json({error:"InValid setion Id"})
-    }
     try {
+        if(!mongoose.Types.ObjectId.isValid(sectionId)){
+            return res.status(400).json({error:"InValid setion Id"})
+        }
         const students = await Student.find({sectionId}).sort({first:1})
         if (students.length === 0) {
             return res.status(404).json({ error: "There are no students in this class" });
@@ -220,16 +219,52 @@ const NumberOfStudentForEachGradeAndSection = async(req,res)=>{
         res.status(500).json({error:error.message})
     }
 }
-// student with his family
-const studentFamily = 
+const getTotalStudents = async (req, res) => {
+    try {
+      const totalStudents = await Student.countDocuments();
+      if (totalStudents === 0) {
+        return res.status(404).json({ error: "No students found" });
+      }
+      return res.status(200).json(totalStudents);
+    } catch (error) {
+      return res.status(500).json({ error: 'Error retrieving total number of students' });
+    }
+};
+
+const getSexStudents = async (req, res) => {
+    try {
+      const totalCounts = await Student.aggregate([
+        {
+          $group: {
+            _id: "$gender",  // Group by gender
+            count: { $sum: 1 }  // Count the number of students for each gender
+          }
+        }
+      ]);
+
+      const maleCount = totalCounts.find(group => group._id === 'Male')?.count || 0;
+      const femaleCount = totalCounts.find(group => group._id === 'Female')?.count || 0;
+
+      return res.status(200).json({
+        totalStudents: maleCount + femaleCount,
+        male: maleCount,
+        female: femaleCount
+      });
+    } catch (error) {
+      return res.status(500).json({ error: 'Error retrieving total number of students' });
+    }
+};
+
 
 module.exports = {
-                    CreateStudent,
-                    addFamilyToStudent,
-                    GetOneStudent, 
-                    GetOneStudentWithExtraInfo, 
-                    GetAllStudents, 
-                    OneSectionStudents,
-                    UpdateStudent,
-                    NumberOfStudentForEachGradeAndSection
-                }
+    CreateStudent,
+    addFamilyToStudent,
+    GetOneStudent, 
+    GetOneStudentWithExtraInfo, 
+    GetAllStudents, 
+    OneSectionStudents,
+    UpdateStudent,
+    NumberOfStudentForEachGradeAndSection,
+    getTotalStudents,
+    getSexStudents
+}

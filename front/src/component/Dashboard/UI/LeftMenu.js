@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { MdDashboard, MdFamilyRestroom } from "react-icons/md";
 import { SiTestcafe, SiGoogleclassroom } from "react-icons/si";
 import { GrSchedules } from "react-icons/gr";
@@ -19,12 +19,14 @@ function LeftMenu({ filterType }) {
         <div className='w-10rem flex justify-content-center' style={{ backgroundColor: "var(--card)", minHeight: "calc(100vh - 4rem)", maxHeight: "calc(100vh - 4rem)", position: "sticky", top: "4rem" }}>
             <div className='flex flex-column gap-3'>
                 <div className='w-5rem'>
-                    <img className='w-5rem h-5rem border-circle mt-4'
-                         style={{ objectFit: 'cover' }} 
-                         src={adminPhoto ? adminPhoto : avatar} 
-                         alt={`${loggedUser.role} profile`} 
-                         onError={(e) => e.target.src = avatar}
-                    />
+                    <Link to={'?type=profile'}>
+                        <img className='w-5rem h-5rem border-circle mt-4'
+                            style={{ objectFit: 'cover' }} 
+                            src={adminPhoto ? adminPhoto : avatar} 
+                            alt={`${loggedUser.role} profile`} 
+                            onError={(e) => e.target.src = avatar}
+                        />
+                    </Link>
                 </div>
                 <NavLink to={'?type=home'} className={`${filterType === 'home' ? 'text-yellow-500 font-bold' : 'text-white'} flex align-items-center gap-2 hover:text-yellow-500 transition-duration-500`}>
                     <span>{<MdDashboard />}</span><span>Dashboard</span>

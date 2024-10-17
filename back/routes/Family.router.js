@@ -1,4 +1,4 @@
-const {CreateFamily, AllFamilies, UpdateFamily, GetFamilies ,getOneFamilyById} = require('../controller/Family.controller')
+const {CreateFamily, AllFamilies, UpdateFamily, GetFamilies ,getOneFamilyById, getTotalFamilies} = require('../controller/Family.controller')
 const { onlyForAdmin, verifyToken } = require('../middleware/verifyToken')
 const upload = require('../upload')
 
@@ -13,7 +13,7 @@ router.get('/families',AllFamilies)
 router.get('/family/:id',getOneFamilyById)
 //update family
 router.patch('/family/update/:familyId', upload.single('familyPhoto'),verifyToken,onlyForAdmin,UpdateFamily);
-
-
+//get total number of faamilies
+router.get('/parent/number/all',getTotalFamilies)
 module.exports = router
 

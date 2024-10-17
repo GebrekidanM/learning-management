@@ -130,3 +130,7 @@ th{
   background-color:var(--card) ;
   color: white;
 }
+.numberCircle{
+  width:70px !important;
+  height: 70px !important;
+}

@@ -172,8 +172,18 @@ const UpdateTeaacher = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 }
-
-module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher}
+const getAllTeachersNumber = async (req, res) => {
+    try {
+      const totalTeachers = await Teacher.countDocuments();
+      if (totalTeachers === 0) {
+        return res.status(404).json({ error: "No Teachers found" });
+      }
+      return res.status(200).json(totalTeachers);
+    } catch (error) {
+      return res.status(500).json({ error: 'Error retrieving total number of Teachers' });
+    }
+}
+module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher,getAllTeachersNumber}
 
 
 
