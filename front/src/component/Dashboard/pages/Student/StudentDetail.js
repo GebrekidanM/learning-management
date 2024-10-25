@@ -50,9 +50,9 @@ function StudentDetail({studentId}) {
     }
 
   return student &&(
-      <div className={'mt-12 grid grid-cols-4 grid-rows-2 gap-4'}>
-        <div className={'bg-gray-400 border-2 row-span-2'}>
-          <img src={`${URL()}/uploads/${student.studentPhoto}`} alt='hello'/>
+      <div className={'w-full mt-4 flex items-start gap-4'}>
+        <div className={'bg-gray-400 rounded-md w-1/4'}>
+          <img className='rounded-t-md' src={`${URL()}/uploads/${student.studentPhoto}`} alt='hello'/>
           <div className={'p-2'}>
             <h5 className='font-bold'>{student.first} {student.middle} {student.last}</h5>
             <p>Gendar: {student.gender}</p>
@@ -60,9 +60,9 @@ function StudentDetail({studentId}) {
             <p> Grade: {student.sectionId.gradeId.grade}{student.sectionId.section}</p>
             <p>Acadamic year: {student.sectionId.gradeId.yearId.yearName}</p>
           </div>
-          <div className='button mt-3 -mb-2 cursor-pointer' onClick={handleResult} >See Result</div>
+          <div className='button mt-3 cursor-pointer' onClick={handleResult} >See Result</div>
         </div>
-        <div className={`${style.adressInfo} row-span-1`}>
+        <div className={`${style.adressInfo} min-w-1/4`}>
           <h3 className='font-bold text-lg'>Detail Adress</h3>
           <div className={style.extraInfo}>
               <p><i><b>Region:</b></i> {student.region}</p>
@@ -72,7 +72,7 @@ function StudentDetail({studentId}) {
               <p><i><b>House No:</b></i> {student.houseNo}</p>
           </div>
         </div>
-        <div className='flex flex-col justify-center gap-4'>
+        <div className='flex items-start justify-between gap-4'>
           {family.length > 0 
           ? 
             family.length > 1 ?

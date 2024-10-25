@@ -21,4 +21,6 @@ router.get('/teachers', GetAllTeachers);
 //update teacher
 router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'),verifyToken,onlyForAdmin,UpdateTeaacher );
 router.get('/teacher/number/all', getAllTeachersNumber);
+//hometeacher
+router.get('/teacher/class/home')
 module.exports = router

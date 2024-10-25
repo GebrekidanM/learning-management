@@ -30,13 +30,14 @@ function NumberofStudent() {
   },[])
   
   return (
-    <div className='w-full'>
+    <div>
       {
         loading ? <LoadingIndicator/>
         :
         
-          <div className='w-full'>
-              <table style={{marginTop:"2rem"}}>
+          <div className='flex flex-col gap-4'>
+              <h2 className='text-center text-lg font-bold text-cyan-900'>Students In Each Class</h2>
+              <table>
                   <thead>
                     <tr>
                       <th> Grade </th>

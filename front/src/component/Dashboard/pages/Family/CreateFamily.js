@@ -45,12 +45,12 @@ function CreateFamily({yearName}) {
             const response = await fetch(`${URL()}/family`, {
                 method: 'POST',
                 body: data,
-                credentials:'include'
+                credentials:'include',
             });
 
             const json = await response.json()
             if(response.ok){
-                navigate(`/main?type=student`, { replace: true });
+                navigate(`/main?type=parent`, { replace: true });
             }else{
                 setError(json.error)
             }

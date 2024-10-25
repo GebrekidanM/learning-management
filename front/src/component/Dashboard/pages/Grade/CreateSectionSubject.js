@@ -142,28 +142,47 @@ function CreateSectionSubject({ teacherId,semesterId }) {
 
     return (
         <div>
-            <h2>Add Sections and Subjects to Teacher</h2>
+            <h2 className='text-lg font-bold text-cyan-900 py-3'>Add Sections and Subjects to Teacher</h2>
             <form onSubmit={handleSubmit}>
                 {error && <ErrorMessage error={error} />}
                 {teacher && <div className='mb-3'><b>Teacher Name:</b> <u>{teacher.first} {teacher.middle} {teacher.last}</u></div>}
-                <div className='card flex flex-column gap-3 mb-3'>
+                <div className='card flex flex-column gap-2 mb-3'>
                     <label>Select Grade:</label>
-                    <Dropdown value={selectedGrade} options={grades} onChange={handleGradeChange} optionLabel="grade" placeholder="Select a Grade" className="w-full md:w-20rem" />
+                    <Dropdown 
+                        value={selectedGrade} 
+                        options={grades} 
+                        onChange={handleGradeChange} 
+                        optionLabel="grade" 
+                        placeholder="Select a Grade" 
+                        className="w-full md:w-20rem p-2" />
                 </div>
 
             {/** select section from sections list */}
                 {selectedGrade && (
-                    <div className='card flex flex-column  mb-3'>
+                    <div className='card flex flex-column gap-2 mb-3'>
                         <label>Select Section:</label>
-                        <Dropdown value={selectedSection} options={sections} onChange={handleSectionChange} optionLabel="section" placeholder="Select a Section" className="w-full md:w-20rem mt-4" />
+                        <Dropdown 
+                            value={selectedSection} 
+                            options={sections} 
+                            onChange={handleSectionChange} 
+                            optionLabel="section" 
+                            placeholder="Select a Section" 
+                            className="w-full md:w-20rem p-2" />
                     </div>
                 )}
         
             {/** select subjects from subjects list */}
                 {selectedSection && (
-                    <div className='card flex flex-column gap-1 mb-3'>
+                    <div className='card flex flex-column gap-2 mb-3'>
                         <label>Select Subjects:</label>
-                        <MultiSelect value={selectedSubjects} options={subjects} onChange={handleSubjectChange} optionLabel="name" placeholder="Select Subjects" className="w-full md:w-20rem mt-4" display="chip" />
+                        <MultiSelect 
+                            value={selectedSubjects} 
+                            options={subjects} 
+                            onChange={handleSubjectChange} 
+                            optionLabel="name" 
+                            placeholder="Select Subjects" 
+                            className="w-full md:w-20rem p-2" 
+                            display="chip" />
                     </div>
                 )}
 

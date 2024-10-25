@@ -29,17 +29,15 @@ function UpdateTeacherSubject({ teacherId, yearId, setToggle }) {
         }
     }, [teacherId]);
 
-    // Fetch subjects for each selected section
     useEffect(() => {
         const fetchSubjects = async (sectionId, grade) => {
             try {
                 const response = await fetch(`${URL()}/class/subjects/${sectionId}`);
                 const json = await response.json();
                 if (response.ok) {
-                    // Store subjects for the selected section of this specific grade
                     setSubjectLists((prev) => ({
                         ...prev,
-                        [grade]: json, // All available subjects in the section for this grade
+                        [grade]: json,
                     }));
                 } else {
                     throw new Error('Error fetching subjects');
@@ -49,7 +47,6 @@ function UpdateTeacherSubject({ teacherId, yearId, setToggle }) {
             }
         };
 
-        // Loop through the selected sections and fetch subjects for each grade
         Object.entries(selectedSections).forEach(([grade, section]) => {
             if (section) {
                 fetchSubjects(section._id, grade);
@@ -57,24 +54,20 @@ function UpdateTeacherSubject({ teacherId, yearId, setToggle }) {
         });
     }, [selectedSections]); // Run effect whenever selectedSections changes
 
-    // Handle section change and store the selected section for a specific grade
     const handleSectionChange = (grade, sectionValue, gradeGroup) => {
         const sectionData = gradeGroup.sections.find(sectionInfo => sectionInfo.section.section === sectionValue);
         
-        // Update the selected section for this specific grade
         setSelectedSections((prev) => ({
             ...prev,
             [grade]: sectionData ? sectionData.section : null,
         }));
 
-        // Reset the selected subject for this section change
         setSelectedSubjects((prev) => ({
             ...prev,
             [grade]: null,
         }));
     };
 
-    // Handle subject change and store the selected subject for a specific grade
     const handleSubjectChange = (grade, subjectId) => {
         setSelectedSubjects((prev) => ({
             ...prev,
@@ -169,7 +162,7 @@ function UpdateTeacherSubject({ teacherId, yearId, setToggle }) {
                                 }))}
                                 onChange={(e) => setNewSubject(e.value)}
                                 placeholder="Select new subject"
-                                className="w-full p-2"
+                                className="w-full p-2 mb-4"
                             />
                         )}
                     </div>

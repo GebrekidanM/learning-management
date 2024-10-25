@@ -36,7 +36,6 @@ import UpdateScore from './pages/Score/UpdateScore'
 import AddFamily from './pages/Family/AddFamily'
 import Profile from './UI/Profile'
 
-
 function Admin({year,yearId,semesterId,yearName}) {
   const [searchParams] = useSearchParams()
   const [loading,setLoading] = useState(false)
@@ -47,7 +46,6 @@ function Admin({year,yearId,semesterId,yearName}) {
   const stuEdit = searchParams.get('action')
 
 
-  console.log(addfamily)
   useEffect(() => {
     try {
     setLoading(true);
@@ -76,7 +74,7 @@ function Admin({year,yearId,semesterId,yearName}) {
         if(card){
           return <ReportCard studentId={card}/>
         }
-        if (stuEdit && !loggedUser.role==='Student' && !loggedUser.role==='Family' && !loggedUser.role==='Teacher') {
+        if (stuEdit && loggedUser.role==='Admin') {
           return <StudentEdit studentId={stuEdit} />;
         }
         return <Student semesterId={semesterId}/>;

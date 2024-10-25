@@ -11,7 +11,8 @@ function FireTeacher({ id, onDeleteSuccess, first, middle, role, setDeleteCard }
             const response = await fetch(`${URL()}/teacher/leave`, {
                 method:'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ teacherId: id })
+                body: JSON.stringify({ teacherId: id }),
+                credentials:'include'
             });
 
             if (response.ok) {

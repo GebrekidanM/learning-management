@@ -87,24 +87,34 @@ function Main({year}) {
   }
 
   return loggedUser && (
-    <div className='w-full mt-4'>
+    <div className='w-full mt-4 flex flex-col gap-8 items-start'>
       <div className='w-full flex justify-between items-center'>
         <NumberCircle number={numberOfParent} name={'Parents'}/>
         <NumberCircle number={numberOfStudent?.totalStudents} name={'Students'}/>
         <NumberCircle number={numberOfTeacher} name={'Teachers'}/>
         <NumberCircle number={numberOfSection} name={'Sections'}/>
       </div>
-      <NumberOfStudent/>
-      <div className='flex gap-4 items-end'>
-        <div className='border-2 bg-yellow-700' style={{width:'16px',height:`${heightOfBar(numberOfStudent?.totalStudents)}px`}}>
-            <div className='bg-yellow-700' style={{width:'100%',height:`${heightOfBar(numberOfStudent?.male)}px`}}></div>
-        </div>
-        <div className='border-2 bg-yellow-700' style={{width:'16px',height:`${heightOfBar(numberOfStudent?.totalStudents)}px`}}>
-            <div className='bg-yellow-700' style={{width:'100%',height:`${heightOfBar(numberOfStudent?.female)}px`}}></div>
+      <div className='w-full flex justify-center items-start gap-8 '>
+        <NumberOfStudent/>
+        <div className='flex flex-col items-center gap-4'>
+          <h2 className='text-center text-lg font-bold text-cyan-900'>Students Sex Number</h2>
+          <div className='flex gap-4 items-end'>
+            <div className='flex flex-col items-center'>
+              <div className='flex items-end border border-yellow-700 bg-white rounded-lg' style={{width:'16px',height:`${heightOfBar(numberOfStudent?.totalStudents)}px`}}>
+                <div className='bg-yellow-700 rounded-lg' style={{width:'100%',height:`${heightOfBar(numberOfStudent?.male)}px`}}></div>
+              </div>
+              <div className='text-center'>Male <br/> {numberOfStudent?.male}</div>
+            </div>
+            <div className='flex flex-col items-center'>
+              <div className=' flex items-end border border-yellow-700 bg-white rounded-lg' style={{width:'16px',height:`${heightOfBar(numberOfStudent?.totalStudents)}px`}}>
+                <div className='bg-yellow-700 rounded-lg ' style={{width:'100%',height:`${heightOfBar(numberOfStudent?.female)}px`}}></div>
+              </div>
+              <div className='text-center'>Female <br/> {numberOfStudent?.female}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    
   )
 }
 

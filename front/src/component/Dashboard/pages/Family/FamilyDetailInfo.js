@@ -9,7 +9,7 @@ function FamilyDetailInfo({fam,student,style}) {
         <div className={`${style.extraInfo} ml-2`}>
             <h5>{fam.family.familyFirst} {fam.family.familyMiddle} {fam.family.familyLast}</h5>
             <p>Email: {fam.family.familyEmail}</p>
-            <p>Phone: {fam.family.familyPhone}</p>
+            <p>Phone: {fam.family.phoneNo}</p>
         </div>
     </div>
   )

@@ -66,7 +66,7 @@ function GradeSectionSelector({ semesterId }) {
                             <div className={style.gradeListBox}>
                                 {grades.map(grade => (
                                     <li 
-                                        className={`${style.gradeList} bg-white text-cyan-900 border-cyan-900 border-1`} 
+                                        className={`${style.gradeList} bg-white text-cyan-900 border-cyan-900 border-1 p-2`} 
                                         key={grade._id} 
                                         onClick={() => setSelectedGrade(grade)}
                                     >
@@ -86,7 +86,7 @@ function GradeSectionSelector({ semesterId }) {
                                     {sections.length > 0 ? (
                                         sections.map(section => (
                                             <li 
-                                                className={`bg-white text-cyan-900 border-cyan-900 border-1 ${style.gradeList}`} 
+                                                className={`bg-white text-cyan-900 border-cyan-900 border-1 p-2 ${style.gradeList}`} 
                                                 key={section._id}
                                                 onClick={() => handleSectionClick(section._id,yearName)}
                                             >

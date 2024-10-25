@@ -51,7 +51,7 @@ function TeacherDetail({teacherId,yearId}) {
                     setErrorInfo(json.error || 'Failed to fetch sections');
                 }
             } catch (error) {
-                setErrorInfo(error.message);
+                setErrorInfo(error.message || 'No info');
             } finally {
                 setLoadingInfo(false);
             }
@@ -93,9 +93,12 @@ function TeacherDetail({teacherId,yearId}) {
         <div className='mt-3'>
           {loadingInfo ? <LoadingIndicator/>
           :
-          <>
-          <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>      
-                {errorInfo ? <ErrorMessage error={error}/>
+          <div className='flex flex-col gap-4'>
+            {teacher.active && <Link className='button' to={`/main?type=teacher&Id=${teacherId}`}>Add Section</Link>}      
+                {errorInfo ? 
+                  <div className='mt-4'>
+                    <ErrorMessage error={error}/>
+                  </div>
                   :
                     <div className={`${css.sectionCardContaine} flex flex-column gap-3 mt-4 w-15rem`}>
                         {sectionInfos && sectionInfos.map(sectionInfo=>(
@@ -103,17 +106,19 @@ function TeacherDetail({teacherId,yearId}) {
                         ))}
                     </div>
                 }            
-          </>
+          </div>
           }
-        </div> 
+        </div>
+        {teacher.active && 
         <div>
-          {loadingInfo ? <LoadingIndicator/>
+          {loadingInfo ? 
+            <LoadingIndicator/>
           :
             errorInfo ? <ErrorMessage error={error}/>
               :
             <UpdateTeacherSubject yearId={yearId} teacherId={teacherId} setToggle={setToggle}/>
           }
-        </div>     
+        </div>}     
       </div>
       }
     </>

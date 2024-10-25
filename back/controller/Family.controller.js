@@ -12,22 +12,16 @@ function Password(name){
     return name + '@011';
 }
 
-
 //the correct one
 const GetFamilies = async (req, res) => {
     try {
-        // Find families associated with the student ID
         const family = await Family.find().sort({createdAt:1});
 
-        // Check if any families were found
         if (family.length === 0) {
             return res.status(404).json({ error: "Family not found!" });
         }
-
-        // Return the found families
         res.status(200).json(family);
     } catch (error) {
-        // Provide more details about the server error
         res.status(500).json({ error: "Server error", details: error.message });
     }
 };
@@ -35,13 +29,10 @@ const GetFamilies = async (req, res) => {
 const CreateFamily = async(req,res)=>{
     const {familyFirst,familyLast,familyMiddle,familyEmail,familyPhone,yearName} = req.body
     const familyPhoto = req.file.filename
-   
-    if(!req.userId) return res.status(401).json({error:"Un Autherized"});
     const role = 'Family'
     const userId = generateId(yearName,role) 
 
     const password = Password(capitalizeFirstLetter(familyFirst))
-    
     const hashedPassword = await bcrypt.hash(password, 10);
     
     try {
@@ -51,12 +42,10 @@ const CreateFamily = async(req,res)=>{
         }
         res.status(200).json(family)
     } catch (error) {
-        console.log(error)
         if (error instanceof mongoose.Error.ValidationError) {
             const ValidationError = Object.values(error.errors).map(err => err.message);
             return res.status(400).json({ error: ValidationError});
         }
-        
         res.status(500).json({ error: error.message });
     }
 }
@@ -68,11 +57,9 @@ const getOneFamilyById = async(req,res)=>{
 }
   try {
         const family = await Family.findOne({_id:id})
-        // Check if any families were found
         if (!family) {
             return res.status(404).json({ error: "Family not found!" });
         }
-        // Return the found families
         res.status(200).json(family);
   } catch (error) {
     res.status(500).json({ error: "Server error", details: error.message });

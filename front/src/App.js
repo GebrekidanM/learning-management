@@ -9,6 +9,7 @@ import CreateSemester from "./component/Dashboard/CreateSemester";
 import Home from "./component/pages/Home";
 import LoadingIndicator from "./component/common/LoadingIndicator";
 import ErrorInternet from "./component/common/ErrorInternet";
+import About from "./component/pages/About";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -57,6 +58,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/about" element={<About/>}/>
         {/* Protected Routes */}
         <Route path="/create-semester" element={loggedUser ? <CreateSemester /> : <Navigate to="/login" />} />
         <Route path="/main" element={loggedUser ? <DashboardIs /> : <Navigate to="/login" />} />

@@ -35,7 +35,7 @@ function AdminNav({ filterType }) {
         <div className='text-2xl medium text-white cursor-pointer'>{<IoMenu />}</div>
       </div>
       <div className={'flex-auto text-white capitalize items-start text-center'}>
-        {filterType ? <h1>{filterType}</h1> : <h1>Welcome {loggedUser.username || loggedUser.first || loggedUser.familyFirst}</h1>}
+        {filterType ? <h1 className='text-lg font-bold'>{filterType}</h1> : <h1 className='text-lg font-bold'>Welcome {loggedUser.username || loggedUser.first || loggedUser.familyFirst}</h1>}
       </div>
       <div className='flex-1 text-2xl medium text-white cursor-pointer flex justify-end mr-3' onClick={logout}>{<CiLogout />}</div>
     </div>

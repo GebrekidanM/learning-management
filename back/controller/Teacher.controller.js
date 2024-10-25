@@ -183,6 +183,21 @@ const getAllTeachersNumber = async (req, res) => {
       return res.status(500).json({ error: 'Error retrieving total number of Teachers' });
     }
 }
+const addHomeClassToATeacher = async (req,res)=>{
+    const {id} = req.params
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Invalid ID!' });
+    }
+    try {
+        const teacher = await Teacher.findOne({_id:id})
+        
+    } catch (error) {
+        
+    }
+}
+const getHomeClassOfATeacher = async (req,res)=>{
+
+}
 module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher,getAllTeachersNumber}
 
 

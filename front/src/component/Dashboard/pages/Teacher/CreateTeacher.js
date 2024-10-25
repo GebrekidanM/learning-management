@@ -158,24 +158,23 @@ function CreateTeacher({yearId,yearName}) {
       }
 
     return (
-        <div className={style.createBox}>
-            <form onSubmit={handleSubmit}>
-                <h2>Teacher's information</h2>
-                {errors.form && <ErrorMessage error={errors.form}/>}
-
+        <form onSubmit={handleSubmit} className='w-full flex flex-col gap-4 justify-center'>
+            <h2 className='text-center text-lg font-bold my-3 text-cyan-900'>Teacher's information</h2>
+            {errors.form && <ErrorMessage error={errors.form}/>}
+            <div className='flex justify-center gap-8 w-3/4 mx-auto'>
                 <div className={style.inLineBox}>
-                    <div className={style.info}>
+                    <div className='flex flex-col gap-2'>
                         <label>First name:</label>
                         <input
                             type='text'
                             name="first"
                             value={userData.first}
-                            onChange={handleOnChange}
+                            onChange={handleOnChange}    
                             required
                         />
                         {errors.first && <span className={style.error}>{errors.first}</span>}
                     </div>
-                    <div className={style.info}>
+                    <div className='flex flex-col gap-2'>
                         <label>Middle name:</label>
                         <input
                             type='text'
@@ -186,7 +185,7 @@ function CreateTeacher({yearId,yearName}) {
                         />
                         {errors.middle && <span className={style.error}>{errors.middle}</span>}
                     </div>
-                    <div className={style.info}>
+                    <div className='flex flex-col gap-2'>
                         <label>Last name:</label>
                         <input
                             type='text'
@@ -197,138 +196,137 @@ function CreateTeacher({yearId,yearName}) {
                         />
                         {errors.last && <span className={style.error}>{errors.last}</span>}
                     </div>
-                </div>
-
-                <div className={`${style.info} ${style.infoContainer}`}>
-                    <label>Gender:</label>
+                    <div className='flex flex-col gap-2'>
+                        <label>Gender:</label>
+                        <div className='flex gap-4'>
+                            <span>
+                                <input type="radio" name="gender" value="Male" checked={userData.gender === "Male"} onChange={handleOnChange} /> Male
+                            </span>
+                            <span>
+                                <input type="radio" name="gender" value="Female" checked={userData.gender === "Female"} onChange={handleOnChange} /> Female
+                            </span>
+                        </div>
+                        {errors.gender && <span className={style.error}>{errors.gender}</span>}
+                    </div>
+                    <div className={style.inLineBox}>
+                        <div className='flex flex-col gap-2'>
+                            <label>Age:</label>
+                            <input
+                                type='number'
+                                name="age"
+                                value={userData.age}
+                                onChange={handleOnChange}
+                                min="1"
+                                required
+                            />
+                            {errors.age && <span className={style.error}>{errors.age}</span>}
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <label>Phone Number:</label>
+                            <input
+                                type='number'
+                                name="phoneNo"
+                                value={userData.phoneNo}
+                                onChange={handleOnChange}
+                                min="1"
+                                required
+                            />
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                            <label>Email:</label>
+                            <input type='email' 
+                                name='email' 
+                                value={userData.email} 
+                                onChange={handleOnChange}/>
+                        </div>
+                    </div>
+                    </div>
                     <div>
-                        <span>
-                            <input type="radio" name="gender" value="Male" checked={userData.gender === "Male"} onChange={handleOnChange} /> Male
-                        </span>
-                        <span>
-                            <input type="radio" name="gender" value="Female" checked={userData.gender === "Female"} onChange={handleOnChange} /> Female
-                        </span>
-                    </div>
-                    {errors.gender && <span className={style.error}>{errors.gender}</span>}
-                </div>
-
-                <div className={style.inLineBox}>
-                    <div className={style.info}>
-                        <label>Age:</label>
-                        <input
-                            type='number'
-                            name="age"
-                            value={userData.age}
-                            onChange={handleOnChange}
-                            min="1"
-                            required
-                        />
-                        {errors.age && <span className={style.error}>{errors.age}</span>}
-                    </div>
-                    <div className={style.info}>
-                          <label>Phone Number:</label>
-                          <input
-                              type='number'
-                              name="phoneNo"
-                              value={userData.phoneNo}
-                              onChange={handleOnChange}
-                              min="1"
-                              required
-                          />
-                      </div>
-                      <div className={style.info}>
-                        <label>Email:</label>
-                        <input type='email' 
-                               name='email' 
-                               value={userData.email} 
-                               onChange={handleOnChange}/>
-                      </div>
-                </div>
-                <div className={style.inLineBox}>
-                      <div className={style.info}>
-                        <label>Experience:</label>
-                        <input type='number' 
-                               name='experience' 
-                               value={userData.experience} 
-                               onChange={handleOnChange}/>
-                      </div>
-                    <div className={style.info}>
-                        <label>Photo:</label>
-                        <input
-                            type='file'
-                            name="teacherPhoto"
-                            onChange={handleFileChange}
-                            required
-                        />
-                        {errors.studentPhoto && <span className={style.error}>{errors.studentPhoto}</span>}
-                    </div>
-                </div>
-
-                <div className={style.inLineBox}>
-                    <div className={style.info}>
-                        <label>Region/State:</label>
-                        <input
-                            type='text'
-                            name="region"
-                            value={userData.region}
-                            onChange={handleOnChange}
-                            required
-                        />
-                        {errors.region && <span className={style.error}>{errors.region}</span>}
-                    </div>
-                    <div className={style.info}>
-                        <label>City:</label>
-                        <input
-                            type='text'
-                            name="city"
-                            value={userData.city}
-                            onChange={handleOnChange}
-                            required
-                        />
-                        {errors.city && <span className={style.error}>{errors.city}</span>}
-                    </div>
-                    <div className={style.info}>
-                        <label>Subcity/Zone:</label>
-                        <input
-                            type='text'
-                            name="subCity"
-                            value={userData.subCity}
-                            onChange={handleOnChange}
-                            required
-                        />
-                        {errors.subCity && <span className={style.error}>{errors.subCity}</span>}
-                    </div>
-                    
-                    <div className={style.info}>
-                        <label>Wereda:</label>
-                        <input
-                            type='text'
-                            name="wereda"
-                            value={userData.wereda}
-                            onChange={handleOnChange}
-                            required
-                        />
-                        {errors.wereda && <span className={style.error}>{errors.wereda}</span>}
-                    </div>
-                    <div className={style.info}>
-                        <label>House No.:</label>
-                        <input
-                            type='number'
-                            name="houseNo"
-                            value={userData.houseNo}
-                            onChange={handleOnChange}
-                            min="1"
-                            required
-                        />
-                        {errors.houseNo && <span className={style.error}>{errors.houseNo}</span>}
-                    </div>
-                </div>
-
-                <button type="submit" disabled={loading} className={style.button}>
+                        <div className='flex flex-col gap-2'>
+                            <div className={style.inLineBox}>
+                                <div className='flex flex-col gap-2'>
+                                    <label>Experience:</label>
+                                    <input type='number' 
+                                        name='experience' 
+                                        value={userData.experience} 
+                                        onChange={handleOnChange}/>
+                                </div>
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <label>Region/State:</label>
+                                <input
+                                    type='text'
+                                    name="region"
+                                    value={userData.region}
+                                    onChange={handleOnChange}
+                                    required
+                                />
+                                {errors.region && <span className={style.error}>{errors.region}</span>}
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <label>City:</label>
+                                <input
+                                    type='text'
+                                    name="city"
+                                    value={userData.city}
+                                    onChange={handleOnChange}
+                                    required
+                                />
+                                {errors.city && <span className={style.error}>{errors.city}</span>}
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <label>Subcity/Zone:</label>
+                                <input
+                                    type='text'
+                                    name="subCity"
+                                    value={userData.subCity}
+                                    onChange={handleOnChange}
+                                    required
+                                />
+                                {errors.subCity && <span className={style.error}>{errors.subCity}</span>}
+                            </div>
+                            
+                            <div className='flex flex-col gap-2'>
+                                <label>Wereda:</label>
+                                <input
+                                    type='text'
+                                    name="wereda"
+                                    value={userData.wereda}
+                                    onChange={handleOnChange}
+                                    required
+                                />
+                                {errors.wereda && <span className={style.error}>{errors.wereda}</span>}
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <label>House No.:</label>
+                                <input
+                                    type='number'
+                                    name="houseNo"
+                                    value={userData.houseNo}
+                                    onChange={handleOnChange}
+                                    min="1"
+                                    required
+                                />
+                                {errors.houseNo && <span className={style.error}>{errors.houseNo}</span>}
+                            </div>
+                        </div>
+                        <div className='flex flex-col gap-2'>
+                                <label>Photo:</label>
+                                <input
+                                    type='file'
+                                    name="teacherPhoto"
+                                    onChange={handleFileChange}
+                                    required
+                                />
+                                {errors.studentPhoto && <span className={style.error}>{errors.studentPhoto}</span>}
+                            </div>
+                    </div>   
+                </div> 
+                <button type="submit" disabled={loading} className='button w-1/2 mx-auto mb-8'>
                     {loading ? 'Submitting...' : 'Submit'}
                 </button>
             </form>
-        </div>
+
     );
 }
 

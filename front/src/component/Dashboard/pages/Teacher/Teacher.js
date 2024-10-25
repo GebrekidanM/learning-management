@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { Dropdown } from 'primereact/dropdown';
-import style from '../css/pages.module.css';
 import CreateTeacher from './CreateTeacher';
 import LoadingIndicator from '../../../common/LoadingIndicator';
 import URL from '../../../UI/URL';
@@ -95,8 +94,9 @@ function Teacher({yearName, yearId}) {
   }
 
   return (
-    <div className={style.pageContainer}>
-      <div className='flex justify-between my-2'>
+    <div className={`flex flex-col gap-6 mt-3`} >
+      {teachType !== 'createTeacher' &&
+        <div className='flex justify-between my-2'>
           <input
             type="text"
             className='w-96 rounded-sm'
@@ -104,17 +104,18 @@ function Teacher({yearName, yearId}) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-        <Dropdown
-          value={filter}
-          options={filterOptions}
-          onChange={(e) => setFilter(e.value)}
-          placeholder="Select Status"
-          className="min-w-32 text-center flex items-center"
-        />
-        <Link to={generateNewSearchParams('teachType', 'createTeacher')} className={'button p-2'}>
-          Add new
-        </Link>
-      </div>
+          <Dropdown
+            value={filter}
+            options={filterOptions}
+            onChange={(e) => setFilter(e.value)}
+            placeholder="Select Status"
+            className="min-w-32 text-center flex items-center"
+          />
+          <Link to={generateNewSearchParams('teachType', 'createTeacher')} className={'button p-2'}>
+            Add new
+          </Link>
+        </div>
+      }
       <div>
         {teachType === 'createTeacher' ? (
           <CreateTeacher yearId={yearId} yearName={yearName} />

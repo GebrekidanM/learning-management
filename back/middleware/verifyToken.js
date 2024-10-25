@@ -4,13 +4,13 @@ const { JWT_SECRET } = require('../config/config');
 const verifyToken = (req, res, next) => {
     const token = req.cookies.user || req.headers.authorization?.split(' ')[1];
     if (!token) {
-        return res.status(401).json({ error: "Unauthorized! No token provided." });
+        return res.status(401).json({ error: "Unauthorized!"});
     }
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
         req.userId = decoded.userId;
-        req.role = decoded.role; // Store the role in the request for further use
+        req.role = decoded.role;
         next();
     } catch (error) {
         if (error.name === 'TokenExpiredError') {

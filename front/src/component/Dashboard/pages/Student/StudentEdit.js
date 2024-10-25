@@ -103,6 +103,7 @@ function StudentEdit({ studentId }) {
             const response = await fetch(`${URL()}/student/updat/${studentId}`, {
                 method: 'PATCH',
                 body: formData,
+                credentials:'include'
             });
             const data = await response.json();
             if (response.ok) {
@@ -180,9 +181,13 @@ function StudentEdit({ studentId }) {
                                 required
                             />
                         </div>
-                        <button type='submit' disabled={loading} className={`button ${style.button}` }>
-                            {loading ? 'Updating...' : 'Update'}
-                        </button>
+                        <div className='w-full flex gap-4'>
+                            <button type='submit' disabled={loading} className={`button` }>
+                                {loading ? 'Updating...' : 'Update'}
+                            </button>
+                            <div className='button'>To change Family</div>
+                        </div>
+                        
                     </div>
                     <div className={`${style.extraInfo} gap-3`}>
                         <div className={style.name}>
