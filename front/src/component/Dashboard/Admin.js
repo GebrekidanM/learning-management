@@ -35,6 +35,7 @@ import Class from './ForTeacher/Class'
 import UpdateScore from './pages/Score/UpdateScore'
 import AddFamily from './pages/Family/AddFamily'
 import Profile from './UI/Profile'
+import HomeClass from './pages/Teacher/HomeClass'
 
 function Admin({year,yearId,semesterId,yearName}) {
   const [searchParams] = useSearchParams()
@@ -136,7 +137,9 @@ function Admin({year,yearId,semesterId,yearName}) {
       case 'score':
         return;
       case 'class':
-        return <Class/>; 
+        return <Class/>;
+      case 'homeclass':
+          return <HomeClass/>;  
         default:
         return <Main  year={year} loggedUser={loggedUser}/>;
     }}

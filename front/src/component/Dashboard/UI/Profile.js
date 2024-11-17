@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import style from '../../css/Dashbord.module.css'
 import URL from '../../UI/URL'
 import { IoSettingsSharp } from "react-icons/io5";
 import PasswordChange from './Password';
@@ -8,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import adminPhoto from '../../../asset/admin.jpg'
 import { AuthContext } from '../../../context/AuthContext';
 
-function Profile({year}) {
+function Profile() {
   const [handle,setHandle] = useState(false)
 
   const {loggedUser} = useContext(AuthContext)
@@ -37,7 +36,6 @@ function Profile({year}) {
   return loggedUser && (
     <div>
     <ToastContainer/>
-      {loggedUser.role === 'Admin' && <button className={`button ${style.buttonSetUp}`} onClick={year} >Create New Acadamic Year</button>}
       <div className='mt-3 h-16rem flex align-items-center'>
         <div className='w-16rem h-16rem bg-white z-2 flex flex-column gap-3 align-items-center border-round-sm shadow-3'>
             <img 

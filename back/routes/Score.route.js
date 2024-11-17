@@ -8,7 +8,8 @@ router.get('/score/student/:studentId',ScoreOfAStudent)
 
 // get scores of students for one Subject subject
 router.get('/score/:subjectId', ScoreOfStudentsForASubject);
-
+//!SECTION
+router.get('/score/all/roster')
 //creating score 
 router.post('/score/', verifyToken,onlyForTeacher,CreatingScore);
 //update score 

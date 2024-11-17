@@ -6,6 +6,8 @@ const {
         GetAllTeachers,
         UpdateTeaacher,
         getAllTeachersNumber,
+        addHomeClassToATeacher,
+        getHomeClassOfATeacher,
     } = require('../controller/Teacher.controller');
 const { onlyForAdmin, verifyToken, onlyForTeacher } = require('../middleware/verifyToken');
 const upload = require('../upload');
@@ -22,5 +24,6 @@ router.get('/teachers', GetAllTeachers);
 router.patch('/teacher/update/:teacherId', upload.single('teacherPhoto'),verifyToken,onlyForAdmin,UpdateTeaacher );
 router.get('/teacher/number/all', getAllTeachersNumber);
 //hometeacher
-router.get('/teacher/class/home')
+router.post('/teacher/class/home/:id',addHomeClassToATeacher)
+router.get('/teacher/class/home/:id',getHomeClassOfATeacher)
 module.exports = router

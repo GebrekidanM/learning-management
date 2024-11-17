@@ -4,6 +4,7 @@ import { AuthContext } from '../../../context/AuthContext';
 import URL from '../../UI/URL';
 import NumberCircle from '../../common/NumberCircle';
 import NumberOfStudent from '../pages/Grade/NumberofStudent'
+import ErrorMessage from '../../common/ErrorMessage';
 function Main({year}) {
   const {loggedUser} = useContext(AuthContext)
   const [numberOfStudent,setNumberOfStudent] = useState(null)
@@ -88,6 +89,8 @@ function Main({year}) {
 
   return loggedUser && (
     <div className='w-full mt-4 flex flex-col gap-8 items-start'>
+      {error && <ErrorMessage error={error}/>}
+      {loggedUser.role === 'Admin' && <button className={`button`} onClick={year} >Create New Acadamic Year</button>}
       <div className='w-full flex justify-between items-center'>
         <NumberCircle number={numberOfParent} name={'Parents'}/>
         <NumberCircle number={numberOfStudent?.totalStudents} name={'Students'}/>

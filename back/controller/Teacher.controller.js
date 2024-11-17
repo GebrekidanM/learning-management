@@ -2,9 +2,10 @@ const { default: mongoose } = require('mongoose');
 const {Teacher} = require('../model/Teacher.model')
 const {TeacherSectionSubject} = require('../model/TeacherSectionSubject.model')
 const {Year} = require('../model/YearModel')
+const {Section} = require('../model/YearModel')
+const { Score } = require("../model/Score.model")
 const generateId = require('../utilities/GenerateId')
 const bcrypt = require('bcrypt');
-const generateTokenAndSetCookie = require('../utilities/generateTokenAndSetCookie')
 
 function capitalizeFirstLetter(str) {
     if (!str) return ''; // Handle empty or null strings
@@ -76,7 +77,14 @@ const GetOneTeacher = async(req,res)=>{
         return res.status(404).json({error:"Invalid Id!"})
     }
     try {
-        const teacher = await Teacher.findById({_id:teacherId}).populate('yearId')
+        const teacher = await Teacher.findById({_id:teacherId})
+                                      .populate('yearId')
+                                      .populate({
+                                        path: 'homeTeacher',
+                                        populate: {
+                                            path: 'gradeId',
+                                        }
+                                    })
         if(!teacher){
             return res.status(404).json({error:"a Teacher with this id isnot found!"})
         }
@@ -183,22 +191,179 @@ const getAllTeachersNumber = async (req, res) => {
       return res.status(500).json({ error: 'Error retrieving total number of Teachers' });
     }
 }
-const addHomeClassToATeacher = async (req,res)=>{
-    const {id} = req.params
+
+const addHomeClassToATeacher =  async (req, res) => {
+    const { id } = req.params;
+    const { homeClass } = req.body;
+   
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ error: 'Invalid ID!' });
     }
     try {
-        const teacher = await Teacher.findOne({_id:id})
-        
+      const sectionExists = await Section.findById(homeClass);
+      if (!sectionExists) {
+        return res.status(404).json({ error: 'Section not found' });
+      }
+      const teacher = await Teacher.find({homeTeacher: homeClass});
+      if(teacher.length > 0){
+        console.log(teacher)
+        return res.status(400).json({error: "This Class already has home teacher!"})
+      }
+
+      const updatedTeacher = await Teacher.findByIdAndUpdate(
+        id,
+        { homeTeacher: homeClass },
+        { new: true }
+      );
+  
+      if (!updatedTeacher) {
+        return res.status(404).json({ error: 'Teacher not found' });
+      }
+  
+      res.json({ message: 'Home class updated successfully', teacher: updatedTeacher });
     } catch (error) {
-        
+      res.status(500).json({ error: 'Failed to set home class' });
     }
-}
+  }
 const getHomeClassOfATeacher = async (req,res)=>{
+    const {id} = req.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return res.status(404).json({ error: 'Invalid ID!' });
+    }
+    try {
+        const teacher = await Teacher.findOne({_id:id}).populate({
+                                                                    path: 'homeTeacher',
+                                                                    populate: {
+                                                                        path: 'gradeId',
+                                                                    }
+                                                                })
+        if(!teacher){
+            return res.status(404).json({error: "No teacher with this Id!"})
+        }else{
+            console.log(teacher.homeTeacher._id)
+            const results = await Score.aggregate([
+                // Match scores for the specified class
+                { $match: { sectionId: new mongoose.Types.ObjectId(teacher.homeTeacher._id) } },
+          
+                // Group by student and subject, summing their scores
+                {
+                  $group: {
+                    _id: {
+                      student: '$studentId',
+                      subject: '$subjectId',
+                    },
+                    totalScore: { $sum: '$value' },
+                    totalOutOf: { $sum: '$outOf' },
+                  },
+                },
+          
+                // Lookup student and subject details
+                {
+                  $lookup: {
+                    from: 'students',
+                    localField: '_id.student',
+                    foreignField: '_id',
+                    as: 'studentDetails',
+                  },
+                },
+                {
+                  $lookup: {
+                    from: 'subjects',
+                    localField: '_id.subject',
+                    foreignField: '_id',
+                    as: 'subjectDetails',
+                  },
+                },
+          
+                // Unwind arrays to simplify structure
+                { $unwind: '$studentDetails' },
+                { $unwind: '$subjectDetails' },
+          
+                // Project the final output
+                {
+                  $project: {
+                    student: {
+                      id: '$studentDetails._id',
+                      firstName: '$studentDetails.firstName',
+                      lastName: '$studentDetails.lastName',
+                    },
+                    subject: {
+                      id: '$subjectDetails._id',
+                      name: '$subjectDetails.name',
+                      shortCode: '$subjectDetails.shortCode',
+                    },
+                    totalScore: 1,
+                    totalOutOf: 1,
+                  },
+                },
+          
+                // Group by student to aggregate all subjects and their total scores
+                {
+                  $group: {
+                    _id: '$student.id',
+                    name: { $first: { $concat: ['$student.firstName', ' ', '$student.lastName'] } },
+                    subjects: {
+                      $push: {
+                        subject: '$subject.name',
+                        shortCode: '$subject.shortCode',
+                        score: '$totalScore',
+                        outOf: '$totalOutOf',
+                      },
+                    },
+                    totalScore: { $sum: '$totalScore' },
+                    totalOutOf: { $sum: '$totalOutOf' },
+                  },
+                },
+          
+                // Optionally, sort by total score for ranking
+                { $sort: { totalScore: -1 } },
+          
+                // Add rank field
+                {
+                  $setWindowFields: {
+                    sortBy: { totalScore: -1 },
+                    output: {
+                      rank: { $rank: {} },
+                    },
+                  },
+                },
+          
+                // Project final output
+                {
+                  $project: {
+                    student: 1,
+                    subjects: 1,
+                    totalScore: 1,
+                    totalOutOf: 1,
+                    average: { $divide: ['$totalScore', '$subjects.length'] },
+                    rank: 1,
+                  },
+                },
+              ]);
+          
+              if (!results.length) {
+                return res.status(404).json({ message: 'No scores found for this class.' });
+              }
+          
+              res.status(200).json(results);
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error:"Server Error!"})
+    }
 
 }
-module.exports = {FiredTeacher,CreatingATeacher,GetOneTeacher,GetAllTeachers,UpdateTeaacher,getAllTeachersNumber}
+
+module.exports = {
+    FiredTeacher,
+    CreatingATeacher,
+    GetOneTeacher,
+    GetAllTeachers,
+    UpdateTeaacher,
+    getAllTeachersNumber,
+    addHomeClassToATeacher,
+    getHomeClassOfATeacher}
 
 
 

@@ -3,6 +3,7 @@ import { AuthContext } from '../../../context/AuthContext'
 import LoadingIndicator from '../../common/LoadingIndicator'
 import URL from '../../UI/URL'
 import ErrorMessage from '../../common/ErrorMessage'
+import {Link} from "react-router-dom";
 
 function Class() {
     const [sectionInfos,setSectionInfos] = useState([])
@@ -40,7 +41,11 @@ function Class() {
     <div className={'w-20rem mt-3'}>
         {error ? <ErrorMessage error={error}/>:
             sectionInfos && sectionInfos.map((sectionInfo,index)=>(
-            <p key={index}>{sectionInfo.sectionId.gradeId.grade}{sectionInfo.sectionId.section} - <span>{sectionInfo.subjects.map(subject=>(<span key={subject._id}>{subject.name},</span>))}</span></p>
+            <Link key={index} >
+                <p className={'bg-cyan-900 p-3 text-white rounded'}>
+                    {sectionInfo.sectionId.gradeId.grade}{sectionInfo.sectionId.section} - <span>{sectionInfo.subjects.map(subject=>(<span key={subject._id}>{subject.name},</span>))}</span>
+                </p>
+            </Link>
         ))}
     </div>
   )

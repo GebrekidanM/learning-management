@@ -81,13 +81,14 @@ function Login() {
   }
 
   return (
-    <div className={style.logBox}>
+    <div className='mt-8 pt-8'>
+    <div className={`${style.logBox}`}>
       <div className={style.logSide}>
         <h2>Are you new?</h2>
         <Link to='/signup' className={style.button}>Sign up</Link>
       </div>
       <form onSubmit={handleSubmit}>
-        <h2>Login to your account</h2>
+        <h2 className='font-bold'>Login to your account</h2>
         {serverError && <p style={{ color: 'red' }}>{serverError}</p>}
         <input
           type='text'
@@ -116,6 +117,7 @@ function Login() {
 
         <button className={style.button} type='submit'>Login</button>
       </form>
+    </div>
     </div>
   )
 }

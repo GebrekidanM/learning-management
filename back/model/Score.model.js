@@ -4,17 +4,22 @@ const ScoreSchema = new mongoose.Schema({
     studentId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Student',
-        required: [true, 'Student ID is required.'],
+        required: [true, 'Student is required.'],
     },
     subjectId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Subject',
-        required: [true, 'Subject ID is required.'],
+        required: [true, 'Subject is required.'],
     },
     teacherId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Teacher',
-        required: [true, 'Teacher ID is required.'],
+        required: [true, 'Teacher is required.'],
+    },
+    sectionId:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Section',
+        required: [true, 'Section is required.'],
     },
     value: {
         type: Number,
